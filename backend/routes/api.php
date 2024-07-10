@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\FunnelController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\StageController;
 
 //login e forgot
 Route::post('/register', [AuthController::class, 'register']);
