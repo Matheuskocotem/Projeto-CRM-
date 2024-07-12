@@ -17,4 +17,9 @@ class Funnel extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function stages()
+    {
+        return $this->hasMany(Stage::class);
+    }
 }

@@ -2,20 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Stage extends Model
 {
-    use HasFactory;
-    
+    protected $fillable = ['name', 'order', 'funnel_id'];
+
     public function funnel()
     {
-        return $this->belongsTo(Funnel::class);
-    }
-
-    public function contacts()
-    {
-        return $this->hasMany(Contact::class);
+        return $this->belongsTo(Funnel::class, 'funnel_id', 'id');
     }
 }

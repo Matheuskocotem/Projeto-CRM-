@@ -28,16 +28,23 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // relatorios
-Route::get('/funnels/reports/completedContacts', [FunnelController::class, 'completedContactsReport']);
-Route::get('/funnels/reports/contactsValue', [FunnelController::class, 'contactsValueReport']);
-Route::get('/funnels/reports/createdContacts', [FunnelController::class, 'createdContactsReport']);
+Route::get('/funnels/reports/completedContacts', [ContactController::class, 'completedContactsReport']);
+Route::get('/funnels/reports/contactsValue', [ContactController::class, 'contactsValueReport']);
+Route::get('/funnels/reports/createdContacts', [ContactController::class, 'createdContactsReport']);
 
 
-// stages
-Route::middleware('auth:sanctum')->get('/funnels/{funnel}/stages', [StageController::class, 'index']);
-Route::middleware('auth:sanctum')->post('/funnels/{funnel}/stages', [StageController::class, 'store']);
-Route::middleware('auth:sanctum')->put('/funnels/{funnel}/stages/{stage}', [StageController::class, 'update']);
-Route::middleware('auth:sanctum')->delete('/funnels/{funnel}/stages/{stage}', [StageController::class, 'destroy']);
+//stages
+Route::middleware('auth:sanctum')->group(function () {
+    // Rotas para CRUD de estágios de um funil específico
+    Route::get('/funnels/{funnel}/stages', [StageController::class, 'index']);
+    Route::post('/funnels/{funnel}/stages', [StageController::class, 'store']);
+    Route::put('/funnels/{funnel}/stages/{stage}', [StageController::class, 'update']);
+    Route::delete('/funnels/{funnel}/stages/{stage}', [StageController::class, 'destroy']);
+
+    // Rota para atualização da ordem dos estágios
+    Route::post('/funnels/{funnel}/stages/update-order', [StageController::class, 'updateOrder']);
+});
+
 
 //contacts
 Route::middleware('auth:sanctum')->group(function () {
@@ -46,4 +53,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/contacts/{contact}', [ContactController::class, 'show']);
     Route::put('/contacts/{contact}', [ContactController::class, 'update']);
     Route::delete('/contacts/{contact}', [ContactController::class, 'destroy']);
+
 });
