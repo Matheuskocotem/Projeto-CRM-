@@ -4,27 +4,33 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateStagesTable extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        schema::create('stages', function (Blueprint $table){
+        Schema::create('stages', function (Blueprint $table) {
             $table->id();
-            $table->foreign('funnel_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('funnel_id');
             $table->string('name');
             $table->integer('order')->default(0);
             $table->timestamps();
+
+            $table->foreign('funnel_id')->references('id')->on('funnel')->onDelete('cascade');
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('stages');
     }
-};
+}
