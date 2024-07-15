@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contacts;
 use Illuminate\Http\Request;
 use App\Models\Stage;
 use App\Models\Funnel;
@@ -14,23 +15,23 @@ class StageController extends Controller
         return response()->json($stages);
     }
     public function store(Request $request, $funnel_id)
-{
-    $validatedData = $request->validate([
-        'name' => 'required|string',
-        'order' => 'required|integer',
-    ]);
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'order' => 'required|integer',
+        ]);
 
-    $funnel = Funnel::findOrFail($funnel_id);
+        $funnel = Funnel::findOrFail($funnel_id);
 
-    $stage = new Stage([
-        'name' => $validatedData['name'],
-        'order' => $validatedData['order'],
-    ]);
+        $stage = new Stage([
+            'name' => $validatedData['name'],
+            'order' => $validatedData['order'],
+        ]);
 
-    $funnel->stages()->save($stage);
+        $funnel->stages()->save($stage);
 
-    return response()->json($stage, 201);
-}
+        return response()->json($stage, 201);
+    }
 
     public function update(Request $request, Funnel $funnel, Stage $stage)
     {
@@ -62,10 +63,19 @@ class StageController extends Controller
     public function updateOrder(Request $request)
     {
         $request->validate(['order' => 'required|array']);
-        foreach ($request->order as $index => $id){
+        foreach ($request->order as $index => $id) {
             Stage::where('id, $id')->update(['order' => $index]);
         }
 
         return response()->json(['message' => 'Ordem alterada com sucesso']);
     }
+
+    public function averageContactsValue($funnelId, $stageId)
+    {
+        $average = Contacts::where('stage_id', $stageId)
+            ->avg('buyValue');
+
+        return response()->json(['average_value' => $average]);
+    }
+
 }
