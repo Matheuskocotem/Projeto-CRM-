@@ -13,16 +13,17 @@ use App\Http\Controllers\StageController;
 //login e forgot
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login');
-Route::post('/forgotPassword', [ForgotPasswordController::class, 'forgotPassword'])->name('password.reset');
+
 
 // resetpassword
 Route::get('/resetPasswordEmail/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset.form');
 Route::post('/resetPassword/{token}', [ResetPasswordController::class, 'reset'])->name('password.update');
+Route::post('/forgotPassword', [ForgotPasswordController::class, 'forgotPassword'])->name('password.reset');
 
 //funnel
-Route::middleware('auth:sanctum')->get('/funnels', [FunnelController::class, 'index']);
-Route::middleware('auth:sanctum')->get('/funnels/search', [FunnelController::class, 'search']);
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/funnels', [FunnelController::class, 'index']);
+    Route::get('/funnels/search', [FunnelController::class, 'search']);
     Route::post('/funnel', [FunnelController::class, 'store']);
     Route::delete('/funnel/{id}', [FunnelController::class, 'destroy']);
 });
@@ -35,7 +36,6 @@ Route::get('/funnels/reports/createdContacts', [ContactController::class, 'creat
 
 //stages
 Route::middleware('auth:sanctum')->group(function () {
-    // Rotas para CRUD de estágios de um funil específico
     Route::get('/funnels/{funnel}/stages', [StageController::class, 'index']);
     Route::post('/funnels/{funnel}/stages', [StageController::class, 'store']);
     Route::put('/funnels/{funnel}/stages/{stage}', [StageController::class, 'update']);
@@ -43,6 +43,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Rota para atualização da ordem dos estágios
     Route::post('/funnels/{funnel}/stages/update-order', [StageController::class, 'updateOrder']);
+
+    Route::get('/funnels/{funnel}/stages/{stage}/contacts/average-value', [StageController::class, 'averageContactsValue']);
 });
 
 

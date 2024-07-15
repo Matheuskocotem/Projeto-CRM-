@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Funnel;
+Use App\Models\Funnel;
 use Illuminate\Support\Facades\Auth;
 use Psy\CodeCleaner\ImplicitReturnPass;
 

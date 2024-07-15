@@ -2,77 +2,59 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Funnel;
 use Illuminate\Http\Request;
-use App\Models\contact;
+use App\Models\Contacts;
 
 class ContactController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return response()->json(Contact::all());
+        return response()->json(Contacts::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string',
             'funnel_id' => 'required|exists:funnel,id',
-            'stage' => 'required|string',
+            'stage_id' => 'required|exists:stages,id',
             'email' => 'required|email',
-            'phoneNumber' => 'nullable|string',
-            'dateOfBirth' => 'nullable|date', 
+            'phoneNumber' => 'required|string',
+            'dateOfBirth' => 'nullable|date',
             'address' => 'nullable|string',
             'buyValue' => 'nullable|numeric',
         ]);
 
-        $contact = Contact::create($request->all());
+
+        $contact = Contacts::create([
+            'name' => $request->name,
+            'funnel_id' => $request->funnel_id,
+            'stage_id' => $request->stage_id,
+            'email' => $request->email,
+            'phoneNumber' => $request->phoneNumber,
+            'dateOfBirth' => $request->dateOfBirth,
+            'address' => $request->address,
+            'buyValue' => $request->buyValue,
+        ]);
 
         return response()->json([
-            'message' => 'contato adicionado com sucesso', 
+            'message' => 'Contato criado com sucesso',
             'data' => $contact
         ], 201);
-
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Contact $contact)
+    public function show(Contacts $contact)
     {
         return response()->json($contact);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Contact $contact)
+    public function update(Request $request, Contacts $contact)
     {
         $request->validate([
             'name' => 'required|string',
             'funnel_id' => 'required|exists:funnel,id',
-            'stage' => 'required|string',
+            'stage_id' => 'required|exists:stages,id',
             'email' => 'required|email',
             'phoneNumber' => 'nullable|string',
             'dateOfBirth' => 'nullable|date',
@@ -81,20 +63,30 @@ class ContactController extends Controller
         ]);
 
         $contact->update($request->all());
-        
+
         return response()->json([
-            'message' => 'contato atualizado com sucesso"',
+            'message' => 'Contato atualizado com sucesso',
             'data' => $contact
         ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Contact $contact)
+    public function destroy(Contacts $contact)
     {
         $contact->delete();
 
-        return response()->json('contanto excluido', 204);
+        return response()->json(['message' => 'Contato apagado com sucesso'], 204);
+
     }
+
+    public function averageValueInStage($funnelId, $stageId)
+    {
+        $average = Contacts::whereHas('stages', function ($query) use ($stageId) {
+                        $query->where('id', $stageId);
+                    })
+                    ->avg('buyValue');
+    
+        return response()->json(['buyValue' => $average]);
+    }
+
+
 }
