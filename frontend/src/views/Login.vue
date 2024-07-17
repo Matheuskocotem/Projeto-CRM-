@@ -43,7 +43,7 @@
             label="Senha"
           />
           <div id="linkForm">
-            <router-link class="link" to="/remember"
+            <router-link class="link" to="/ResetPassword"
               >Esqueceu sua senha?</router-link
             >
             <router-link class="link" to="/register"

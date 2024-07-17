@@ -27,6 +27,14 @@ const router = createRouter({
       meta: {
         title: 'Dashboard',
       }
+    },
+    {
+      path: '/ResetPassword',
+      name: 'ResetPassword',
+      component: () => import('../views/ResetPassword.vue'),
+      meta: {
+        title: 'ResetPassword',
+      }
     }
   ]
 })
@@ -37,7 +45,7 @@ router.beforeEach((to, from, next) => {
   }
 
   const Auth = store.getters.isAuth;
-  const PublicRoutes = ['/login', '/register'];
+  const PublicRoutes = ['/login', '/register', '/forgotPassword'];
   const AuthRequired = !PublicRoutes.includes(to.path);
 
   if(AuthRequired && !Auth){

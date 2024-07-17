@@ -12,7 +12,7 @@ import "bootstrap";
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faInstagram, faTiktok } from '@fortawesome/free-brands-svg-icons';
-import { faFileAlt, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { faFileAlt, faCircleCheck,  } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(faInstagram, faTiktok, faFileAlt, faCircleCheck);
