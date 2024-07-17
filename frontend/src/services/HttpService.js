@@ -50,6 +50,4 @@ export const register = async (name, email, password, password_confirmation, doc
   }
 }
 
-export const funnel = async ()
-
 export default HttpService;

@@ -11,10 +11,14 @@ class Funnel extends Model
 
     protected $table = 'funnel';
     protected $fillable = ['user_id', 'name'];
-
     // Relacionamento com o usuário
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function stages()
+    {
+        return $this->hasMany(Stage::class);
     }
 }

@@ -16,12 +16,17 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:User',
             'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8    ',
             'documentType' => 'required|in:CPF,CNPJ',
             'documentNumber' => 'required|string|unique:User',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'não foi possivel registrar, tente novamente',
+            ], 422);
         }
 
         $user = User::create([
