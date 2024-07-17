@@ -50,4 +50,16 @@ export const register = async (name, email, password, password_confirmation, doc
   }
 }
 
+export const funnel = async (name, user_id) => {
+  try {
+    const response = await HttpService.post('/funnel', {
+      name: name,
+      user_id: user_id
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export default HttpService;

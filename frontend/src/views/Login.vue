@@ -50,7 +50,7 @@
               >Crie sua conta</router-link
             >
           </div>
-          <button type="button" class="btn btn-primary" @submit.prevent="Login">
+          <button type="button" class="btn btn-primary" @click="Login">
             Entrar
           </button>
         </div>
