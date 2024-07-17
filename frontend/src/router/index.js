@@ -47,7 +47,6 @@ router.beforeEach((to, from, next) => {
   // const Auth = store.getters.isAuth;
   // const PublicRoutes = ['/login', '/register'];
   // const AuthRequired = !PublicRoutes.includes(to.path);
-
 // <<<<<<< HEAD
 //   const Auth = store.getters.isAuth;
 //   const PublicRoutes = ['/login', '/register', '/forgotPassword'];
