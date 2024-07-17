@@ -1,15 +1,42 @@
 <template>
-    <div>
-    <h1>ajwbdkawdaodn k fsjenkjsenjsnefkjsnkjefjsnhjsabjhdabjha </h1>
-    <backEffect />
-</div>
+  <div>
+    
+  </div>
 </template>
-
+  
 <script>
-import backEffect from '../components/backEffect.vue'
+import Error from "@/components/Error.vue";
+import { useToast } from "vue-toastification";
+import { mapGetters } from "vuex";
+
 export default {
-    components: {
-        backEffect
+  data() {
+    return {
+      errorMessage: "",
+    };
+  },
+  computed: {
+    ...mapGetters(['isAuth']),
+  },
+  components: {
+    Error,
+  },
+  methods: {
+    showError(errorMessage) {
+      const toast = useToast();
+      toast.error({
+        component: Error,
+        props: {
+          errorMessage
+        },
+      });
+    },
+  },
+  verifyAuth(errorMessage){
+    if(!this.isAuth){
+      this.showError(errorMessage);
     }
-}
+  }
+};
 </script>
+  

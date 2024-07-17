@@ -1,5 +1,4 @@
 import CryptoJS from 'crypto-js';
-import router from '../router';
 import axios from "axios";
 
 const HttpService = axios.create({
@@ -26,8 +25,6 @@ export const login = async (email, password) => {
       email: email,
       password: password
     });
-    const token = response.data;
-    console.log(token);
     return response.data;
   } catch (error) {
     console.error('Erro ao fazer login:', error);
@@ -45,14 +42,14 @@ export const register = async (name, email, password, password_confirmation, doc
       documentType: documentType,
       documentNumber: documentNumber
     });
-    router.push({ name: 'login' });
     return response.data;
     
   } catch (error) {
-    console.error("Erro ao registrar:", error.response ? error.response.data : error.message);
-    this.errorMessage = error.response ? error.response.data : 'Erro desconhecido';
+    console.error("Erro ao registrar:", error.response);
     throw error;
   }
 }
+
+export const funnel = async ()
 
 export default HttpService;
