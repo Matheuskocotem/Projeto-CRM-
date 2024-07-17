@@ -97,7 +97,7 @@
           :label="`Número do ${documentType}`"
           class="input"
         />
-        <button type="button" class="btn btn-primary" @submit.prevent="Register">
+        <button type="button" class="btn btn-primary" @click="Register">
           Registrar-se
         </button>
       </form>
