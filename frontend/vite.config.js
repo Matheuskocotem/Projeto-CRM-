@@ -8,6 +8,12 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
+  build: {
+    sourcemap: false,  // Desativa source maps para o build
+  },
+  css: {
+    devSourcemap: false,  // Desativa source maps para CSS
+  },
   server: {
     watch: {
       usePolling: true,

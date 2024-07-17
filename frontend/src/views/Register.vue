@@ -97,7 +97,7 @@
           :label="`Número do ${documentType}`"
           class="input"
         />
-        <button type="button" class="btn btn-primary" @click="Register">
+        <button type="button" class="btn btn-primary" @submit.prevent="Register">
           Registrar-se
         </button>
       </form>
@@ -110,7 +110,10 @@
 import backEffect from "../components/backEffect.vue";
 import AppFooter from "../components/AppFooter.vue";
 import InputForm from "../components/InputForm.vue";
+import Error from "../components/Error.vue";
 import { register } from "../services/HttpService";
+import { useToast } from "vue-toastification";
+import Success from "../components/Success.vue";
 
 export default {
   name: "Register",
@@ -118,6 +121,8 @@ export default {
     backEffect,
     AppFooter,
     InputForm,
+    Error,
+    Success
   },
   data() {
     return {
@@ -167,9 +172,43 @@ export default {
         this.showWord = true;
       }, 100);
     },
+    showError(errorMessage) {
+      const toast = useToast();
+      toast.error({
+        component: Error,
+        props: {
+          errorMessage
+        },
+      });
+    },
+    showSuccess(successMessage){
+      const toast = useToast();
+      toast.success({
+        component: Success,
+        props: {
+          successMessage,
+        }
+      });
+    },
     async Register() {
       if (this.password !== this.password_confirmation) {
-        this.errorMessage = "As senhas não coincidem";
+        this.showError("As senhas não coincidem");
+        return;
+      }
+      if (!this.name) {
+        this.showError("Nome inválido");
+        return;
+      }
+      if (!this.email) {
+        this.showError("Email inválido");
+        return;
+      }
+      if (this.password.length < 6) {
+        this.showError("A senha deve ter mais que 6 dígitos");
+        return;
+      }
+      if (!this.documentNumber) {
+        this.showError("Documento inválido");
         return;
       }
 
@@ -182,16 +221,11 @@ export default {
           this.documentType,
           this.unformatDocumentNumber(this.documentNumber)
         );
-        console.log(response.data);
+        this.showSuccess("Faça o seu login a seguir!");
+        this.$router.push("/login");
         return response.data;
       } catch (error) {
-        console.error(
-          "Erro ao registrar:",
-          error.response ? error.response.data : error.message
-        );
-        this.errorMessage = error.response
-          ? error.response.data
-          : "Erro desconhecido";
+        this.showError("Erro ao fazer login!");
       }
     },
     formatDocumentNumber(number, type) {
@@ -218,7 +252,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 #icons img {
   width: 30px;
   height: 30px;
@@ -305,13 +339,12 @@ export default {
 
 #main {
   position: absolute;
-  width: 80%;
-  height: 80%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   z-index: 1;
   margin-bottom: 40px;
+  align-items: center;
 }
 
 form {
@@ -332,7 +365,7 @@ form .input {
 form button {
   width: 100%;
   height: 40px;
-  margin-bottom: -50px;
+  margin-top: 20px;
   background-color: #007bff;
   color: white;
   border: none;

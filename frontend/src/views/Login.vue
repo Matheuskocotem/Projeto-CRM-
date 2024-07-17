@@ -50,7 +50,7 @@
               >Crie sua conta</router-link
             >
           </div>
-          <button type="button" class="btn btn-primary" @click="handleLogin">
+          <button type="button" class="btn btn-primary" @submit.prevent="Login">
             Entrar
           </button>
         </div>
@@ -61,10 +61,14 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import { login } from "../services/HttpService";
+import { useToast } from "vue-toastification";
 import AppFooter from "../components/AppFooter.vue";
 import backEffect from "../components/backEffect.vue";
 import InputForm from "../components/InputForm.vue";
+import Error from "../components/Error.vue";
+import Success from '../components/Success.vue';
 
 export default {
   name: "Login",
@@ -72,21 +76,60 @@ export default {
     AppFooter,
     backEffect,
     InputForm,
+    Error,
+    Success
   },
   data() {
     return {
       email: "",
       password: "",
+      errorMessage: "",
     };
   },
   methods: {
-    async handleLogin() {
+    showError(errorMessage){
+      const toast = useToast();
+      toast.error({
+        component: Error,
+        props: {
+          errorMessage
+        }
+      })
+    },
+    showSuccess(successMessage) {
+      const toast = useToast();
+      toast.success({
+        component: Success,
+        props: {
+          successMessage
+        }
+      })
+    },
+    async Login() {
+      // error treatment
+
+      if (!this.email) {
+        this.showError("Email inválido.");
+        return;
+      }
+      if (!this.password) {
+        this.showError("Senha inválida.");
+        return;
+      }
+
+      // method to login
       try {
         const response = await login(this.email, this.password);
+        this.saveToken(response.access_token);
+        this.showSuccess("Seu Login deu certo.");
+        if (this.isAuth) {
+          this.$router.push("/dashboard");
+        }
       } catch (error) {
-        console.error("Erro ao fazer login:", error);
+        this.showError("Erro ao fazer login!");
       }
     },
+    ...mapActions(["saveToken"]),
   },
 };
 </script>
