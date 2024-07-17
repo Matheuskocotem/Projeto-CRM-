@@ -37,11 +37,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/funnel/{id}', [FunnelController::class, 'destroy']);
 });
 
-// relatorios
-Route::get('/funnels/reports/completedContacts', [ContactController::class, 'completedContactsReport']);
-Route::get('/funnels/reports/contactsValue', [ContactController::class, 'contactsValueReport']);
-Route::get('/funnels/reports/createdContacts', [ContactController::class, 'createdContactsReport']);
-
 
 //stages
 Route::middleware('auth:sanctum')->group(function () {
