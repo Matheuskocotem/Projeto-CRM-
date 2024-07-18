@@ -76,7 +76,9 @@
             v-model="documentType"
             checked
           />
-          <label class="btn btn-outline-primary" for="btnradio1">CPF</label>
+          <label class="btn btn-outline-primary mb-1" for="btnradio1"
+            >CPF</label
+          >
           <input
             type="radio"
             class="btn-check"
@@ -86,7 +88,9 @@
             value="CNPJ"
             v-model="documentType"
           />
-          <label class="btn btn-outline-primary" for="btnradio2">CNPJ</label>
+          <label class="btn btn-outline-primary mb-1" for="btnradio2"
+            >CNPJ</label
+          >
         </div>
         <InputForm
           type="text"
@@ -111,9 +115,9 @@ import backEffect from "../components/backEffect.vue";
 import AppFooter from "../components/AppFooter.vue";
 import InputForm from "../components/InputForm.vue";
 import Error from "../components/Error.vue";
-import { register } from "../services/HttpService";
-import { useToast } from "vue-toastification";
 import Success from "../components/Success.vue";
+import { useToast } from "vue-toastification";
+import { mapActions } from "vuex";
 
 export default {
   name: "Register",
@@ -122,7 +126,7 @@ export default {
     AppFooter,
     InputForm,
     Error,
-    Success
+    Success,
   },
   data() {
     return {
@@ -177,17 +181,17 @@ export default {
       toast.error({
         component: Error,
         props: {
-          errorMessage
+          errorMessage,
         },
       });
     },
-    showSuccess(successMessage){
+    showSuccess(successMessage) {
       const toast = useToast();
       toast.success({
         component: Success,
         props: {
           successMessage,
-        }
+        },
       });
     },
     async Register() {
@@ -212,22 +216,22 @@ export default {
         return;
       }
 
-      try {
-        const response = await register(
-          this.name,
-          this.email,
-          this.password,
-          this.password_confirmation,
-          this.documentType,
-          this.unformatDocumentNumber(this.documentNumber)
-        );
+      const response = await this.register({
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        password_confirmation: this.password_confirmation,
+        documentType: this.documentType,
+        documentNumber: this.unformatDocumentNumber(this.documentNumber)
+      });
+      if (response == 201) {
         this.showSuccess("Faça o seu login a seguir!");
         this.$router.push("/login");
-        return response.data;
-      } catch (error) {
-        this.showError("Erro ao fazer login!");
+      } else {
+        this.showError(response[0]);
       }
     },
+    ...mapActions("user", ["register"]),
     formatDocumentNumber(number, type) {
       if (type === "CPF") {
         return number

@@ -21,10 +21,9 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'não foi possivel registrar, tente novamente',
-            ], 422);
+            return response()->json(
+                $validator->errors()
+            , 422);
         }
 
         $user = User::create([
