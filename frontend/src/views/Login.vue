@@ -24,7 +24,7 @@
           </div>
         </div>
         <div id="titleArea">
-          <img src="../assets/vencedor/Title3c.PNG" alt="title" />
+          <h1 class="h1s">Sua jornada Começa Aqui</h1> 
           <p>Um único login para todos os produtos da 3c plus</p>
         </div>
         <div id="form">
@@ -43,7 +43,7 @@
             label="Senha"
           />
           <div id="linkForm">
-            <router-link class="link" to="/ResetPassword"
+            <router-link class="link" to="/remember"
               >Esqueceu sua senha?</router-link
             >
             <router-link class="link" to="/register"
@@ -173,10 +173,12 @@ export default {
   align-items: center;
 }
 
-#titleArea img {
-  width: 308.81px;
-  height: 27.19px;
-  margin: 32px 0px 12px;
+.h1s {
+  font-weight: 100;
+  font-size: 38px;
+  margin-top: 40px;
+  font-family: 'grotesque';
+  color: #212529;
 }
 
 /* STYLE FROM THE FORM */

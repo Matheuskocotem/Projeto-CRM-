@@ -45,10 +45,10 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 import InputForm from "../components/InputForm.vue";
 import AppFooter from "../components/AppFooter.vue";
-import Animation from "@/components/Animation.vue";
+import Animation from "../components/Animation.vue";
 
 export default {
   components: {
@@ -61,14 +61,11 @@ export default {
       email: '',
     };
   },
-  computed: {
-    ...mapState(['resetStatus']),
-  },
   methods: {
-    ...mapActions(['resetPassword']),
+    ...mapActions(['resetPassword']), // Mapeia a action 'resetPassword' do Vuex
     handleResetPassword() {
       if (this.email) {
-        this.resetPassword(this.email);
+        this.resetPassword(this.email); // Chama a action 'resetPassword' passando o email como parâmetro
       } else {
         console.log('Por favor, insira um email válido.');
       }

@@ -1,16 +1,18 @@
 <template>
   <div>
     <div id="upper-bar">
-    <img src="../assets/vencedor/Plus3cLogo.jpeg" alt="logo">
-    <div id="tools">
-    <button type="button" class="btn btn-primary" @click="CreateFunnel">Criar Funil</button>
-  </div>
-  </div>
+      <img src="../assets/vencedor/Plus3cLogo.jpeg" alt="logo">
+      <div id="tools">
+        <button type="button" class="btn btn-primary" @click="CreateFunnel">Criar Funil</button>
+      </div>
+    </div>
+    <Animation />
   </div>
 </template>
-  
+
 <script>
 import Error from "@/components/Error.vue";
+import Animation from "@/components/Animation.vue";
 import { useToast } from "vue-toastification";
 import { mapGetters } from "vuex";
 
@@ -25,6 +27,7 @@ export default {
   },
   components: {
     Error,
+    Animation
   },
   methods: {
     showError(errorMessage) {
@@ -37,15 +40,12 @@ export default {
       });
     },
   },
-  verifyAuth(errorMessage){
-    if(!this.isAuth){
+  verifyAuth(errorMessage) {
+    if (!this.isAuth) {
       this.showError(errorMessage);
     }
   }
 };
 </script>
 
-<style>
-
-</style>
-  
+<style></style>
