@@ -5,6 +5,7 @@ const HttpService = axios.create({
   baseURL: "http://localhost:8000/api",
   headers: {
     "Content-type": "application/json", 
+    Accept: "application/json"
   },
 });
 
@@ -20,34 +21,21 @@ export const decryptToken = (encryptedToken) => {
 };
 
 export const login = async (email, password) => {
-  try {
-    const response = await HttpService.post('/login', {
+    return await HttpService.post('/login', {
       email: email,
       password: password
     });
-    return response.data;
-  } catch (error) {
-    console.error('Erro ao fazer login:', error);
-    throw error;
-  }
 };
 
 export const register = async (name, email, password, password_confirmation, documentType, documentNumber) => {
-  try {
-    const response = await HttpService.post('/register', {
-      name: name,
-      email: email,
-      password: password,
-      password_confirmation: password_confirmation,
-      documentType: documentType,
-      documentNumber: documentNumber
-    });
-    return response.data;
-    
-  } catch (error) {
-    console.error("Erro ao registrar:", error.response);
-    throw error;
-  }
+  return await HttpService.post('/register', {
+    name: name,
+    email: email,
+    password: password,
+    password_confirmation: password_confirmation,
+    documentType: documentType,
+    documentNumber: documentNumber
+  });
 }
 
 export const funnel = async (name, user_id) => {

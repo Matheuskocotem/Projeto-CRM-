@@ -35,16 +35,16 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title){
     document.title = to.meta.title;
   }
+  next();
+  // const Auth = store.getters.isAuth;
+  // const PublicRoutes = ['/login', '/register'];
+  // const AuthRequired = !PublicRoutes.includes(to.path);
 
-  const Auth = store.getters.isAuth;
-  const PublicRoutes = ['/login', '/register'];
-  const AuthRequired = !PublicRoutes.includes(to.path);
-
-  if(AuthRequired && !Auth){
-    next({ name: 'login', query: { error: 'Você deve estar logado!'} });
-  } else {
-    next();
-  }
+  // if(AuthRequired && !Auth){
+  //   next({ name: 'login', query: { error: 'Você deve estar logado!'} });
+  // } else {
+  //   next();
+  // }
 });
 
 export default router

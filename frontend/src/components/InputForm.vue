@@ -2,7 +2,7 @@
   <div class="form-group form-floating">
     <input
       :type="type"
-      class="form-control"
+      class="form-control mb-2"
       v-model="inputValue"
       :placeholder="placeholder"
       :maxlength="maxlength"

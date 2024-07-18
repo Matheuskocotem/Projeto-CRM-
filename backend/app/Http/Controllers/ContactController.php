@@ -84,7 +84,7 @@ class ContactController extends Controller
                         $query->where('id', $stageId);
                     })
                     ->avg('buyValue');
-    
+
         return response()->json(['buyValue' => $average]);
     }
 

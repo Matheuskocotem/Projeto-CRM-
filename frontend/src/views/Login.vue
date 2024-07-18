@@ -62,13 +62,13 @@
 
 <script>
 import { mapActions } from "vuex";
-import { login } from "../services/HttpService";
+
 import { useToast } from "vue-toastification";
 import AppFooter from "../components/AppFooter.vue";
 import backEffect from "../components/backEffect.vue";
 import InputForm from "../components/InputForm.vue";
 import Error from "../components/Error.vue";
-import Success from '../components/Success.vue';
+import Success from "../components/Success.vue";
 
 export default {
   name: "Login",
@@ -77,7 +77,7 @@ export default {
     backEffect,
     InputForm,
     Error,
-    Success
+    Success,
   },
   data() {
     return {
@@ -87,23 +87,23 @@ export default {
     };
   },
   methods: {
-    showError(errorMessage){
+    showError(errorMessage) {
       const toast = useToast();
       toast.error({
         component: Error,
         props: {
-          errorMessage
-        }
-      })
+          errorMessage,
+        },
+      });
     },
     showSuccess(successMessage) {
       const toast = useToast();
       toast.success({
         component: Success,
         props: {
-          successMessage
-        }
-      })
+          successMessage,
+        },
+      });
     },
     async Login() {
       // error treatment
@@ -118,18 +118,20 @@ export default {
       }
 
       // method to login
-      try {
-        const response = await login(this.email, this.password);
-        this.saveToken(response.access_token);
+      const response = await this.login({
+        email: this.email,
+        password: this.password
+      });
+      
+      if (response == 200) {
         this.showSuccess("Seu Login deu certo.");
-        if (this.isAuth) {
-          this.$router.push("/dashboard");
-        }
-      } catch (error) {
-        this.showError("Erro ao fazer login!");
+        this.$router.push("dashboard");
+      }
+      else {
+        this.showError(response.data.error.message);
       }
     },
-    ...mapActions(["saveToken"]),
+    ...mapActions("user", ["login"]),
   },
 };
 </script>
