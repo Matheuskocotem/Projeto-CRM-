@@ -18,7 +18,7 @@
           </div>
           <div id="titleArea">
             <h1 class="h1s" data-v-77bd0b9e=""> Esqueci minha senha </h1>         
-            <p>Confirme seu e-mail para receber o link para redefinir sua senha </p>
+            <p>Confirme seu e-mail<br>para receber o link<br>para redefinir<br> sua senha</p>
           </div>
           <div id="form">
             <div class="email-input">
@@ -35,7 +35,7 @@
               Redefinir Senha
             </button>
             <p class="footer-text">
-              Atenção agente: Contate o gestor ou supervisor do sistema 3C PLUS na sua operação para receber ajuda.
+              Atenção agente: Contate o gestor ou <br> supervisor do sistema 3C PLUS na sua <br>
             </p>
           </div>
         </div>
@@ -91,7 +91,7 @@
     position: absolute;
     background-color: #ffffff;
     border-radius: 10px;
-    padding: 30px 30px 80px 30px;
+    padding: 56px;
     z-index: 1050 !important;
     box-shadow: 0 4px 18px 0 rgba(34, 54, 77, 0.12);
     display: flex;
@@ -99,6 +99,7 @@
     justify-content: center;
     flex-direction: column;
     color: #677c92;
+    overflow: hidden;
   }
   
   /* FORM STYLE */
@@ -109,7 +110,16 @@
     flex-direction: column;
     justify-content: center !important;
     align-items: center;
+  
   }
+
+  p {
+    text-align: center;
+    font-size: 1.125rem;
+    margin-bottom: 0;
+    
+  }
+  
 
 .h1s {
     font-size: 38px;
