@@ -52,14 +52,6 @@ export const funnel = async (name, user_id) => {
 
 export default HttpService;
 
-export const resetPassword = async (email) => {
-  try {
-    const response = await HttpService.post('/forgotPassword', {
-      email: email
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Erro ao solicitar redefinição de senha:', error);
-    throw error;
-  }
-};
+export const resetPassword = (email) => {
+  return axios.post(`/password.reset`, { email });
+};  
