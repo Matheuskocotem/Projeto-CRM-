@@ -1,9 +1,7 @@
 <template>
   <div id="main">
-    <Animation />
     <div id="main-container">
       <div id="formArea">
-        <font-awesome-icon :icon="['fas', 'arrow-left']" />
         <div id="logoArea">
           <div id="logo3c">
             <img id="three" src="../assets/vencedor/3da3c.png" alt="three" />
@@ -60,12 +58,23 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['resetPassword']), // Mapeia a action 'resetPassword' do Vuex
-    handleResetPassword() {
+    ...mapActions("user", ['resetPassword']),
+
+    async handleResetPassword() {
       if (this.email) {
-        this.resetPassword(this.email); // Chama a action 'resetPassword' passando o email como parâmetro
+        try {
+          const status = await this.resetPassword(this.email);
+          if (status === 200) {
+            alert('Link de redefinição enviado para o seu e-mail.');
+          } else {
+            alert('Ocorreu um erro ao enviar o link de redefinição.');
+          }
+        } catch (error) {
+          console.error('Erro ao resetar a senha:', error);
+          alert('Ocorreu um erro ao enviar o link de redefinição.');
+        }
       } else {
-        console.log('Por favor, insira um email válido.');
+        alert('Por favor, insira um email válido.');
       }
     },
   },
