@@ -18,7 +18,7 @@
         </div>
         <div id="titleArea">
           <h1 class="h1s">Esqueci minha senha</h1>
-          <p>Confirme seu e-mail<br>para receber o link<br>para redefinir<br> sua senha</p>
+          <p>Confirme seu e-mail para <br> receber o link redefinir<br> sua senha</p>
         </div>
         <div id="form">
           <div class="email-input">
@@ -48,13 +48,11 @@
 import { mapActions } from 'vuex';
 import InputForm from "../components/InputForm.vue";
 import AppFooter from "../components/AppFooter.vue";
-import Animation from "../components/Animation.vue";
 
 export default {
   components: {
     InputForm,
     AppFooter,
-    Animation,
   },
   data() {
     return {
