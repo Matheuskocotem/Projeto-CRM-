@@ -1,6 +1,5 @@
 <template>
   <div id="main">
-    <backEffect />
     <div id="main-container">
       <div id="formArea">
         <div id="logoArea">
@@ -11,133 +10,88 @@
           </div>
           <div id="pics3c">
             <img id="plusIcon" src="../assets/vencedor/plus3c.png" alt="plus" />
-            <img
-              id="messageIcon"
-              src="../assets/vencedor/message3c.png"
-              alt="message"
-            />
-            <img
-              id="asterisc"
-              src="../assets/vencedor/asterisc3c.png"
-              alt="asterisc"
-            />
+            <img id="messageIcon" src="../assets/vencedor/message3c.png" alt="message" />
+            <img id="asterisc" src="../assets/vencedor/asterisc3c.png" alt="asterisc" />
           </div>
         </div>
         <div id="titleArea">
-          <h1 class="h1s">Sua jornada Começa Aqui</h1> 
-          <p>Um único login para todos os produtos da 3c plus</p>
+          <h1 class="h1s">Esqueci minha senha</h1>
+          <p>Confirme seu e-mail para <br> receber o link redefinir<br> sua senha</p>
         </div>
         <div id="form">
-          <InputForm
-            type="text"
-            v-model="email"
-            placeholder="Email ou Ramal"
-            id="email"
-            label="Email ou Ramal"
-          />
-          <InputForm
-            type="password"
-            v-model="password"
-            placeholder="Senha"
-            id="password"
-            label="Senha"
-          />
-          <div id="linkForm">
-            <router-link class="link" to="/forgot-password"
-              >Esqueceu sua senha?</router-link
-            >
-            <router-link class="link" to="/register"
-              >Crie sua conta</router-link
-            >
+          <div class="email-input">
+            <InputForm
+              type="email"
+              v-model="email"
+              placeholder="E-mail"
+              id="email"
+              label="E-mail"
+              class="input"
+            />
           </div>
-          <button type="button" class="btn btn-primary" @click="Login">
-            Entrar
+          <button type="button" class="btn btn-primary" @click="handleResetPassword">
+            Redefinir Senha
           </button>
+          <p class="footer-text">
+            Atenção agente: Contate o gestor ou<br>supervisor do sistema 3C PLUS na sua<br>
+          </p>
         </div>
       </div>
       <AppFooter />
     </div>
   </div>
+
 </template>
 
-<script>
-import { mapActions } from "vuex";
 
-import { useToast } from "vue-toastification";
-import AppFooter from "../components/AppFooter.vue";
-import backEffect from "../components/backEffect.vue";
+<script>
+import { mapActions } from 'vuex';
 import InputForm from "../components/InputForm.vue";
-import Error from "../components/Error.vue";
-import Success from "../components/Success.vue";
+import AppFooter from "../components/AppFooter.vue";
 
 export default {
-  name: "Login",
   components: {
-    AppFooter,
-    backEffect,
     InputForm,
-    Error,
-    Success,
+    AppFooter,
   },
   data() {
     return {
-      email: "",
-      password: "",
-      errorMessage: "",
+      email: '',
     };
   },
   methods: {
-    showError(errorMessage) {
-      const toast = useToast();
-      toast.error({
-        component: Error,
-        props: {
-          errorMessage,
-        },
-      });
-    },
-    showSuccess(successMessage) {
-      const toast = useToast();
-      toast.success({
-        component: Success,
-        props: {
-          successMessage,
-        },
-      });
-    },
-    async Login() {
-      // error treatment
+    async handleResetPassword() {
+      if (this.email) {
+        try {
+          const response = await fetch('http://localhost:8000/api/forgotPassword', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: this.email }),
+          });
 
-      if (!this.email) {
-        this.showError("Email inválido.");
-        return;
-      }
-      if (!this.password) {
-        this.showError("Senha inválida.");
-        return;
-      }
-
-      // method to login
-      const response = await this.login({
-        email: this.email,
-        password: this.password
-      });
-      
-      if (response == 200) {
-        this.showSuccess("Seu Login deu certo.");
-        this.$router.push("dashboard");
-      }
-      else {
-        this.showError(response.data.error.message);
+          if (response.ok) {
+            // Mostra mensagem de sucesso
+            alert('Link de redefinição enviado para o seu e-mail.');
+            //coloca toast aqui
+            this.$router.push('/resetPassword/:token');
+          } else {
+            alert('Ocorreu um erro ao enviar o link de redefinição.');
+          }
+        } catch (error) {
+          console.error('Erro ao resetar a senha:', error);
+          alert('Ocorreu um erro ao enviar o link de redefinição.');
+        }
+      } else {
+        alert('Por favor, insira um e-mail válido.');
       }
     },
-    ...mapActions("user", ["login"]),
   },
 };
 </script>
 
-
-<style scoped>
+<style>
 #main {
   display: flex;
   justify-content: center;
@@ -151,10 +105,10 @@ export default {
 #main-container {
   width: 40%;
   height: 85%;
-  position: absolute;
+  position: relative;
   background-color: #ffffff;
   border-radius: 10px;
-  padding: 30px 30px 80px 30px;
+  padding: 56px;
   z-index: 1050 !important;
   box-shadow: 0 4px 18px 0 rgba(34, 54, 77, 0.12);
   display: flex;
@@ -167,16 +121,20 @@ export default {
 /* FORM STYLE */
 
 /* TITLE STYLE */
-
-#titleArea {
+#formArea {
   display: flex;
   flex-direction: column;
   justify-content: center !important;
   align-items: center;
 }
 
+p {
+  text-align: center;
+  font-size: 1.125rem;
+  margin-bottom: 0;
+}
+
 .h1s {
-  font-weight: 100;
   font-size: 38px;
   margin-top: 40px;
   font-family: 'grotesque';
@@ -184,32 +142,19 @@ export default {
 }
 
 /* STYLE FROM THE FORM */
-
 #form {
   width: 100%;
   margin: 8px 0px 0px;
 }
 
-#linkForm {
-  display: flex;
-  justify-content: space-between;
-  margin-top: px;
-  width: 98%;
-  align-items: center;
-  margin-left: 5px;
-}
-
-#linkForm .link {
-  text-decoration: none !important;
-  font-size: 14px;
-  color: inherit;
-  margin-bottom: 10px;
+#form .email-input {
+  margin-bottom: 16px;
 }
 
 #form button {
   width: 100%;
   height: 40px;
-  margin-bottom: -50px;
+  margin-bottom: 10px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -221,8 +166,14 @@ export default {
   background-color: #0056b3;
 }
 
-/* LOGO ANIMATION */
+.footer-text {
+  font-size: 14px;
+  color: #677c92;
+  text-align: center;
+  margin-top: 20px;
+}
 
+/* LOGO ANIMATION */
 #logoArea {
   width: 100%;
   height: 65px;

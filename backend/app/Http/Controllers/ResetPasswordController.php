@@ -27,4 +27,5 @@ class ResetPasswordController extends Controller
 
         return response()->json(['message' => 'Senha atualizada com sucesso.']);
     }
+
 }
