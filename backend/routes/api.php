@@ -8,11 +8,6 @@ use App\Http\Controllers\ResetPasswordController;
 //login e forgot
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login');
-Route::post('/forgotPassword', [ForgotPasswordController::class, 'forgotPassword'])->name('password.reset');
-
-// resetpassword
-Route::get('/resetPasswordEmail/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset.form');
-Route::post('/resetPassword/{token}', [ResetPasswordController::class, 'reset'])->name('password.update');
 
 use App\Http\Controllers\FunnelController;
 use App\Http\Controllers\ContactController;
@@ -25,7 +20,7 @@ Route::get('/login', [App\Http\Controllers\AuthController::class, 'login'])->nam
 
 
 // resetpassword
-Route::get('/resetPasswordEmail/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset.form');
+Route::put('/resetPasswordEmail/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset.form');
 Route::post('/resetPassword/{token}', [ResetPasswordController::class, 'reset'])->name('password.update');
 Route::post('/forgotPassword', [ForgotPasswordController::class, 'forgotPassword'])->name('password.reset');
 
@@ -61,3 +56,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/contacts/{contact}', [ContactController::class, 'destroy']);
 
 });
+
