@@ -161,12 +161,13 @@
   margin: 8px 0px 0px;
 }
   
-  .input-group-form {
-    margin-bottom: 3px;
-    width: 150%;
-    justify-content: center;
-
-  }
+input-group-form {
+  margin-bottom: 3px;
+  width: 100%; 
+  display: flex; 
+  justify-content: center; 
+}
+  
   
   #form button {
     width: 100%;
