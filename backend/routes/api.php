@@ -20,8 +20,8 @@ Route::get('/login', [App\Http\Controllers\AuthController::class, 'login'])->nam
 
 
 // resetpassword
-Route::put('/resetPasswordEmail/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset.form');
-Route::post('/resetPassword/{token}', [ResetPasswordController::class, 'reset'])->name('password.update');
+Route::get('/resetPasswordEmail/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset.form');
+Route::post('/resetPassword', [ResetPasswordController::class, 'reset'])->name('password.update');
 Route::post('/forgotPassword', [ForgotPasswordController::class, 'forgotPassword'])->name('password.reset');
 
 //funnel
