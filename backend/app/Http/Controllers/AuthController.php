@@ -56,4 +56,4 @@ class AuthController extends Controller
 }
 
 
-//atualizar e apagar user
+

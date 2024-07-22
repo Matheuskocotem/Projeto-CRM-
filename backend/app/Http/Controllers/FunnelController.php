@@ -13,8 +13,18 @@ class FunnelController extends Controller
     public function index()
     {
         $funnel = Funnel::where('user_id', Auth::id())->paginate(10);
-        
-        return response()->json($funnel);
+    
+        return response()->json([
+            'data' => $funnel->items(), 
+            'meta' => [
+                'total' => $funnel->total(), 
+                'per_page' => $funnel->perPage(), 
+                'current_page' => $funnel->currentPage(), 
+                'last_page' => $funnel->lastPage(), 
+                'next_page_url' => $funnel->nextPageUrl(), 
+                'prev_page_url' => $funnel->previousPageUrl() 
+            ]
+        ]);
     }
 
     public function store(Request $request)
