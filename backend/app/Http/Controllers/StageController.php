@@ -14,6 +14,7 @@ class StageController extends Controller
         $stages = $funnel->stages()->orderBy('order')->get();
         return response()->json($stages);
     }
+    
     public function store(Request $request, $funnel_id)
     {
         $validatedData = $request->validate([
@@ -33,41 +34,48 @@ class StageController extends Controller
         return response()->json($stage, 201);
     }
 
-    public function update(Request $request, Funnel $funnel, Stage $stage)
+    public function updateOrder(Request $request)
     {
         $request->validate([
-            'name' => 'string',
-            'order' => 'integer',
+            'contact_id' => 'required|integer',
+            'new_order' => 'required|integer',
+            'new_stage_id' => 'nullable|integer', 
         ]);
-
-        if ($request->has('name')) {
-            $stage->name = $request->name;
+    
+        $contactId = $request->contact_id;
+        $newOrder = $request->new_order;
+        $newStageId = $request->new_stage_id;
+    
+        $contact = Contacts::findOrFail($contactId);
+    
+        if ($newStageId && $newStageId != $contact->stage_id) {
+            $newStage = Stage::findOrFail($newStageId);
+    
+            Contacts::where('stage_id', $newStage->id)
+                ->where('order', '>=', $newOrder)
+                ->increment('order');
+    
+            $contact->stage_id = $newStageId;
+        } else {
+            
+            Contacts::where('stage_id', $contact->stage_id)
+                ->where('order', '>=', $newOrder)
+                ->where('id', '!=', $contactId)
+                ->increment('order');
         }
-
-        if ($request->has('order')) {
-            $stage->order = $request->order;
-        }
-
-        $stage->save();
-
-        return response()->json($stage, 200);
+    
+        $contact->order = $newOrder;
+        $contact->save();
+    
+        return response()->json($contact, 200);
     }
+    
 
     public function destroy(Request $request, Funnel $funnel, Stage $stage)
     {
         $stage->delete();
 
         return response()->json(['message' => 'etapa deletada'], 200);
-    }
-
-    public function updateOrder(Request $request)
-    {
-        $request->validate(['order' => 'required|array']);
-        foreach ($request->order as $index => $id) {
-            Stage::where('id, $id')->update(['order' => $index]);
-        }
-
-        return response()->json(['message' => 'Ordem alterada com sucesso']);
     }
 
     public function averageContactsValue($funnelId, $stageId)
