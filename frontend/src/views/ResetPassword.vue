@@ -104,8 +104,7 @@
   };
   </script>
   
-  <style>
-  /* Adicione o CSS do seu template aqui */
+  <style scoped>
   #main {
     display: flex;
     justify-content: center;
@@ -119,10 +118,10 @@
   #main-container {
     width: 40%;
     height: 85%;
-    position: relative;
+    position: absolute;
     background-color: #ffffff;
     border-radius: 10px;
-    padding: 56px;
+    padding: 30px 30px 80px 30px;
     z-index: 1050 !important;
     box-shadow: 0 4px 18px 0 rgba(34, 54, 77, 0.12);
     display: flex;
@@ -135,20 +134,16 @@
   /* FORM STYLE */
   
   /* TITLE STYLE */
-  #formArea {
+  
+  #titleArea {
     display: flex;
     flex-direction: column;
     justify-content: center !important;
     align-items: center;
   }
   
-  p {
-    text-align: center;
-    font-size: 1.125rem;
-    margin-bottom: 0;
-  }
-  
   .h1s {
+    font-weight: 100;
     font-size: 38px;
     margin-top: 40px;
     font-family: 'grotesque';
@@ -156,24 +151,32 @@
   }
   
   /* STYLE FROM THE FORM */
+  
   #form {
-  width: 100%;
-  margin: 8px 0px 0px;
-}
+    width: 100%;
+    margin: 8px 0px 0px;
+  }
   
-input-group-form {
-  margin-bottom: 3px;
-  width: 100%; 
-  display: flex; 
-  justify-content: center; 
-}
+  #linkForm {
+    display: flex;
+    justify-content: space-between;
+    width: 98%;
+    align-items: center;
+    margin-left: 5px;
+  }
   
+  #linkForm .link {
+    text-decoration: none !important;
+    font-size: 14px;
+    color: inherit;
+    margin-bottom: 10px;
+  }
   
   #form button {
     width: 100%;
     height: 40px;
-    margin-bottom: 10px;
-    margin-top: 18px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -185,14 +188,8 @@ input-group-form {
     background-color: #0056b3;
   }
   
-  .footer-text {
-    font-size: 14px;
-    color: #677c92;
-    text-align: center;
-    margin-top: 20px;
-  }
-  
   /* LOGO ANIMATION */
+  
   #logoArea {
     width: 100%;
     height: 65px;
@@ -285,4 +282,3 @@ input-group-form {
     margin: 0 10px;
   }
   </style>
-  
