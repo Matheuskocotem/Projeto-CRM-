@@ -53,6 +53,14 @@ class AuthController extends Controller
 
         return response()->json(['access_token' => $token, 'token_type' => 'Bearer', 'AuthUser' => $user]);
     }
+
+    public function destroy($id)
+    {
+        $User = User::where('user_i d', Auth::id())->where('id', $id)->firstOrFail();
+        $User->delete();
+
+        return response()->json(null, 204);
+    }
 }
 
 
