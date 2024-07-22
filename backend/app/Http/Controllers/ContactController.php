@@ -88,5 +88,19 @@ class ContactController extends Controller
         return response()->json(['buyValue' => $average]);
     }
 
+    public function search(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+        ]);
 
+        $name = $request->input('name');
+        $contacts = Contacts::where('name', 'LIKE', "%{$name}%")->get();
+
+        if ($contacts->isEmpty()) {
+            return response()->json(['message' => 'Contato não encontrado'], 404);
+        }
+
+        return response()->json($contacts);
+    }
 }
