@@ -84,6 +84,7 @@ export default {
   },
   components: {
     Error,
+    InputForm
   },
   methods: {
     ...mapActions("user", ["logout"]),

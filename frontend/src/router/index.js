@@ -56,7 +56,6 @@ router.beforeEach((to, from, next) => {
   // const Auth = store.getters.isAuth;
   // const PublicRoutes = ['/login', '/register'];
   // const AuthRequired = !PublicRoutes.includes(to.path);
-// <<<<<<< HEAD
 //   const Auth = store.getters.isAuth;
 //   const PublicRoutes = ['/login', '/register', '/forgotPassword'];
 //   const AuthRequired = !PublicRoutes.includes(to.path);
@@ -66,7 +65,8 @@ router.beforeEach((to, from, next) => {
 //   } else {
 //     next();
 //   }
-// =======
+
+
   // if(AuthRequired && !Auth){
   //   next({ name: 'login', query: { error: 'Você deve estar logado!'} });
   // } else {

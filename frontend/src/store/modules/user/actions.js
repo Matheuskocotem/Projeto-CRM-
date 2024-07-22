@@ -1,5 +1,5 @@
-import { login, register, resetPassword } from "@/services/HttpService";
 
+import { login, register, resetPassword } from "@/services/HttpService";
 
 export default {
     saveToken({ commit }, token) {
@@ -46,6 +46,7 @@ export default {
             const firstErrorKey = Object.keys(error.response.data)[0];
             return error.response.data[firstErrorKey];
         }
+
     },
     async resetPassword({ commit }, email) {
         try {
@@ -56,4 +57,6 @@ export default {
           throw error;
         }
       },
-}
+
+    }
+
