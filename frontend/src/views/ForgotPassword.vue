@@ -147,6 +147,11 @@ p {
   margin: 8px 0px 0px;
 }
 
+.input-group {
+  width: 100%; 
+  max-width: 400px; 
+}
+
 #form .email-input {
   margin-bottom: 16px;
 }
