@@ -1,9 +1,18 @@
 import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
+import user from "./modules/user"
+import funnels from "./modules/funnels";
+
+const state = createPersistedState({
+  paths: ["user.user", "user.token", "funnels.funnels"]
+})
 
 export default createStore({
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+  modules: {
+    user,
+    funnels
+  },
+  plugins: [
+    state
+  ]
 });

@@ -29,13 +29,15 @@
         </div>
         <div id="form">
           <InputForm
+            class="my-2"
             type="text"
             v-model="email"
-            placeholder="Email ou Ramal"
+            placeholder="Email"
             id="email"
-            label="Email ou Ramal"
+            label="Email"
           />
           <InputForm
+            class="my-2"
             type="password"
             v-model="password"
             placeholder="Senha"
@@ -50,7 +52,7 @@
               >Crie sua conta</router-link
             >
           </div>
-          <button type="button" class="btn btn-primary" @click="handleLogin">
+          <button type="button" class="btn btn-primary w-100" @click="Login">
             Entrar
           </button>
         </div>
@@ -61,10 +63,13 @@
 </template>
 
 <script>
-import { login } from "../services/HttpService";
+import { mapActions } from "vuex";
+import { useToast } from "vue-toastification";
 import AppFooter from "../components/AppFooter.vue";
 import backEffect from "../components/backEffect.vue";
 import InputForm from "../components/InputForm.vue";
+import Error from "../components/Error.vue";
+import Success from "../components/Success.vue";
 
 export default {
   name: "Login",
@@ -72,21 +77,61 @@ export default {
     AppFooter,
     backEffect,
     InputForm,
+    Error,
+    Success,
   },
   data() {
     return {
       email: "",
       password: "",
+      errorMessage: "",
     };
   },
   methods: {
-    async handleLogin() {
-      try {
-        const response = await login(this.email, this.password);
-      } catch (error) {
-        console.error("Erro ao fazer login:", error);
+    showError(errorMessage) {
+      const toast = useToast();
+      toast.error({
+        component: Error,
+        props: {
+          errorMessage,
+        },
+      });
+    },
+    showSuccess(successMessage) {
+      const toast = useToast();
+      toast.success({
+        component: Success,
+        props: {
+          successMessage,
+        },
+      });
+    },
+    async Login() {
+      // error treatment
+
+      if (!this.email) {
+        this.showError("Email inválido.");
+        return;
+      }
+      if (!this.password) {
+        this.showError("Senha inválida.");
+        return;
+      }
+
+      // method to login
+      const response = await this.login({
+        email: this.email,
+        password: this.password,
+      });
+
+      if (response == 200) {
+        this.showSuccess("Seu Login deu certo.");
+        this.$router.push("dashboard");
+      } else {
+        this.showError(response.data.error.message);
       }
     },
+    ...mapActions("user", ["login"]),
   },
 };
 </script>

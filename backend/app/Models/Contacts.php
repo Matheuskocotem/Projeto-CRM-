@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class contact extends Model
+
+class Contacts extends Model
 {
     use HasFactory;
 
-    protected $table = 'contact';
     protected $fillable = [
         'name',
         'funnel_id',
-        'stage',
+        'stage_id',
         'email',
         'phoneNumber',
         'dateOfBirth',
@@ -21,9 +21,8 @@ class contact extends Model
         'buyValue',
     ];
 
-    public $timestamps = false;
-
-    public function funnel(){
+    public function funnel()
+    {
         return $this->belongsTo(Funnel::class, 'funnel_id');
     }
 }

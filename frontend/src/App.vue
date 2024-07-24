@@ -4,7 +4,7 @@
   </main>
 </template>
 
-<style>
+<style lang="scss">
 @font-face {
     font-family: 'CerebriSans';
     src: url('./assets/fonts/fontsCerebri/CerebriSansPro-Regular.ttf') format('truetype');
@@ -25,4 +25,5 @@
   padding: 0;
   font-family: 'CerebriSans';
 }
+
 </style>

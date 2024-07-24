@@ -21,7 +21,9 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response()->json(
+                $validator->errors()
+            , 422);
         }
 
         $user = User::create([
@@ -43,12 +45,15 @@ class AuthController extends Controller
         ]);
 
         if (!auth::attempt($credentials)) {
-            return response()->json(['message' => 'Credenciais Invalidas'], 401);
+            return response()->json(['message' => 'Credenciais Inválidas'], 401);
         }
 
         $user = Auth::User();
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['access_token' => $token, 'token_type' => 'Bearer']);
+        return response()->json(['access_token' => $token, 'token_type' => 'Bearer', 'AuthUser' => $user]);
     }
 }
+
+
+//atualizar e apagar user

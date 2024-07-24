@@ -76,7 +76,9 @@
             v-model="documentType"
             checked
           />
-          <label class="btn btn-outline-primary" for="btnradio1">CPF</label>
+          <label class="btn btn-outline-primary mb-1" for="btnradio1"
+            >CPF</label
+          >
           <input
             type="radio"
             class="btn-check"
@@ -86,7 +88,9 @@
             value="CNPJ"
             v-model="documentType"
           />
-          <label class="btn btn-outline-primary" for="btnradio2">CNPJ</label>
+          <label class="btn btn-outline-primary mb-1" for="btnradio2"
+            >CNPJ</label
+          >
         </div>
         <InputForm
           type="text"
@@ -110,7 +114,10 @@
 import backEffect from "../components/backEffect.vue";
 import AppFooter from "../components/AppFooter.vue";
 import InputForm from "../components/InputForm.vue";
-import { register } from "../services/HttpService";
+import Error from "../components/Error.vue";
+import Success from "../components/Success.vue";
+import { useToast } from "vue-toastification";
+import { mapActions } from "vuex";
 
 export default {
   name: "Register",
@@ -118,6 +125,8 @@ export default {
     backEffect,
     AppFooter,
     InputForm,
+    Error,
+    Success,
   },
   data() {
     return {
@@ -167,33 +176,62 @@ export default {
         this.showWord = true;
       }, 100);
     },
+    showError(errorMessage) {
+      const toast = useToast();
+      toast.error({
+        component: Error,
+        props: {
+          errorMessage,
+        },
+      });
+    },
+    showSuccess(successMessage) {
+      const toast = useToast();
+      toast.success({
+        component: Success,
+        props: {
+          successMessage,
+        },
+      });
+    },
     async Register() {
       if (this.password !== this.password_confirmation) {
-        this.errorMessage = "As senhas não coincidem";
+        this.showError("As senhas não coincidem");
+        return;
+      }
+      if (!this.name) {
+        this.showError("Nome inválido");
+        return;
+      }
+      if (!this.email) {
+        this.showError("Email inválido");
+        return;
+      }
+      if (this.password.length < 6) {
+        this.showError("A senha deve ter mais que 6 dígitos");
+        return;
+      }
+      if (!this.documentNumber) {
+        this.showError("Documento inválido");
         return;
       }
 
-      try {
-        const response = await register(
-          this.name,
-          this.email,
-          this.password,
-          this.password_confirmation,
-          this.documentType,
-          this.unformatDocumentNumber(this.documentNumber)
-        );
-        console.log(response.data);
-        return response.data;
-      } catch (error) {
-        console.error(
-          "Erro ao registrar:",
-          error.response ? error.response.data : error.message
-        );
-        this.errorMessage = error.response
-          ? error.response.data
-          : "Erro desconhecido";
+      const response = await this.register({
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        password_confirmation: this.password_confirmation,
+        documentType: this.documentType,
+        documentNumber: this.unformatDocumentNumber(this.documentNumber)
+      });
+      if (response == 201) {
+        this.showSuccess("Faça o seu login a seguir!");
+        this.$router.push("/login");
+      } else {
+        this.showError(response[0]);
       }
     },
+    ...mapActions("user", ["register"]),
     formatDocumentNumber(number, type) {
       if (type === "CPF") {
         return number
@@ -218,7 +256,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 #icons img {
   width: 30px;
   height: 30px;
@@ -305,13 +343,12 @@ export default {
 
 #main {
   position: absolute;
-  width: 80%;
-  height: 80%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   z-index: 1;
   margin-bottom: 40px;
+  align-items: center;
 }
 
 form {
@@ -332,7 +369,7 @@ form .input {
 form button {
   width: 100%;
   height: 40px;
-  margin-bottom: -50px;
+  margin-top: 20px;
   background-color: #007bff;
   color: white;
   border: none;
