@@ -10,7 +10,7 @@ use App\Http\Controllers\StageController;
 
 // login e forgot
 Route::post('/register',     [AuthController::class, 'register']);
-Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 // reset password
 Route::get('/resetPasswordEmail/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset.form');
@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/search', [FunnelController::class, 'search']);
         Route::post('/', [FunnelController::class, 'store']);
         Route::delete('/{id}', [FunnelController::class, 'destroy']);
+        //relatorios
         Route::get('/{funnelId}/total-value', [StageController::class, 'totalContactsValue']);
 
         // Stages
@@ -33,7 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::put('/{stage}', [StageController::class, 'update']);
             Route::delete('/{stage}', [StageController::class, 'destroy']);
             Route::put('/update-order', [StageController::class, 'updateOrder']);
-            Route::get('/{stage}/contacts/average-value', [StageController::class, 'averageContactsValue']);
         });
     });
 
