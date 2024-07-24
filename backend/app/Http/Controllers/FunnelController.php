@@ -10,8 +10,17 @@ use Psy\CodeCleaner\ImplicitReturnPass;
 
 class FunnelController extends Controller
 {
-    public function index()
+    public function index($id)
     {
+        if ($id) {
+            $funnel = Funnel::where('user_id', Auth::id())
+                            ->where('id', $id)
+                            ->first();
+            if (!$funnel) {
+                return response()->json(['message' => 'funnel não encontrado'], 404);
+            }
+            return response()->json($funnel);
+        }
         $funnel = Funnel::where('user_id', Auth::id())->paginate(10);
     
         return response()->json([

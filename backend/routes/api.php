@@ -20,7 +20,7 @@ Route::post('/forgotPassword', [ForgotPasswordController::class, 'forgotPassword
 Route::middleware('auth:sanctum')->group(function () {
     // Funnel
     Route::prefix('funnels')->group(function () {
-        Route::get('/', [FunnelController::class, 'index']);
+        Route::get('/{user_id}', [FunnelController::class, 'index']);
         Route::get('/search', [FunnelController::class, 'search']);
         Route::post('/', [FunnelController::class, 'store']);
         Route::delete('/{id}', [FunnelController::class, 'destroy']);
