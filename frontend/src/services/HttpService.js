@@ -1,30 +1,19 @@
-import CryptoJS from 'crypto-js';
 import axios from "axios";
+
 
 const HttpService = axios.create({
   baseURL: "http://localhost:8000/api",
   headers: {
-    "Content-type": "application/json", 
+    "Content-type": "application/json",
     Accept: "application/json"
   },
 });
 
-export const encryptToken = (token) => {
-  const secretKey = process.env.VUE_APP_SECRET_KEY;
-  return CryptoJS.AES.encrypt(token, secretKey).toString();
-};
-
-export const decryptToken = (encryptedToken) => {
-  const secretKey = process.env.VUE_APP_SECRET_KEY;
-  const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
-  return bytes.toString(CryptoJS.enc.Utf8);
-};
-
 export const login = async (email, password) => {
-    return await HttpService.post('/login', {
-      email: email,
-      password: password
-    });
+  return await HttpService.post('/login', {
+    email: email,
+    password: password
+  });
 };
 
 export const register = async (name, email, password, password_confirmation, documentType, documentNumber) => {
@@ -38,16 +27,28 @@ export const register = async (name, email, password, password_confirmation, doc
   });
 }
 
-export const funnel = async (name, user_id) => {
-  try {
-    const response = await HttpService.post('/funnel', {
-      name: name,
-      user_id: user_id
-    });
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+export const createFunnel = async (funnel, token) => {
+  return await HttpService.post('/funnel', funnel, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+
+export const getFunnels = async (token, user_id) => {
+  return await HttpService.get(`/funnels`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+
+export const destroyFunnel = async (funnelId, token) => {
+  return await HttpService.delete(`/funnel/${funnelId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
 }
 
 export default HttpService;

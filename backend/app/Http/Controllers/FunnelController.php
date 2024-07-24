@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-Use App\Models\Funnel;
+use App\Models\Funnel;
 use Illuminate\Support\Facades\Auth;
-use Psy\CodeCleaner\ImplicitReturnPass;
-
 
 class FunnelController extends Controller
 {
@@ -41,13 +39,15 @@ class FunnelController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
+            'color' => 'required|string|max:7',
         ]);
-    
+
         $funnel = new Funnel();
         $funnel->user_id = Auth::id();
         $funnel->name = $request->name;
+        $funnel->color = $request->color;
         $funnel->save();
-    
+
         return response()->json($funnel, 201);
     }
 

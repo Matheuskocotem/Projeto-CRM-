@@ -7,12 +7,13 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [
     vue(),
+    vueDevTools(),
   ],
   build: {
-    sourcemap: false,  // Desativa source maps para o build
+    sourcemap: false,  
   },
   css: {
-    devSourcemap: false,  // Desativa source maps para CSS
+    devSourcemap: false,
   },
   server: {
     watch: {
