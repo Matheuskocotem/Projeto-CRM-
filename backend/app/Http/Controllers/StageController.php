@@ -39,7 +39,7 @@ class StageController extends Controller
         $request->validate([
             'contact_id' => 'required|integer',
             'new_order' => 'required|integer',
-            'new_stage_id' => 'nullable|integer', 
+            'new_stage_id' => 'nullable|integer',
         ]);
     
         $contactId = $request->contact_id;
@@ -47,28 +47,68 @@ class StageController extends Controller
         $newStageId = $request->new_stage_id;
     
         $contact = Contacts::findOrFail($contactId);
+        $oldOrder = $contact->order;
+        $oldStageId = $contact->stage_id;
     
-        if ($newStageId && $newStageId != $contact->stage_id) {
+        $matriz = [
+            'horizontal' => [],
+            'vertical' => []
+        ];
+    
+        if ($newStageId && $newStageId != $oldStageId) {
             $newStage = Stage::findOrFail($newStageId);
     
-            Contacts::where('stage_id', $newStage->id)
+            $newContacts = Contacts::where('stage_id', $newStage->id)
                 ->where('order', '>=', $newOrder)
-                ->increment('order');
+                ->get();
+            foreach ($newContacts as $newContact) {
+                $newContact->order++;
+                $matriz['vertical'][] = $newContact; 
+            }
+    
+            $oldContacts = Contacts::where('stage_id', $oldStageId)
+                ->where('order', '>', $oldOrder)
+                ->get();
+            foreach ($oldContacts as $oldContact) {
+                $oldContact->order--;
+                $matriz['vertical'][] = $oldContact; 
+            }
     
             $contact->stage_id = $newStageId;
         } else {
-            
-            Contacts::where('stage_id', $contact->stage_id)
-                ->where('order', '>=', $newOrder)
-                ->where('id', '!=', $contactId)
-                ->increment('order');
+            if ($oldOrder != $newOrder) {
+                $contacts = Contacts::where('stage_id', $oldStageId)->orderBy('order')->get();
+                foreach ($contacts as $currentContact) {
+                    if ($currentContact->order > $oldOrder && $currentContact->order <= $newOrder) {
+                        $currentContact->order--;
+                        $matriz['horizontal'][] = $currentContact; 
+                    } elseif ($currentContact->order >= $newOrder && $currentContact->order < $oldOrder) {
+                        $currentContact->order++;
+                        $matriz['horizontal'][] = $currentContact; 
+                    }
+                }
+            }
+        }
+
+        $contact->order = $newOrder;
+        if ($newStageId && $newStageId != $oldStageId) {
+            $matriz['vertical'][] = $contact; 
+        } else {
+            $matriz['horizontal'][] = $contact; 
         }
     
-        $contact->order = $newOrder;
-        $contact->save();
+        foreach ($matriz['horizontal'] as $update) {
+            $update->save();
+        }
+    
+
+        foreach ($matriz['vertical'] as $update) {
+            $update->save();
+        }
     
         return response()->json($contact, 200);
     }
+    
     
 
     public function destroy(Request $request, Funnel $funnel, Stage $stage)
@@ -78,12 +118,17 @@ class StageController extends Controller
         return response()->json(['message' => 'etapa deletada'], 200);
     }
 
-    public function averageContactsValue($funnelId, $stageId)
-    {
-        $average = Contacts::where('stage_id', $stageId)
-            ->avg('buyValue');
-
-        return response()->json(['average_value' => $average]);
+    public function totalContactsValue($funnelId)
+{
+    $funnel = Funnel::with('stages.contacts')->findOrFail($funnelId);
+    $totalValue = 0;
+  
+    foreach ($funnel->stages as $stage) {
+        foreach ($stage->contacts as $contact) {
+            $totalValue += $contact->buyValue;
+        }
     }
+    return response()->json(['total_value' => $totalValue]);
+}
 
 }

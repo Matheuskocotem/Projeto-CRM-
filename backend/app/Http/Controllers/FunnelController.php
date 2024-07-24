@@ -46,9 +46,9 @@ class FunnelController extends Controller
     {
         $name = $request->query('name');
         $funnel = Funnel::where('user_id', Auth::id())
-                         ->where('name', 'like', "%$name%")
-                         ->get();
-         return response()->json($funnel);
+                        ->where('name', 'like', "%$name%")
+                        ->get();
+        return response()->json($funnel);
     }
 
     public function destroy($id)
@@ -58,4 +58,6 @@ class FunnelController extends Controller
 
         return response()->json(null, 204);
     }
+
+
 }
