@@ -8,31 +8,35 @@ use App\Http\Controllers\FunnelController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\StageController;
 
-//rotas públicas
-//login e forgot
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login');
-Route::post('/forgotPassword', [ForgotPasswordController::class, 'forgotPassword'])->name('password.reset');
-// resetpassword
-Route::get('/resetPasswordEmail/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset.form');
-Route::post('/resetPassword/{token}', [ResetPasswordController::class, 'reset'])->name('password.update');
-//login e forgot
-Route::post('/register', [AuthController::class, 'register']);
-Route::get('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login');
-// resetpassword
+// login e forgot
+Route::post('/register',     [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+// reset password
 Route::get('/resetPasswordEmail/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset.form');
 Route::post('/resetPassword', [ResetPasswordController::class, 'reset'])->name('password.update');
 Route::post('/forgotPassword', [ForgotPasswordController::class, 'forgotPassword'])->name('password.reset');
 
 //rotas protegidas
 Route::middleware('auth:sanctum')->group(function () {
-    //funnel
+    // Funnel
+    Route::prefix('funnels')->group(function () {
+        Route::get('/{user_id}', [FunnelController::class, 'index']);
+        Route::get('/search', [FunnelController::class, 'search']);
+        Route::post('/', [FunnelController::class, 'store']);
+        Route::delete('/{id}', [FunnelController::class, 'destroy']);
+        //relatorios
+        Route::get('/{funnelId}/total-value', [StageController::class, 'totalContactsValue']);
 
-    Route::get('/funnels', [FunnelController::class, 'index']);
-    Route::get('/funnels/search', [FunnelController::class, 'search']);
-    Route::post('/funnel', [FunnelController::class, 'store']);
-    Route::delete('/funnel/{id}', [FunnelController::class, 'destroy']);
-    //etapas
+        // Stages
+        Route::prefix('{funnel}/stages')->group(function () {
+            Route::get('/', [StageController::class, 'index']);
+            Route::post('/', [StageController::class, 'store']);
+            Route::put('/{stage}', [StageController::class, 'update']);
+            Route::delete('/{stage}', [StageController::class, 'destroy']);
+            Route::put('/update-order', [StageController::class, 'updateOrder']);
+        });
+    });
 
     Route::get('/funnels/{funnel}/stages', [StageController::class, 'index']);
     Route::post('/funnels/{funnel}/stages', [StageController::class, 'store']);

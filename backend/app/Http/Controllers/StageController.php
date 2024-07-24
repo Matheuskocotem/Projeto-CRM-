@@ -128,7 +128,11 @@ class StageController extends Controller
             $totalValue += $contact->buyValue;
         }
     }
-    return response()->json(['total_value' => $totalValue]);
+    return response()->json([
+        'total_value' => $totalValue
+        // 'quantidade_contatos' =>
+        // 'finalizados' =>
+    ]);
 }
 
 }
