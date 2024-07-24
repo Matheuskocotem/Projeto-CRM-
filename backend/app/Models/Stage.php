@@ -12,4 +12,10 @@ class Stage extends Model
     {
         return $this->belongsTo(Funnel::class, 'funnel_id', 'id');
     }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contacts::class, 'stage_id');
+    }
+
 }
