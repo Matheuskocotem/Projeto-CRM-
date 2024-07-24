@@ -15,4 +15,5 @@ export default createStore({
   plugins: [
     state
   ]
+
 });

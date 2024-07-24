@@ -52,3 +52,7 @@ export const destroyFunnel = async (funnelId, token) => {
 }
 
 export default HttpService;
+
+export const resetPassword = (email) => {
+  return axios.post(`/password.reset`, { email });
+};  

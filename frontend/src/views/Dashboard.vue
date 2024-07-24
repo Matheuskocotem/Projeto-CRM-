@@ -101,7 +101,7 @@
   </ul>
 </div> -->
 </template>
-  
+
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { useToast } from "vue-toastification";

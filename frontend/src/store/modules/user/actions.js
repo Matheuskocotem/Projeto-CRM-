@@ -1,4 +1,5 @@
-import { login, register } from "@/services/HttpService";
+
+import { login, register, resetPassword } from "@/services/HttpService";
 
 export default {
     saveToken({ commit }, token) {
@@ -45,5 +46,17 @@ export default {
             const firstErrorKey = Object.keys(error.response.data)[0];
             return error.response.data[firstErrorKey];
         }
+
+    },
+    async resetPassword({ commit }, email) {
+        try {
+          const response = await axios.post('/api/resetPassword/{token}', { email });
+          return response.status; 
+        } catch (error) {
+          console.error('Erro ao enviar link de redefinição de senha:', error);
+          throw error;
+        }
+      },
+
     }
-}
+

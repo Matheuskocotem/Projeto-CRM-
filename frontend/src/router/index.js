@@ -27,6 +27,23 @@ const router = createRouter({
       meta: {
         title: 'Dashboard',
       }
+    },
+    {
+      path: '/resetPassword/:token',
+      name: 'resetPassword',
+      component: () => import('../views/ResetPassword.vue'),
+      props: route => ({
+        token: route.query.token,
+        email: route.query.email
+      }),
+    },
+    {
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: () => import('../views/ForgotPassword.vue'),
+      meta: {
+        title: 'esqueci minha senha',
+      },
     }
   ]
 })
