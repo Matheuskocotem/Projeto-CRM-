@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-Use App\Models\Funnel;
+use App\Models\Funnel;
 use Illuminate\Support\Facades\Auth;
-use Psy\CodeCleaner\ImplicitReturnPass;
-
 
 class FunnelController extends Controller
 {
@@ -22,18 +20,8 @@ class FunnelController extends Controller
             return response()->json($funnel);
         }
         $funnel = Funnel::where('user_id', Auth::id())->paginate(10);
-    
-        return response()->json([
-            'data' => $funnel->items(), 
-            'meta' => [
-                'total' => $funnel->total(), 
-                'per_page' => $funnel->perPage(), 
-                'current_page' => $funnel->currentPage(), 
-                'last_page' => $funnel->lastPage(), 
-                'next_page_url' => $funnel->nextPageUrl(), 
-                'prev_page_url' => $funnel->previousPageUrl() 
-            ]
-        ]);
+
+        return response()->json($funnel);
     }
 
     public function store(Request $request)
@@ -41,13 +29,15 @@ class FunnelController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
+            'color' => 'required|string|max:7',
         ]);
-    
+
         $funnel = new Funnel();
         $funnel->user_id = Auth::id();
         $funnel->name = $request->name;
+        $funnel->color = $request->color;
         $funnel->save();
-    
+
         return response()->json($funnel, 201);
     }
 
@@ -55,8 +45,8 @@ class FunnelController extends Controller
     {
         $name = $request->query('name');
         $funnel = Funnel::where('user_id', Auth::id())
-                        ->where('name', 'like', "%$name%")
-                        ->get();
+            ->where('name', 'like', "%$name%")
+            ->get();
         return response()->json($funnel);
     }
 
@@ -67,6 +57,4 @@ class FunnelController extends Controller
 
         return response()->json(null, 204);
     }
-
-
 }
