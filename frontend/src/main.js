@@ -12,10 +12,11 @@ import "bootstrap";
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faInstagram, faTiktok } from '@fortawesome/free-brands-svg-icons';
-import { faFileAlt, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { faFileAlt, faCircleCheck, faSearch, faFilterCircleDollar, faChartBar, faPhone, faPalette } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faInstagram, faTiktok, faFileAlt, faCircleCheck);
+library.add(faInstagram, faTiktok, faFileAlt, faCircleCheck, faSearch, faFilterCircleDollar, faUser, faPhone, faChartBar, faPalette);
 
 const app = createApp(App);
 

@@ -16,7 +16,6 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:User',
             'password' => 'required|string|min:8|confirmed',
-            'password' => 'required|string|min:8    ',
             'documentType' => 'required|in:CPF,CNPJ',
             'documentNumber' => 'required|string|unique:User',
         ]);
@@ -46,7 +45,7 @@ class AuthController extends Controller
         ]);
 
         if (!auth::attempt($credentials)) {
-            return response()->json(['message' => 'Credenciais Invalidas'], 401);
+            return response()->json(['message' => 'Credenciais Inválidas'], 401);
         }
 
         $user = Auth::User();

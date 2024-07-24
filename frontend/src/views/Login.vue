@@ -29,13 +29,15 @@
         </div>
         <div id="form">
           <InputForm
+            class="my-2"
             type="text"
             v-model="email"
-            placeholder="Email ou Ramal"
+            placeholder="Email"
             id="email"
-            label="Email ou Ramal"
+            label="Email"
           />
           <InputForm
+            class="my-2"
             type="password"
             v-model="password"
             placeholder="Senha"
@@ -50,7 +52,7 @@
               >Crie sua conta</router-link
             >
           </div>
-          <button type="button" class="btn btn-primary" @click="Login">
+          <button type="button" class="btn btn-primary w-100" @click="Login">
             Entrar
           </button>
         </div>
@@ -62,7 +64,6 @@
 
 <script>
 import { mapActions } from "vuex";
-
 import { useToast } from "vue-toastification";
 import AppFooter from "../components/AppFooter.vue";
 import backEffect from "../components/backEffect.vue";
@@ -120,14 +121,13 @@ export default {
       // method to login
       const response = await this.login({
         email: this.email,
-        password: this.password
+        password: this.password,
       });
-      
+
       if (response == 200) {
         this.showSuccess("Seu Login deu certo.");
         this.$router.push("dashboard");
-      }
-      else {
+      } else {
         this.showError(response.data.error.message);
       }
     },

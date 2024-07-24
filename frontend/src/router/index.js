@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import store from "../store/index";
+import { createRouter, createWebHistory } from 'vue-router';
+import store from "../store";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,16 +35,17 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title){
     document.title = to.meta.title;
   }
-  next();
-  // const Auth = store.getters.isAuth;
-  // const PublicRoutes = ['/login', '/register'];
-  // const AuthRequired = !PublicRoutes.includes(to.path);
 
-  // if(AuthRequired && !Auth){
-  //   next({ name: 'login', query: { error: 'Você deve estar logado!'} });
-  // } else {
-  //   next();
-  // }
-});
+  const auth = store.getters['user/isAuth'];
+  const PublicRoutes = ['/login', '/register'];
+  const AuthRequired = !PublicRoutes.includes(to.path);
 
-export default router
+  if(AuthRequired && !auth){
+    next({ name: 'login', query: { error: 'Você deve estar logado!'} });
+  } else {
+    next();
+  }
+})
+
+
+export default router;

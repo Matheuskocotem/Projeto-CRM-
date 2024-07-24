@@ -2,7 +2,7 @@
   <div class="form-group form-floating">
     <input
       :type="type"
-      class="form-control mb-2"
+      class="form-control"
       v-model="inputValue"
       :placeholder="placeholder"
       :maxlength="maxlength"
@@ -62,7 +62,6 @@ export default {
 
 .form-group {
   position: relative;
-  margin: 16px 0px 6px 0px;
   width: 100%;
 }
 
@@ -87,7 +86,7 @@ export default {
 
 .form-control:focus + label,
 .form-control:not(:placeholder-shown) + label {
-  transform: translateY(-57%);
+  transform: translateY(-50%);
   font-size: 16px;
   color: #495057;
 }
