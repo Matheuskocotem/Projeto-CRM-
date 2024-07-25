@@ -34,23 +34,18 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/', [StageController::class, 'store']);
             Route::put('/{stage}', [StageController::class, 'update']);
             Route::delete('/{stage}', [StageController::class, 'destroy']);
-            Route::put('/update-order', [StageController::class, 'updateOrder']);
         });
     });
 
-    Route::get('/funnels/{funnel}/stages', [StageController::class, 'index']);
-    Route::post('/funnels/{funnel}/stages', [StageController::class, 'store']);
-    Route::put('/funnels/{funnel}/stages/{stage}', [StageController::class, 'update']);
-    Route::delete('/funnels/{funnel}/stages/{stage}', [StageController::class, 'destroy']);
-    // Rota para atualização da ordem dos estágios
-
-    Route::post('/funnels/{funnel}/stages/update-order', [StageController::class, 'updateOrder']);
-    Route::get('/funnels/{funnel}/stages/{stage}/contacts/average-value', [StageController::class, 'averageContactsValue']);
-
-    //contatos
-    Route::get('/contacts', [ContactController::class, 'index']);
-    Route::post('/contacts', [ContactController::class, 'store']);
-    Route::get('/contacts/{contact}', [ContactController::class, 'show']);
-    Route::put('/contacts/{contact}', [ContactController::class, 'update']);
-    Route::delete('/contacts/{contact}', [ContactController::class, 'destroy']);
+    // Contacts
+    Route::prefix('{funnel_id}/contacts')->group(function () {
+        Route::get('/', [ContactController::class, 'index']);
+        Route::post('/', [ContactController::class, 'store']);
+        Route::get('/{contact}', [ContactController::class, 'show']);
+        Route::put('/{contact}', [ContactController::class, 'update']);
+        Route::delete('/{contact}', [ContactController::class, 'destroy']);
+        Route::post('/search', [ContactController::class, 'search']);
+        Route::put('/swap/{contact_id}', [ContactController::class, 'swap']);
+        Route::put('/swap-phase/{contact_id}', [ContactController::class, 'swapPhase']);
+    });
 });

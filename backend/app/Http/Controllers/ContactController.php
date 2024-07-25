@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Funnel;
 use Illuminate\Http\Request;
 use App\Models\Contacts;
+Use App\Models\Stage;
 
 class ContactController extends Controller
 {
@@ -23,9 +24,8 @@ class ContactController extends Controller
             'phoneNumber' => 'required|string',
             'dateOfBirth' => 'nullable|date',
             'address' => 'nullable|string',
-            'buyValue' => 'nullable|numeric',
+            'buyValue' => 'nullable|numeric',   
         ]);
-
 
         $contact = Contacts::create([
             'name' => $request->name,
@@ -78,6 +78,78 @@ class ContactController extends Controller
 
     }
 
+    public function swap($newPosition, $stage_id, $contact_id)
+{
+    $contact = Contacts::findOrFail($contact_id);
+    $position = $contact->position;
+    
+    $contactsInStage = Contacts::where('stage_id', $stage_id)
+        ->orderBy('position')
+        ->get();
+
+    if ($newPosition == $position) {
+        return response()->json(['message' => 'A nova posição é igual à posição atual.'], 200);
+    }
+
+    foreach ($contactsInStage as $contactInStage) {
+        if ($contactInStage->position == $newPosition) {
+            $contactInStage->position = $position;
+            $contactInStage->save();
+            break;
+        } elseif ($position < $newPosition && $contactInStage->position > $position && $contactInStage->position <= $newPosition) {
+            $contactInStage->position--;
+            $contactInStage->save();
+        } elseif ($position > $newPosition && $contactInStage->position < $position && $contactInStage->position >= $newPosition) {
+            $contactInStage->position++;
+            $contactInStage->save();
+        }
+    }
+
+    $contact->position = $newPosition;
+    $contact->save();
+    
+    return response()->json(['message' => 'Posição alterada com sucesso.'], 200);
+}
+
+public function swapPhase($contact_id, $newPosition, $new_stage_id)
+{
+    $contact = Contacts::findOrFail($contact_id);
+    $position = $contact->position;
+
+    $contactsInCurrentStage = Contacts::where('stage_id', $contact->stage_id)
+        ->orderBy('position')
+        ->get();
+
+    $contactsInNewStage = Contacts::where('stage_id', $new_stage_id)
+        ->orderBy('position')
+        ->get();
+
+    foreach ($contactsInCurrentStage as $contactInCurrentStage) {
+        if ($contactInCurrentStage->position > $position) {
+            $contactInCurrentStage->position--;
+            $contactInCurrentStage->save();
+        }
+    }
+
+    $newPosition = $contactsInNewStage->count() + 1;
+    
+    foreach ($contactsInNewStage as $contactInNewStage) {
+        if ($contactInNewStage->position >= $newPosition) {
+            $contactInNewStage->position++;
+            $contactInNewStage->save();
+        }
+    }
+    
+    $contact->stage_id = $new_stage_id;
+    $contact->position = $newPosition;
+    $contact->save();
+    
+    return response()->json(['message' => 'Fase alterada com sucesso.'], 200);
+}
+
+
+
+
     public function averageValueInStage($funnelId, $stageId)
     {
         $average = Contacts::whereHas('stages', function ($query) use ($stageId) {
@@ -103,4 +175,5 @@ class ContactController extends Controller
 
         return response()->json($contacts);
     }
+
 }
