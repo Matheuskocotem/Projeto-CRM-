@@ -31,6 +31,7 @@ class FunnelController extends Controller
                 'next_page_url' => $funnel->nextPageUrl(), 
                 'prev_page_url' => $funnel->previousPageUrl() 
             ]
+            //refatorar aqui
         ]);
     }
 

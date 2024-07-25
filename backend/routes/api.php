@@ -33,17 +33,18 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/', [StageController::class, 'store']);
             Route::put('/{stage}', [StageController::class, 'update']);
             Route::delete('/{stage}', [StageController::class, 'destroy']);
-            Route::put('/update-order', [StageController::class, 'updateOrder']);
         });
     });
 
     // Contacts
-    Route::prefix('contacts')->group(function () {
+    Route::prefix('{funnel_id}/contacts')->group(function () {
         Route::get('/', [ContactController::class, 'index']);
         Route::post('/', [ContactController::class, 'store']);
         Route::get('/{contact}', [ContactController::class, 'show']);
         Route::put('/{contact}', [ContactController::class, 'update']);
         Route::delete('/{contact}', [ContactController::class, 'destroy']);
         Route::post('/search', [ContactController::class, 'search']);
+        Route::put('/swap/{contact_id}', [ContactController::class, 'swap']);
+        Route::put('/swap-phase/{contact_id}', [ContactController::class, 'swapPhase']);
     });
 });

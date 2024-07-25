@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
+            $table->integer('position');
             $table->string('name');
             $table->unsignedBigInteger('funnel_id');
             $table->foreign('funnel_id')->references('id')->on('funnel');

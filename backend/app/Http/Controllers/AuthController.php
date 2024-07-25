@@ -56,7 +56,7 @@ class AuthController extends Controller
 
     public function destroy($id)
     {
-        $User = User::where('user_i d', Auth::id())->where('id', $id)->firstOrFail();
+        $User = User::where('user_id', Auth::id())->where('id', $id)->firstOrFail();
         $User->delete();
 
         return response()->json(null, 204);

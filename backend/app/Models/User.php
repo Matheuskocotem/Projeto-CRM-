@@ -30,4 +30,10 @@ class User extends Authenticatable implements CanResetPasswordContract
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function funnel()
+    {
+        return $this->hasMany(Funnel::class, 'funnel_id', 'id');
+    }
+
 }
