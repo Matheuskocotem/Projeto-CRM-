@@ -9,7 +9,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\StageController;
 
 // login e forgot
-Route::post('/register',     [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 // reset password
@@ -20,8 +20,8 @@ Route::post('/forgotPassword', [ForgotPasswordController::class, 'forgotPassword
 //rotas protegidas
 Route::middleware('auth:sanctum')->group(function () {
     // Funnel
-    Route::prefix('funnels')->group(function () {
-        Route::get('/{user_id}', [FunnelController::class, 'index']);
+    Route::prefix('/funnels')->group(function () {
+        Route::get('/', [FunnelController::class, 'index']);
         Route::get('/search', [FunnelController::class, 'search']);
         Route::post('/', [FunnelController::class, 'store']);
         Route::delete('/{id}', [FunnelController::class, 'destroy']);

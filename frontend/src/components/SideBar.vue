@@ -98,8 +98,8 @@ export default {
 }
 
 .icon {
-  margin-right: 27px;
-  margin-left: 17px;
+  margin-right: 28px;
+  margin-left: 20px;
 }
 
 .icon-text:hover,
@@ -112,11 +112,11 @@ export default {
 .icon-text,
 .icon-profile {
   display: flex;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .icon {
-  font-size: 25px;
+  font-size: 20px;
 }
 
 #sidebar {
