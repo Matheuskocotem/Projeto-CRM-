@@ -9,8 +9,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\StageController;
 
 // login e forgot
-Route::post('/register',     [AuthController::class, 'register']);
-Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 // reset password
 Route::get('/resetPasswordEmail/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset.form');
@@ -19,8 +19,8 @@ Route::post('/forgotPassword', [ForgotPasswordController::class, 'forgotPassword
 
 Route::middleware('auth:sanctum')->group(function () {
     // Funnel
-    Route::prefix('funnels')->group(function () {
-        Route::get('/{user_id}', [FunnelController::class, 'index']);
+    Route::prefix('/funnels')->group(function () {
+        Route::get('/', [FunnelController::class, 'index']);
         Route::get('/search', [FunnelController::class, 'search']);
         Route::post('/', [FunnelController::class, 'store']);
         Route::delete('/{id}', [FunnelController::class, 'destroy']);
@@ -39,8 +39,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Contacts
     Route::prefix('contacts')->group(function () {
-        Route::get('/', [ContactController::class, 'index']);
-        Route::post('/', [ContactController::class, 'store']);
+        Route::get('/{funnel_id}/', [ContactController::class, 'index']);
+        Route::post('/{funnel_id}/', [ContactController::class, 'store']);
         Route::get('/{contact}', [ContactController::class, 'show']);
         Route::put('/{contact}', [ContactController::class, 'update']);
         Route::delete('/{contact}', [ContactController::class, 'destroy']);

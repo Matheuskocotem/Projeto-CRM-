@@ -4,7 +4,7 @@ import user from "./modules/user"
 import funnels from "./modules/funnels";
 
 const state = createPersistedState({
-  paths: ["user.user", "user.token", "funnels.funnels"]
+  paths: ["user.user", "user.token"]
 })
 
 export default createStore({
