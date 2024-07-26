@@ -46,6 +46,7 @@ library.add(
   faAngleLeft
 );
 
+
 const app = createApp(App);
 
 app.use(Toast, {
