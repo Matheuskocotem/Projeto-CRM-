@@ -1,4 +1,4 @@
-import { createFunnel, getFunnels, destroyFunnel } from "@/services/HttpService";
+import { createFunnel, getFunnels, destroyFunnel, getRelatories } from "@/services/HttpService";
 
 export default {
     async clearFunnels({ commit }) {
@@ -12,11 +12,7 @@ export default {
             console.log(response);
             return response;
         } catch (error) {
-            if (error.response && error.response.data && error.response.data.message){
-                return error.response.data;
-            } else {
-                return error.response;
-            }
+            return error.response.data.message;
         }
     },
     async deleteFunnel({ commit, rootState }, funnel) {
@@ -28,13 +24,12 @@ export default {
             error.response.data.message;
         }
     },
-    async setFunnels({ commit, rootState }, page) {
+    async setFunnels({ commit, rootState }) {
         try {
             const token = rootState.user.token;
-            const funnels = await getFunnels(token, page);
+            const funnels = await getFunnels(token);
             // const relatories = await getRelatories(token, funnels);
             commit('setFunnels', funnels.data.data);
-            commit('setPagination', funnels.data.meta);
         } catch (error) {
             error.response.data.message;
         }

@@ -1,3 +1,5 @@
+
+
 export default {
     clearFunnels(state) {
         state.funnels = {};
@@ -20,4 +22,10 @@ export default {
             state.funnels.splice(index, 1);
         }
     },
+    deleteFunnel(state, funnelId) {
+        const index = state.funnels.findIndex(funnel => funnel.id === funnelId);
+        if (index !== -1) {
+            state.funnels.splice(index, 1);
+        }
+    }
 }

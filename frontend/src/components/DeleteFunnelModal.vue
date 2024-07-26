@@ -1,5 +1,16 @@
 <template>
   <div>
+    <div class="d-flex flex-row align-items-center justify-content-between">
+      <h4 style="font-family: grotesque">
+        {{ funnel?.name }}
+      </h4>
+      <font-awesome-icon
+        :icon="['far', 'trash-can']"
+        data-bs-toggle="modal"
+        :data-bs-target="'#modalDelete' + funnel?.id"
+        class="trash"
+      />
+    </div>
     <div
       class="modal fade"
       :id="'modalDelete' + funnel?.id"
@@ -17,32 +28,29 @@
               data-bs-dismiss="modal"
               aria-label="Close"
               ref="CloseDeleteModal"
-              @click.stop
             ></button>
           </div>
           <div
             class="modal-body d-flex flex-column align-items-center justify-content-center"
           >
-            <h1 class="fs-4 fw-bolder mt-5 mb-4">
+            <h1 class="fs-4 fw-bolder">
               Tem certeza que deseja excluir este funil?
             </h1>
-            <p class="fs-6">A ação não poderá ser desfeita.</p>
-            
+            <p>A ação não poderá ser desfeita.</p>
+
             <button
               type="button"
-              class="btn btn-danger w-50 mt-4"
-              @click="deleteFunnel(funnel)"
-              @click.stop
+              class="btn btn-secondary w-75 my-1"
+              data-bs-dismiss="modal"
             >
-              Sim
+              Não
             </button>
             <button
               type="button"
-              class="btn btn-light w-50 mt-2 mb-4"
-              data-bs-dismiss="modal"
-              @click.stop 
+              class="btn btn-danger w-75 my-1"
+              @click="funnelDelection(funnel)"
             >
-              Não
+              Sim
             </button>
           </div>
         </div>
@@ -52,38 +60,26 @@
 </template>
 
 <script>
+// TERMINAR DE COMPONENTIZAR ISTO
 export default {
-  name: "DeleteFunnelModal",
-  props: {
-    funnel: {
-      type: Object,
-      required: true,
+    name: "DeleteFunnelModal",
+    data() {
+        return {
+            funnel: this.funnel
+        }
     },
-  },
-  methods: {
-    deleteFunnel(funnel) {
-      this.$emit("deleteFunnel", funnel);
-      const modalElement = document.querySelector("#modalDelete" + funnel.id);
-      const closeButton = modalElement.querySelector(
-        '[data-bs-dismiss="modal"]'
-      );
-      closeButton.click();
+    props: {
+        funnel: {
+            type: Object,
+            required: true,
+        }
     },
-  },
-};
+    methods: {
+        deleteFunnel() {
+            this.$emit("deleteFunnel", {
+                funnel: this.funnel
+            })
+        }
+    }
+}
 </script>
-<<<<<<< HEAD
-
-<style scoped>
-.btn-close {
-  font-size: 12px;
-}
-
-.modal {
-  --bs-modal-width: 55%;
-  --bs-modal-padding: 0 !important;
-}
-</style>
-
-=======
->>>>>>> 406972a (terminando de componentizar as fita loka)
