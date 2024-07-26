@@ -15,7 +15,7 @@
             type="button"
             class="btn btn-primary h-100 w-25 mx-4"
             data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
+            data-bs-target="#modalCreate"
           >
             <font-awesome-icon :icon="['fass', 'filter-circle-dollar']" />
             Criar Funil
@@ -29,77 +29,15 @@
           :key="id"
           class="cardFunnel d-flex flex-column p-2 mx-3 mb-3"
         >
-          <h4 class="mx-2" ref="Funnel" style="font-family: grotesque">
-            {{ funnel?.name }}
-          </h4>
-          <p class="mt-5">Value</p>
         </div>
       </div>
-    </div>
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">
-              Crie aqui seu funil!
-            </h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              ref="CloseModal"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <InputForm
-              class="my-2"
-              type="text"
-              v-model="FunnelName"
-              placeholder="Nome"
-              id="name"
-              label="Nome"
-            />
-            <div class="colorInput d-flex mt-3 fs-5">
-              <span class="inputTitle mx-2"
-                >Escolha a cor de seu funil aqui!
-              </span>
-              <font-awesome-icon :icon="['fas', 'palette']" /><input
-                type="color"
-                class="mx-3"
-                v-model="FunnelColor"
-              />
-            </div>
-          </div>
-          <div class="d-flex align-items-center justify-content-center mb-4">
-            <button
-              type="button"
-              class="w-25 mx-1 btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Fechar
-            </button>
-            <button type="button" class="w-25 btn btn-primary mx-1" @click="createFunnel">
-              Criar Funil
-            </button>
-          </div>
-        </div>
-      </div>
+      <CreateFunnelModal
+        :funnelName="funnelName"
+        :funnelColor="funnelColor"
+        @createFunnel="createFunnel"
+      />
     </div>
   </div>
-  <!-- <div class="btn-group dropup">
-  <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-    Dropup
-  </button>
-  <ul class="dropdown-menu">
-  </ul>
-</div> -->
 </template>
 
 <script>
@@ -109,6 +47,8 @@ import Error from "@/components/Error.vue";
 import Success from "@/components/Success.vue";
 import SideBar from "@/components/SideBar.vue";
 import InputForm from "@/components/InputForm.vue";
+import CreateFunnelModal from "@/components/CreateFunnelModal.vue";
+import DeleteFunnelModal from "@/components/DeleteFunnelModal.vue";
 
 export default {
   data() {
@@ -116,8 +56,8 @@ export default {
       errorMessage: "",
       successMessage: "",
       name: "",
-      FunnelName: "",
-      FunnelColor: "#212529",
+      funnelName: "",
+      funnelColor: "#212529",
       SearchRequest: "",
       funnels: {},
     };
@@ -126,7 +66,8 @@ export default {
     ...mapGetters("user", ["getUser", "isAuth"]),
     ...mapGetters("funnels", ["getFunnels"]),
   },
-  created() {
+  async created() {
+    await this.setFunnels();
     this.funnels = this.getFunnels;
     this.name = this.getUser.name;
   },
@@ -134,24 +75,29 @@ export default {
     Error,
     SideBar,
     InputForm,
+    CreateFunnelModal,
+    DeleteFunnelModal,
   },
   methods: {
     ...mapActions("user", ["logout"]),
     ...mapActions("funnels", ["saveFunnel", "setFunnels", "deleteFunnel"]),
-    async createFunnel() {
-      const response = await this.saveFunnel({
-        name: this.FunnelName,
-        color: this.FunnelColor,
-      });
-
+    async createFunnel(funnel) {
+      const response = await this.saveFunnel(funnel);
       if (response.status == 201) {
         this.showSuccess("Funil criado com sucesso!");
-        this.$refs.CloseModal.click();
       } else {
         this.showError(response[0]);
       }
     },
-
+    async funnelDelection(funnel) {
+      try {
+        await this.deleteFunnel(funnel);
+        this.$refs.CloseDeleteModal.click();
+        this.showSuccess("Funil deletado com sucesso.");
+      } catch (error) {
+        this.showError(error.message);
+      }
+    },
     toggleSideBar(expanded) {
       if (expanded) {
         this.$refs.MainContent.style.marginLeft = "200px";
@@ -200,17 +146,33 @@ export default {
 }
 
 .cardFunnel {
+  position: relative;
+  display: inline-block;
   width: 20%;
-  min-width: 17%;
+  min-width: 200px;
   height: 130px;
   border-left: solid 6px var(--border-color);
   border-bottom: solid 6px var(--border-color);
+  border-top: solid 1px var(--border-color);
+  border-right: solid 1px var(--border-color);
   border-radius: 12px;
 }
 
-.colorInput {
-  align-items: center;
-  justify-content: center;
+.trash {
+  margin-top: -10px;
+  display: none;
+  position: absolute;
+  right: 0;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.cardFunnel:hover .trash {
+  display: block;
+}
+
+.trash:hover {
+  color: red;
 }
 
 img {
