@@ -8,12 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class FunnelController extends Controller
 {
-
-    public function __construct(StageController $StageController)
-    {
-        $this->StageController = $StageController;
-    }
-
     public function index($id)
     {
         if ($id) {
@@ -36,7 +30,6 @@ class FunnelController extends Controller
                 'last_page' => $funnel->lastPage(), 
                 'next_page_url' => $funnel->nextPageUrl(), 
                 'prev_page_url' => $funnel->previousPageUrl() 
-                'total_contacts_value' => $totalContactsValue['total_value'],
             ]
         ]);
     }
