@@ -83,3 +83,4 @@ export default {
   --bs-modal-padding: 0 !important;
 }
 </style>
+
