@@ -27,6 +27,8 @@ class ContactController extends Controller
             'buyValue' => 'nullable|numeric',   
         ]);
 
+        $nextPosition = Contacts::getNextPosition($request->stage_id);
+
         $contact = Contacts::create([
             'name' => $request->name,
             'funnel_id' => $request->funnel_id,
@@ -36,6 +38,7 @@ class ContactController extends Controller
             'dateOfBirth' => $request->dateOfBirth,
             'address' => $request->address,
             'buyValue' => $request->buyValue,
+            'position' => $nextPosition,
         ]);
 
         return response()->json([
@@ -78,28 +81,38 @@ class ContactController extends Controller
 
     }
 
-    public function swap($newPosition, $stage_id, $contact_id)
+    public function swap(Request $request)
 {
+    $request->validate([
+        'newPosition' => 'required|integer',
+        'stage_id' => 'required|exists:stages,id',
+    ]);
+
+    $newPosition = $request->newPosition;
+    $stage_id = $request->stage_id;
+    $contact_id = $request->contact_id;
+
     $contact = Contacts::findOrFail($contact_id);
-    $position = $contact->position;
-    
+    $currentPosition = $contact->position;
+
+    if ($newPosition == $currentPosition) {
+        return response()->json(['message' => 'A nova posição é igual à posição atual.'], 200);
+    }
+
+ 
     $contactsInStage = Contacts::where('stage_id', $stage_id)
         ->orderBy('position')
         ->get();
 
-    if ($newPosition == $position) {
-        return response()->json(['message' => 'A nova posição é igual à posição atual.'], 200);
-    }
-
     foreach ($contactsInStage as $contactInStage) {
         if ($contactInStage->position == $newPosition) {
-            $contactInStage->position = $position;
+            $contactInStage->position = $currentPosition;
             $contactInStage->save();
             break;
-        } elseif ($position < $newPosition && $contactInStage->position > $position && $contactInStage->position <= $newPosition) {
+        } elseif ($currentPosition < $newPosition && $contactInStage->position > $currentPosition && $contactInStage->position <= $newPosition) {
             $contactInStage->position--;
             $contactInStage->save();
-        } elseif ($position > $newPosition && $contactInStage->position < $position && $contactInStage->position >= $newPosition) {
+        } elseif ($currentPosition > $newPosition && $contactInStage->position < $currentPosition && $contactInStage->position >= $newPosition) {
             $contactInStage->position++;
             $contactInStage->save();
         }
@@ -107,45 +120,56 @@ class ContactController extends Controller
 
     $contact->position = $newPosition;
     $contact->save();
-    
+
     return response()->json(['message' => 'Posição alterada com sucesso.'], 200);
 }
 
-public function swapPhase($contact_id, $newPosition, $new_stage_id)
-{
-    $contact = Contacts::findOrFail($contact_id);
-    $position = $contact->position;
 
-    $contactsInCurrentStage = Contacts::where('stage_id', $contact->stage_id)
-        ->orderBy('position')
-        ->get();
+    public function swapPhase(Request $request)
+    {
+        $request->validate([
+            'contact_id' => 'required|exists:contacts,id',
+            'newPosition' => 'required|integer',
+            'new_stage_id' => 'required|exists:stages,id',
+        ]);
 
-    $contactsInNewStage = Contacts::where('stage_id', $new_stage_id)
-        ->orderBy('position')
-        ->get();
+        $contact_id = $request->contact_id;
+        $newPosition = $request->newPosition;
+        $new_stage_id = $request->new_stage_id;
 
-    foreach ($contactsInCurrentStage as $contactInCurrentStage) {
-        if ($contactInCurrentStage->position > $position) {
-            $contactInCurrentStage->position--;
-            $contactInCurrentStage->save();
+        $contact = Contacts::findOrFail($contact_id);
+        $position = $contact->position;
+
+        $contactsInCurrentStage = Contacts::where('stage_id', $contact->stage_id)
+            ->orderBy('position')
+            ->get();
+
+        $contactsInNewStage = Contacts::where('stage_id', $new_stage_id)
+            ->orderBy('position')
+            ->get();
+
+        foreach ($contactsInCurrentStage as $contactInCurrentStage) {
+            if ($contactInCurrentStage->position > $position) {
+                $contactInCurrentStage->position--;
+                $contactInCurrentStage->save();
+            }
         }
-    }
 
-    $newPosition = $contactsInNewStage->count() + 1;
-    
-    foreach ($contactsInNewStage as $contactInNewStage) {
-        if ($contactInNewStage->position >= $newPosition) {
-            $contactInNewStage->position++;
-            $contactInNewStage->save();
+        $newPosition = $contactsInNewStage->count() + 1;
+        
+        foreach ($contactsInNewStage as $contactInNewStage) {
+            if ($contactInNewStage->position >= $newPosition) {
+                $contactInNewStage->position++;
+                $contactInNewStage->save();
+            }
         }
+        
+        $contact->stage_id = $new_stage_id;
+        $contact->position = $newPosition;
+        $contact->save();
+        
+        return response()->json(['message' => 'Fase alterada com sucesso.'], 200);
     }
-    
-    $contact->stage_id = $new_stage_id;
-    $contact->position = $newPosition;
-    $contact->save();
-    
-    return response()->json(['message' => 'Fase alterada com sucesso.'], 200);
-}
 
 
 
