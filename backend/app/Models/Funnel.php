@@ -11,6 +11,22 @@ class Funnel extends Model
 
     protected $table = 'funnel';
     protected $fillable = ['user_id', 'name', 'color'];
+    
+    protected static function booted()
+    {
+        static::created(function ($funnel) {
+            $stages = ['sem etapa', 'prospecção', 'contato', 'proposta'];
+
+            foreach ($stages as $index => $stageName) {
+                \App\Models\Stage::create([
+                    'funnel_id' => $funnel->id,
+                    'name' => $stageName,
+                    'order' => $index + 1,
+                ]);
+            }
+        });
+    }
+
     // Relacionamento com o usuário
     public function user()
     {

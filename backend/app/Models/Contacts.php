@@ -19,10 +19,19 @@ class Contacts extends Model
         'dateOfBirth',
         'address',
         'buyValue',
+        'position'
     ];
 
     public function funnel()
     {
         return $this->belongsTo(Funnel::class, 'funnel_id');
+    }
+
+    public static function getNextPosition($stage_id)
+    {
+        $lastPosition = self::where('stage_id', $stage_id)
+            ->max('position');
+    
+        return $lastPosition ? $lastPosition + 1 : 1;
     }
 }
