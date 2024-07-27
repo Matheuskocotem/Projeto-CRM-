@@ -2,9 +2,12 @@
   <div
     :style="{ '--border-color': funnel?.color }"
     class="cardFunnel d-flex flex-column p-2 mx-3 mb-3"
+    @click="goToFunnel()"
   >
-    <div class="d-flex flex-row align-items-center justify-content-between">
-      <h4 style="font-family: grotesque">
+    <div
+      class="d-flex flex-row align-items-center justify-content-between w-100"
+    >
+      <h4 class="w-50" style="font-family: grotesque">
         {{ funnel?.name }}
       </h4>
       <font-awesome-icon
@@ -12,6 +15,7 @@
         data-bs-toggle="modal"
         :data-bs-target="'#modalDelete' + funnel.id"
         class="trash"
+        @click.stop
       />
       <DeleteFunnelModal :funnel="funnel" @deleteFunnel="funnelDelection" />
     </div>
@@ -19,7 +23,7 @@
 </template>
 
 <script>
-import DeleteFunnelModal from './DeleteFunnelModal.vue';
+import DeleteFunnelModal from "./DeleteFunnelModal.vue";
 
 export default {
   name: "CardFunnel",
@@ -33,10 +37,19 @@ export default {
     },
   },
   methods: {
+    goToFunnel() {
+      this.$router.push({
+        name: "Funil",
+        params: {
+          name: this.funnel.name,
+          id: this.funnel.id,
+        },
+      });
+    },
     funnelDelection(funnel) {
-      this.$emit('deleteFunnel', funnel);
-    }
-  }
+      this.$emit("deleteFunnel", funnel);
+    },
+  },
 };
 </script>
 

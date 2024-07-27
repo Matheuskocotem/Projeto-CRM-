@@ -1,7 +1,7 @@
-import { createApp } from 'vue';
-import router from './router';
+import { createApp } from "vue";
+import router from "./router";
 import store from "./store";
-import App from './App.vue';
+import App from "./App.vue";
 
 import { POSITION } from "vue-toastification";
 import Toast from "vue-toastification";
@@ -10,13 +10,39 @@ import "vue-toastification/dist/index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faInstagram, faTiktok } from '@fortawesome/free-brands-svg-icons';
-import { faFileAlt, faCircleCheck, faSearch, faFilterCircleDollar, faChartBar, faPhone, faPalette, faEllipsisVertical, faFillDrip } from '@fortawesome/free-solid-svg-icons';
-import { faUser, faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faInstagram, faTiktok } from "@fortawesome/free-brands-svg-icons";
+import {
+  faFileAlt,
+  faCircleCheck,
+  faSearch,
+  faFilterCircleDollar,
+  faChartBar,
+  faPhone,
+  faPalette,
+  faEllipsisVertical,
+  faFillDrip,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { faUser, faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faInstagram, faTiktok, faFileAlt, faCircleCheck, faSearch, faFilterCircleDollar, faUser, faPhone, faChartBar, faPalette, faEllipsisVertical, faTrashCan, faFillDrip);
+library.add(
+  faInstagram,
+  faTiktok,
+  faFileAlt,
+  faCircleCheck,
+  faSearch,
+  faFilterCircleDollar,
+  faUser,
+  faPhone,
+  faChartBar,
+  faPalette,
+  faEllipsisVertical,
+  faTrashCan,
+  faFillDrip,
+  faUserPlus
+);
 
 const app = createApp(App);
 
@@ -30,5 +56,5 @@ app.use(Toast, {
 
 app.use(router);
 app.use(store);
-app.component('font-awesome-icon', FontAwesomeIcon);
-app.mount('#app');
+app.component("font-awesome-icon", FontAwesomeIcon);
+app.mount("#app");

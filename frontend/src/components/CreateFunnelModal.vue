@@ -44,7 +44,7 @@
             <font-awesome-icon class="fs-4 mb-1" :icon="['fas', 'fill-drip']" />
             <input
               type="color"
-              class="mx-3 mt-2"
+              class="mx-3"
               v-model="funnelColorComp"
             />
           </div>
