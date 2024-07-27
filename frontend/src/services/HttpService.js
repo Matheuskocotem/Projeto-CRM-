@@ -55,9 +55,32 @@ export const destroyFunnel = async (funnel_id, token) => {
   });
 }
 
-export const getRelatories = async (token, funnel_id) => {
-  console.log(token);
-  return await HttpService.get(`/funnels/${funnel_id}/total-value`, {
+export const createContact = async (contact, token, funnel_id) => {
+  return await HttpService.post(`/contacts/${funnel_id}`, contact, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+
+export const getContacts = async (token, funnel_id) => {
+  return await HttpService.get(`/contacts/${funnel_id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+
+export const updateContact = async (contact, token, contact_id) => {
+  return await HttpService.put(`/contacts/${contact_id}`, contact, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+
+export const getStages = async (token, funnel_id) => {
+  return await HttpService.get(`${funnel_id}/stages/`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
