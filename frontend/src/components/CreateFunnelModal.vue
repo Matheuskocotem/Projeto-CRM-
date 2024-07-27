@@ -53,21 +53,21 @@
         <div
           class="d-flex flex-column align-items-center justify-content-center mb-4"
         >
-          <button
-            type="button"
-            class="w-50 btn btn-primary mx-1 mt-2"
-            @click="createFunnel"
-          >
-            Criar Funil
-          </button>
-          <button
-            type="button"
-            class="w-50 btn btn-light mx-1 mt-2"
-            data-bs-dismiss="modal"
-          >
-            Fechar
-          </button>
-        </div>
+        <button
+        type="button"
+        class="w-50 btn btn-light mx-1 mt-2"
+        data-bs-dismiss="modal"
+        >
+        Fechar
+      </button>
+      <button
+        type="button"
+        class="w-50 btn btn-primary mx-1 mt-2"
+        @click="createFunnel"
+      >
+        Criar Funil
+      </button>
+    </div>
       </div>
     </div>
   </div>

@@ -22,24 +22,24 @@
           <div
             class="modal-body d-flex flex-column align-items-center justify-content-center"
           >
-            <h1 class="fs-4 fw-bolder">
+            <h1 class="fs-4 fw-bolder mt-5 mb-4">
               Tem certeza que deseja excluir este funil?
             </h1>
-            <p>A ação não poderá ser desfeita.</p>
-
+            <p class="fs-6">A ação não poderá ser desfeita.</p>
+            
             <button
               type="button"
-              class="btn btn-secondary w-75 my-1"
-              data-bs-dismiss="modal"
-            >
-              Não
-            </button>
-            <button
-              type="button"
-              class="btn btn-danger w-75 my-1"
+              class="btn btn-danger w-50 mt-4"
               @click="deleteFunnel(funnel)"
             >
               Sim
+            </button>
+            <button
+              type="button"
+              class="btn btn-light w-50 mt-2 mb-4"
+              data-bs-dismiss="modal" 
+            >
+              Não
             </button>
           </div>
         </div>
@@ -69,3 +69,14 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.btn-close {
+  font-size: 12px;
+}
+
+.modal {
+  --bs-modal-width: 55%;
+  --bs-modal-padding: 0 !important;
+}
+</style>
