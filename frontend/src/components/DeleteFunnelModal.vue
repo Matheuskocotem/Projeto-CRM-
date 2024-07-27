@@ -17,6 +17,7 @@
               data-bs-dismiss="modal"
               aria-label="Close"
               ref="CloseDeleteModal"
+              @click.stop
             ></button>
           </div>
           <div
@@ -31,13 +32,15 @@
               type="button"
               class="btn btn-danger w-50 mt-4"
               @click="deleteFunnel(funnel)"
+              @click.stop
             >
               Sim
             </button>
             <button
               type="button"
               class="btn btn-light w-50 mt-2 mb-4"
-              data-bs-dismiss="modal" 
+              data-bs-dismiss="modal"
+              @click.stop 
             >
               Não
             </button>
