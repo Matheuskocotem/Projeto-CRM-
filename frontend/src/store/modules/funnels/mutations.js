@@ -9,9 +9,12 @@ export default {
         state.loading = isLoading;
     },
     addFunnel(state, funnel) {
-        state.funnels[funnel.id] = funnel;
+        state.funnels.push(funnel);
     },
-    deleteFunnel(state, funnelId){
-        Vue.delete(state.funnels, funnelId);
+    deleteFunnel(state, funnelId) {
+        const index = state.funnels.findIndex(funnel => funnel.id === funnelId);
+        if (index !== -1) {
+            state.funnels.splice(index, 1);
+        }
     }
 }

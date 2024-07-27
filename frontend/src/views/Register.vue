@@ -10,7 +10,7 @@
         </div>
         <div id="title">
           <div id="title-line">
-            <p id="mais" class="carac">Mais</p>
+            <p id="mais" style="font-family: grotesque" class="carac mr-1">Mais</p>
             <div v-if="showWord">
               <span
                 v-for="(char, index) in titleChars"
@@ -29,13 +29,14 @@
         </div>
       </div>
       <form>
+        <h1 style="font-family: grotesque">Comece por aqui!</h1> 
         <InputForm
           type="text"
           v-model="name"
           placeholder="Nome"
           id="name"
           label="Nome"
-          class="input"
+          class="input my-2"
         />
         <InputForm
           type="email"
@@ -43,7 +44,7 @@
           placeholder="Email ou Ramal"
           id="email"
           label="Email"
-          class="input"
+          class="input my-2"
         />
         <InputForm
           type="password"
@@ -51,7 +52,7 @@
           placeholder="Senha"
           id="password"
           label="Senha"
-          class="input"
+          class="input my-2"
         />
         <InputForm
           type="password"
@@ -59,10 +60,10 @@
           placeholder="Confirme sua senha"
           id="password_confirmation"
           label="Confirme sua senha"
-          class="input"
+          class="input my-2"
         />
         <div
-          class="btn-group"
+          class="btn-group w-50 my-2"
           role="group"
           aria-label="Basic radio toggle button group"
         >
@@ -76,7 +77,7 @@
             v-model="documentType"
             checked
           />
-          <label class="btn btn-outline-primary mb-1" for="btnradio1"
+          <label class="btn btn-outline-primary" for="btnradio1"
             >CPF</label
           >
           <input
@@ -88,7 +89,7 @@
             value="CNPJ"
             v-model="documentType"
           />
-          <label class="btn btn-outline-primary mb-1" for="btnradio2"
+          <label class="btn btn-outline-primary" for="btnradio2"
             >CNPJ</label
           >
         </div>
@@ -99,7 +100,7 @@
           id="docNum"
           :maxlength="documentMaxLength"
           :label="`Número do ${documentType}`"
-          class="input"
+          class="input my-2"
         />
         <button type="button" class="btn btn-primary" @click="Register">
           Registrar-se
@@ -263,10 +264,6 @@ export default {
   margin: 0px 20px 0px 0px;
 }
 
-.btn-group {
-  width: 40%;
-}
-
 #title {
   display: flex;
   flex-direction: column;
@@ -282,14 +279,13 @@ export default {
 }
 
 #banner {
-  margin-top: 70px;
+  margin-top: 60px;
   align-items: flex-start;
   display: flex;
   flex-direction: column;
 }
 
 #mais {
-  font-family: "grotesque";
   margin-right: 20px;
 }
 
@@ -342,6 +338,7 @@ export default {
 }
 
 #main {
+  width: 85%;
   position: absolute;
   display: flex;
   flex-direction: row;
@@ -362,14 +359,10 @@ form {
   padding: 30px;
 }
 
-form .input {
-  margin: 13px 0px;
-}
-
 form button {
-  width: 100%;
+  width: 50%;
   height: 40px;
-  margin-top: 20px;
+  margin-top: 10px;
   background-color: #007bff;
   color: white;
   border: none;

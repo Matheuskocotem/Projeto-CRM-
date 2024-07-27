@@ -19,8 +19,8 @@ Route::post('/forgotPassword', [ForgotPasswordController::class, 'forgotPassword
 
 Route::middleware('auth:sanctum')->group(function () {
     // Funnel
-    Route::prefix('funnels')->group(function () {
-        Route::get('/{user_id}', [FunnelController::class, 'index']);
+    Route::prefix('/funnels')->group(function () {
+        Route::get('/', [FunnelController::class, 'index']);
         Route::get('/search', [FunnelController::class, 'search']);
         Route::post('/', [FunnelController::class, 'store']);
         Route::delete('/{id}', [FunnelController::class, 'destroy']);
@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{funnelId}/total-value', [StageController::class, 'totalContactsValue']);
 
         // Stages
-        Route::prefix('{funnel}/stages')->group(function () {
+        Route::prefix('{funnel_id}/stages')->group(function () {
             Route::get('/', [StageController::class, 'index']);
             Route::post('/', [StageController::class, 'store']);
             Route::put('/{stage}', [StageController::class, 'update']);

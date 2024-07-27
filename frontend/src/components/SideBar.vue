@@ -7,7 +7,7 @@
     @mouseout="collapse"
   >
     <div id="img" class="d-flex">
-      <img src="../assets/vencedor/logo-3C.svg" class="my-2 mx-1" alt="logo" />
+      <img src="../assets/vencedor/logo-3C.svg" class="py-3" alt="logo" />
     </div>
     <p class="icon-text my-4 mx-2">
       <font-awesome-icon class="icon" :icon="['fas', 'phone']" /> Discadora
@@ -93,13 +93,13 @@ export default {
   height: 75px;
   img {
     width: 75%;
-    height: 60px;
+    height: 75px;
   }
 }
 
 .icon {
-  margin-right: 27px;
-  margin-left: 17px;
+  margin-right: 28px;
+  margin-left: 20px;
 }
 
 .icon-text:hover,
@@ -112,11 +112,11 @@ export default {
 .icon-text,
 .icon-profile {
   display: flex;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .icon {
-  font-size: 25px;
+  font-size: 20px;
 }
 
 #sidebar {

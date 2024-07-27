@@ -44,6 +44,12 @@ const router = createRouter({
       meta: {
         title: 'esqueci minha senha',
       },
+    },
+    {
+      path: '/funnel/:name/:id',
+      name: 'Funil',
+      
+      component: () => import('../views/Kanban.vue')
     }
   ]
 })
