@@ -1,5 +1,3 @@
-
-
 export default {
     clearFunnels(state) {
         state.funnels = {};
@@ -11,7 +9,7 @@ export default {
         state.loading = isLoading;
     },
     addFunnel(state, funnel) {
-        state.funnels[funnel.id] = funnel;
+        state.funnels.push(funnel);
     },
     deleteFunnel(state, funnelId) {
         const index = state.funnels.findIndex(funnel => funnel.id === funnelId);

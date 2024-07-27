@@ -1,16 +1,5 @@
 <template>
   <div>
-    <div class="d-flex flex-row align-items-center justify-content-between">
-      <h4 style="font-family: grotesque">
-        {{ funnel?.name }}
-      </h4>
-      <font-awesome-icon
-        :icon="['far', 'trash-can']"
-        data-bs-toggle="modal"
-        :data-bs-target="'#modalDelete' + funnel?.id"
-        class="trash"
-      />
-    </div>
     <div
       class="modal fade"
       :id="'modalDelete' + funnel?.id"
@@ -48,7 +37,7 @@
             <button
               type="button"
               class="btn btn-danger w-75 my-1"
-              @click="funnelDelection(funnel)"
+              @click="deleteFunnel(funnel)"
             >
               Sim
             </button>
@@ -60,26 +49,23 @@
 </template>
 
 <script>
-// TERMINAR DE COMPONENTIZAR ISTO
 export default {
-    name: "DeleteFunnelModal",
-    data() {
-        return {
-            funnel: this.funnel
-        }
+  name: "DeleteFunnelModal",
+  props: {
+    funnel: {
+      type: Object,
+      required: true,
     },
-    props: {
-        funnel: {
-            type: Object,
-            required: true,
-        }
+  },
+  methods: {
+    deleteFunnel(funnel) {
+      this.$emit("deleteFunnel", funnel);
+      const modalElement = document.querySelector("#modalDelete" + funnel.id);
+      const closeButton = modalElement.querySelector(
+        '[data-bs-dismiss="modal"]'
+      );
+      closeButton.click();
     },
-    methods: {
-        deleteFunnel() {
-            this.$emit("deleteFunnel", {
-                funnel: this.funnel
-            })
-        }
-    }
-}
+  },
+};
 </script>

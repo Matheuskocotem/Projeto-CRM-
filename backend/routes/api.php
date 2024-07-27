@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/search', [FunnelController::class, 'search']);
         Route::post('/', [FunnelController::class, 'store']);
         Route::delete('/{id}', [FunnelController::class, 'destroy']);
+
         //relatorios
         Route::get('/{funnelId}/Relatories', [StageController::class, 'totalContactsValue']);
 
