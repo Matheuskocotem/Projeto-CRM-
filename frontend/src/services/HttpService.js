@@ -65,10 +65,32 @@ export const destroyFunnel = async (funnel_id, token) => {
   });
 };
 
-// parte de criação de etapa
+export const createContact = async (contact, token, funnel_id) => {
+  return await HttpService.post(`/contacts/${funnel_id}`, contact, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
 
-export const getStages = async (funnel_id, token) => {
-  return await HttpService.get(`funnels/${funnel_id}/stages/`, {
+export const getContacts = async (token, funnel_id) => {
+  return await HttpService.get(`/contacts/${funnel_id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+
+export const updateContact = async (contact, token, contact_id) => {
+  return await HttpService.put(`/contacts/${contact_id}`, contact, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+
+export const getStages = async (token, funnel_id) => {
+  return await HttpService.get(`${funnel_id}/stages/`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -25,9 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/search', [FunnelController::class, 'search']);
         Route::post('/', [FunnelController::class, 'store']);
         Route::delete('/{id}', [FunnelController::class, 'destroy']);
-
-        //relatorios
-        Route::get('/{funnelId}/Relatories', [StageController::class, 'totalContactsValue']);
+        Route::get('/{funnel_id}/total-value', [StageController::class, 'totalContactsValue']);
 
         // Stages
         Route::prefix('{funnel_id}/stages')->group(function () {
@@ -40,8 +38,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Contacts
     Route::prefix('contacts')->group(function () {
-        Route::get('/{funnel_id}/', [ContactController::class, 'index']);
-        Route::post('/{funnel_id}/', [ContactController::class, 'store']);
+        Route::get('/{funnel_id}', [ContactController::class, 'index']);
+        Route::post('/{funnel_id}', [ContactController::class, 'store']);
         Route::get('/{contact}', [ContactController::class, 'show']);
         Route::put('/{contact}', [ContactController::class, 'update']);
         Route::delete('/{contact}', [ContactController::class, 'destroy']);

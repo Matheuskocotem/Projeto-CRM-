@@ -1,4 +1,4 @@
-import { createFunnel, getFunnels, destroyFunnel, getRelatories } from "@/services/HttpService";
+import { createFunnel, getFunnels, destroyFunnel } from "@/services/HttpService";
 
 export default {
     async clearFunnels({ commit }) {
@@ -12,7 +12,11 @@ export default {
             console.log(response);
             return response;
         } catch (error) {
-            return error.response.data.message;
+            if (error.response && error.response.data && error.response.data.message){
+                return error.response.data;
+            } else {
+                return error.response;
+            }
         }
     },
     async deleteFunnel({ commit, rootState }, funnel) {
