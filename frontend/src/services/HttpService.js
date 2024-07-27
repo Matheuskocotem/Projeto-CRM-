@@ -64,7 +64,6 @@ export const destroyFunnel = async (funnel_id, token) => {
     },
   });
 };
-
 // parte de criação de etapa
 
 export const getStages = async (funnel_id, token) => {

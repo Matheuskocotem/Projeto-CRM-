@@ -8,6 +8,7 @@
       class="d-flex flex-row align-items-center justify-content-between w-100"
     >
       <h4 class="w-50" style="font-family: grotesque">
+
         {{ funnel?.name }}
       </h4>
       <font-awesome-icon

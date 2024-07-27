@@ -1,5 +1,3 @@
-
-
 export default {
     clearFunnels(state) {
         state.funnels = {};
