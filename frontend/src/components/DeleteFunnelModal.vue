@@ -72,6 +72,7 @@ export default {
   },
 };
 </script>
+<<<<<<< HEAD
 
 <style scoped>
 .btn-close {
@@ -84,3 +85,5 @@ export default {
 }
 </style>
 
+=======
+>>>>>>> 406972a (terminando de componentizar as fita loka)
