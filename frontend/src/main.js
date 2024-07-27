@@ -10,13 +10,39 @@ import "vue-toastification/dist/index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faInstagram, faTiktok } from '@fortawesome/free-brands-svg-icons';
-import { faFileAlt, faCircleCheck, faSearch, faFilterCircleDollar, faChartBar, faPhone, faPalette, faEllipsisVertical, faFillDrip } from '@fortawesome/free-solid-svg-icons';
-import { faUser, faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faInstagram, faTiktok } from "@fortawesome/free-brands-svg-icons";
+import {
+  faFileAlt,
+  faCircleCheck,
+  faSearch,
+  faFilterCircleDollar,
+  faChartBar,
+  faPhone,
+  faPalette,
+  faEllipsisVertical,
+  faFillDrip,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { faUser, faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faInstagram, faTiktok, faFileAlt, faCircleCheck, faSearch, faFilterCircleDollar, faUser, faPhone, faChartBar, faPalette, faEllipsisVertical, faTrashCan, faFillDrip);
+library.add(
+  faInstagram,
+  faTiktok,
+  faFileAlt,
+  faCircleCheck,
+  faSearch,
+  faFilterCircleDollar,
+  faUser,
+  faPhone,
+  faChartBar,
+  faPalette,
+  faEllipsisVertical,
+  faTrashCan,
+  faFillDrip,
+  faUserPlus
+);
 
 const app = createApp(App);
 
