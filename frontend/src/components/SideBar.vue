@@ -7,7 +7,7 @@
     @mouseout="collapse"
   >
     <div id="img" class="d-flex">
-      <img src="../assets/vencedor/logo-3C.svg" class="my-2 mx-1" alt="logo" />
+      <img src="../assets/vencedor/logo-3C.svg" class="py-3" alt="logo" />
     </div>
     <p class="icon-text my-4 mx-2">
       <font-awesome-icon class="icon" :icon="['fas', 'phone']" /> Discadora
@@ -93,7 +93,7 @@ export default {
   height: 75px;
   img {
     width: 75%;
-    height: 60px;
+    height: 75px;
   }
 }
 

@@ -9,6 +9,8 @@ const HttpService = axios.create({
   },
 });
 
+// parte de login, registro, resetpassword e autenticação
+
 export const login = async (email, password) => {
   return await HttpService.post('/login', {
     email: email,
@@ -29,7 +31,9 @@ export const register = async (name, email, password, password_confirmation, doc
 
 export const resetPassword = (email) => {
   return axios.post(`/password.reset`, { email });
-};  
+}; 
+
+// parte de criação de funil
 
 export const createFunnel = async (funnel, token) => {
   return await HttpService.post('/funnels', funnel, {
@@ -55,6 +59,8 @@ export const destroyFunnel = async (funnel_id, token) => {
   });
 }
 
+// parte de criação de contato
+
 export const createContact = async (contact, token, funnel_id) => {
   return await HttpService.post(`/contacts/${funnel_id}`, contact, {
     headers: {
@@ -73,6 +79,14 @@ export const getContacts = async (token, funnel_id) => {
 
 export const updateContact = async (contact, token, contact_id) => {
   return await HttpService.put(`/contacts/${contact_id}`, contact, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+
+export const destroyContact = async (contact_id, token) => {
+  return await HttpService.delete(`/contacts/${contact_id}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

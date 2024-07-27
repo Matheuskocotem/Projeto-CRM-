@@ -14,7 +14,7 @@
         data-bs-toggle="modal"
         data-bs-target="#modalCreate"
       >
-        <font-awesome-icon :icon="['fas', 'filter-circle-dollar']" />
+        <font-awesome-icon class="mx-1" :icon="['fas', 'filter-circle-dollar']" />
         Criar Funil
       </button>
     </form>
