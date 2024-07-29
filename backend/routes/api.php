@@ -28,11 +28,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{funnelId}/total-value', [StageController::class, 'totalContactsValue']);
 
         // Stages
-        Route::prefix('{funnel}/stages')->group(function () {
+        Route::prefix('{funnel_id}/stages')->group(function () {
             Route::get('/', [StageController::class, 'index']);
             Route::post('/', [StageController::class, 'store']);
-            Route::put('/{stage}', [StageController::class, 'update']);
-            Route::delete('/{stage}', [StageController::class, 'destroy']);
+            Route::put('/swap-move-stage/{stage_id}', [StageController::class, 'updateOrder']);
+            Route::delete('/{stage_id}', [StageController::class, 'destroy']);
         });
     });
 

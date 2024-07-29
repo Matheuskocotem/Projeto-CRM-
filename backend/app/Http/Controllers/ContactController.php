@@ -171,9 +171,6 @@ class ContactController extends Controller
         return response()->json(['message' => 'Fase alterada com sucesso.'], 200);
     }
 
-
-
-
     public function averageValueInStage($funnelId, $stageId)
     {
         $average = Contacts::whereHas('stages', function ($query) use ($stageId) {
