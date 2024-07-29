@@ -61,6 +61,6 @@ export default {
       commit("deleteContact", contact);
     } catch (error) {
       console.log(error.response.data.message);
-    }
+    } 
   },
 };

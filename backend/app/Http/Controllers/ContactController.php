@@ -53,7 +53,7 @@ class ContactController extends Controller
         return response()->json($contact);
     }
 
-    public function update(Request $request, $funnel_id, $stage_id, Contacts $contact)
+    public function update(Request $request, Contacts $contact)
     {
         $request->validate([
             'position' => 'required|integer',
