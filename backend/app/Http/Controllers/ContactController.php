@@ -9,14 +9,19 @@ Use App\Models\Stage;
 
 class ContactController extends Controller
 {
-    public function index()
+    public function index($funnel_id, $stage_id)
     {
-        return response()->json(Contacts::all());
+        $contacts = Contacts::where('funnel_id', $funnel_id)
+                            ->where('stage_id', $stage_id)
+                            ->orderBy('position')
+                            ->get();
+        return response()->json($contacts);
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'position' => 'required|integer',
             'name' => 'required|string',
             'funnel_id' => 'required|exists:funnel,id',
             'stage_id' => 'required|exists:stages,id',
@@ -27,9 +32,8 @@ class ContactController extends Controller
             'buyValue' => 'nullable|numeric',   
         ]);
 
-        $nextPosition = Contacts::getNextPosition($request->stage_id);
-
         $contact = Contacts::create([
+            'position' => $request->position,
             'name' => $request->name,
             'funnel_id' => $request->funnel_id,
             'stage_id' => $request->stage_id,
@@ -38,7 +42,6 @@ class ContactController extends Controller
             'dateOfBirth' => $request->dateOfBirth,
             'address' => $request->address,
             'buyValue' => $request->buyValue,
-            'position' => $nextPosition,
         ]);
 
         return response()->json([
@@ -55,10 +58,9 @@ class ContactController extends Controller
     public function update(Request $request, Contacts $contact)
     {
         $request->validate([
-            'name' => 'required|string',
-            'funnel_id' => 'required|exists:funnel,id',
-            'stage_id' => 'required|exists:stages,id',
-            'email' => 'required|email',
+            'position' => 'required|integer',
+            'name' => 'nullable|string',
+            'email' => 'nullable|email',
             'phoneNumber' => 'nullable|string',
             'dateOfBirth' => 'nullable|date',
             'address' => 'nullable|string',
@@ -184,14 +186,17 @@ class ContactController extends Controller
         return response()->json(['buyValue' => $average]);
     }
 
-    public function search(Request $request)
+    public function search(Request $request, $funnel_id, $stage_id)
     {
         $request->validate([
             'name' => 'required|string',
         ]);
 
         $name = $request->input('name');
-        $contacts = Contacts::where('name', 'LIKE', "%{$name}%")->get();
+        $contacts = Contacts::where('funnel_id', $funnel_id)
+                            ->where('stage_id', $stage_id)
+                            ->where('name', 'LIKE', "%{$name}%")
+                            ->get();
 
         if ($contacts->isEmpty()) {
             return response()->json(['message' => 'Contato não encontrado'], 404);

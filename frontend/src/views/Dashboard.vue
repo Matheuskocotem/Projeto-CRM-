@@ -28,8 +28,6 @@ import CardFunnel from "@/components/CardFunnel.vue";
 export default {
   data() {
     return {
-      errorMessage: "",
-      successMessage: "",
       name: "",
       funnelName: "",
       funnelColor: "#212529",
