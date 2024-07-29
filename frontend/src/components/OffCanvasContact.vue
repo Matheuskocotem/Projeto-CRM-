@@ -216,16 +216,16 @@ export default {
     async createNewContact() {
       console.log(this.stage_id);
       try {
-        await this.createContact(this.funnel.id, {
-          name: this.name,
-          funnel_id: this.funnel.id,
-          stage_id: this.stage_id,
-          email: this.email,
-          phoneNumber: this.phoneNumber,
-          cpf: this.cpf,
-          dateOfBirth: this.dateOfBirth,
-          address: this.address,
-          buyValue: this.buyValue,
+        await this.createContact(this.funnel.id ,{
+            name: this.name,
+            funnel_id: this.funnel.id,
+            stage_id: this.stage_id,
+            email: this.email,
+            phoneNumber: this.phoneNumber,
+            cpf: this.cpf,
+            dateOfBirth: this.dateOfBirth,
+            address: this.address,
+            buyValue: this.buyValue,
         });
         this.showSuccess("Contato criado com sucesso!");
       } catch (error) {

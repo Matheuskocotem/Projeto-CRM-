@@ -1,18 +1,7 @@
 <template>
-<<<<<<< HEAD
-  <div class="stage">
-    <h3>{{ stage.name }}</h3>
-    <Draggable v-model="contacts" group="cards" item-key="id">
-      <template #item="{ element }">
-        <CardContact :contact="element" />
-      </template>
-    </Draggable>
-  </div>
-=======
     <div>
     </div>
 
->>>>>>> ae0c6ef (bizil)
 </template>
 
 <script>
