@@ -57,6 +57,7 @@ class StageController extends Controller
     }
 
     public function swapOrder(Request $request, $funnel_id, $stage_id)
+
     {
         $request->validate([
             'order' => 'required|integer|min:1',
@@ -70,6 +71,7 @@ class StageController extends Controller
         
         if ($newOrder == $stage->order) {
             return response()->json(['message' => 'A nova ordem é igual à ordem atual.'], 200);
+
         }
     
         if ($newOrder < $stage->order) {
