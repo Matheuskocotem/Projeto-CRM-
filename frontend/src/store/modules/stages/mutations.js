@@ -11,4 +11,5 @@ export default {
     clearStages(state) {
         state.stages = [];
     },
+
 }

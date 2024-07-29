@@ -24,6 +24,7 @@ export default {
     OffCanvasContact,
     CardContact,
     StageKanban,
+
   },
   data() {
     return {

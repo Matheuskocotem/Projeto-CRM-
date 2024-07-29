@@ -34,6 +34,7 @@
         <div class="d-flex flex-column w-100 justify-content-between mt-3">
           <p class="mx-3 fw-bolder">{{ funnel.name }}</p>
           <div class="button-stage gap-1 d-flex flex-row">
+
             <div v-for="stage in getStages" :key="stage.id">
               <input
                 type="radio"
@@ -300,6 +301,8 @@ export default {
 
 .offcanvas {
   --bs-offcanvas-width: 640px;
+
+
 }
 
 .contact {
