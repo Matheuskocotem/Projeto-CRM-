@@ -18,16 +18,14 @@ class ContactController extends Controller
         return response()->json($contacts);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $funnel_id, $stage_id)
     {
         $request->validate([
             'position' => 'required|integer',
             'name' => 'required|string',
-            'funnel_id' => 'required|exists:funnel,id',
-            'stage_id' => 'required|exists:stages,id',
             'email' => 'required|email',
             'phoneNumber' => 'required|string',
-            'dateOfBirth' => 'nullable|date',
+            'dateOfBirth' => 'nullable|string',
             'address' => 'nullable|string',
             'buyValue' => 'nullable|numeric',   
         ]);
@@ -35,8 +33,8 @@ class ContactController extends Controller
         $contact = Contacts::create([
             'position' => $request->position,
             'name' => $request->name,
-            'funnel_id' => $request->funnel_id,
-            'stage_id' => $request->stage_id,
+            'funnel_id' => $funnel_id,
+            'stage_id' => $stage_id,
             'email' => $request->email,
             'phoneNumber' => $request->phoneNumber,
             'dateOfBirth' => $request->dateOfBirth,
@@ -55,7 +53,7 @@ class ContactController extends Controller
         return response()->json($contact);
     }
 
-    public function update(Request $request, Contacts $contact)
+    public function update(Request $request, $funnel_id, $stage_id, Contacts $contact)
     {
         $request->validate([
             'position' => 'required|integer',
