@@ -95,32 +95,32 @@ export const destroyStage = async (funnel_id, stage_id, token) => {
 
 // parte de criação de contato
 
-export const getContacts = async (funnel_id, stage_id, token) => {
-  return await HttpService.get(`funnels/${funnel_id}/${stage_id}/contacts/`, {
+export const getContacts = async (funnel_id, token) => {
+  return await HttpService.get(`${funnel_id}/contacts/`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
   })
 }
 
-export const createContact = async (funnel_id, stage_id, contact, token) => {
-  return await HttpService.post(`${funnel_id}/${stage_id}/contacts/`, contact, {
+export const createContact = async (funnel_id, contact, token) => {
+  return await HttpService.post(`${funnel_id}/contacts/`, contact, {
     headers: {
       Authorization: `Bearer ${token}`
     }
   })
 }
 
-export const updateContact = async (funnel_id, stage_id, contact, contact_id, token) => {
-  return await HttpService.put(`${funnel_id}/${stage_id}/contacts/${contact_id}`, contact, {
+export const updateContact = async (funnel_id, contact, contact_id, token) => {
+  return await HttpService.put(`${funnel_id}/contacts/${contact_id}`, contact, {
     headers: {
       Authorization: `Bearer ${token}`
     }
   })
 }
 
-export const destroyContact = async (funnel_id, stage_id, contact_id, token) => {
-  return await HttpService.delete(`${funnel_id}/${stage_id}/contacts/${contact_id}`, {
+export const destroyContact = async (funnel_id, contact_id, token) => {
+  return await HttpService.delete(`${funnel_id}/contacts/${contact_id}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

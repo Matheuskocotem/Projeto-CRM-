@@ -206,8 +206,6 @@ export default {
   },
   async created() {
     await this.setStages(this.funnel.id);
-    console.log(this.funnel.id);
-    console.log(this.stage_id);
   },
   watch: {
     stage_id(newValue) {
@@ -219,16 +217,16 @@ export default {
     ...mapActions("stages", ["setStages"]),
     async createContact() {
       try {
-        await this.createContact(this.funnel.id, this.stage_id, {
-          contact: {
+        await this.createContact(this.funnel.id ,{
             name: this.name,
+            funnel_id: this.funnel.id,
+            stage_id: this.stage_id,
             email: this.email,
             phoneNumber: this.phoneNumber,
             cpf: this.cpf,
             dateOfBirth: this.dateOfBirth,
             address: this.address,
             buyValue: this.buyValue,
-          },
         });
         this.showSuccess("Contato criado com sucesso!");
       } catch (error) {
