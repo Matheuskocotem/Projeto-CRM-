@@ -39,10 +39,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // Contacts
     Route::prefix('{funnel_id}/contacts')->group(function () {
         Route::get('/', [ContactController::class, 'index']);
-        Route::post('/', [ContactController::class, 'store']);
-        Route::get('/{contact}', [ContactController::class, 'show']);
-        Route::put('/{contact}', [ContactController::class, 'update']);
-        Route::delete('/{contact}', [ContactController::class, 'destroy']);
+        Route::post('/', [ContactController::class, 'store']);  
+        Route::get('/{contact_id}', [ContactController::class, 'show']);
+        Route::put('/{contact_id}', [ContactController::class, 'update']);
+        Route::delete('/{contact_id}', [ContactController::class, 'destroy']);
         Route::post('/search', [ContactController::class, 'search']);
         Route::put('/swap/{contact_id}', [ContactController::class, 'swap']);
         Route::put('/swap-phase/{contact_id}', [ContactController::class, 'swapPhase']);
