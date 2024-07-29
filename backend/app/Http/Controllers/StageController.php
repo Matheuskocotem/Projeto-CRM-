@@ -9,10 +9,11 @@ use App\Models\Funnel;
 
 class StageController extends Controller
 {
-    public function index(Request $request, Funnel $funnel)
+    public function index(Request $request, $funnel_id)
     {
-        $stages = $funnel->stages()->orderBy('order')->get();
-        return response()->json($stages);
+        $funnel = Funnel::findOrFail($funnel_id);
+        $stages = $funnel->stages()->orderBy('order')->get()->toArray();
+        return response()->json($stages, 200,['message' => 'Sucesso ao buscar as etapas']);
     }
     
     public function store(Request $request, $funnel_id)
@@ -32,6 +33,20 @@ class StageController extends Controller
         $funnel->stages()->save($stage);
 
         return response()->json($stage, 201);
+    }
+
+    public function update(Request $request, Funnel $funnel, Stage $stage){
+        $validatedData = $request->validate([
+            'name' => 'sometimes|string',
+            'order' => 'sometimes|integer',
+        ]);
+
+        $stage->update([
+            'name' => $validatedData['name'],
+            'order' => $validatedData['order'],
+        ]);
+
+        return response()->json($stage, 200);
     }
 
     public function destroy(Request $request, Funnel $funnel, Stage $stage)

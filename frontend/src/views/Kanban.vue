@@ -1,7 +1,8 @@
 <template>
   <div>
     <SideBar @toggleSideBar="toggleSideBar" />
-    <NavBarKanban ref="NavBarKanban" :expanded="expanded" :funnel="funnel" />
+    <NavBarKanban ref="NavBarKanban" :funnel="funnel" />
+    <OffCanvasContact :funnel="funnel" />
     <div id="main-content" class="p-4 d-flex" ref="MainContent">
       <!-- <v-for "etapas in quadro">
             <v-for "contatos in etapa"> -->
@@ -11,15 +12,18 @@
 
 <script>
 import NavBarKanban from "@/components/NavBarKanban.vue";
+import OffCanvasContact from "@/components/OffCanvasContact.vue";
 import SideBar from "@/components/SideBar.vue";
 
 export default {
   components: {
     SideBar,
     NavBarKanban,
+    OffCanvasContact,
   },
   created() {
     this.funnel = this.$route.params;
+    console.log(this.funnel);
   },
   methods: {
     toggleSideBar(expanded) {
