@@ -59,46 +59,72 @@ export const destroyFunnel = async (funnel_id, token) => {
   });
 }
 
+// parte de criação de etapa
+
+export const getStages = async (funnel_id ,token) => {
+  return await HttpService.get(`funnels/${funnel_id}/stages/`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}
+
+export const createStage = async (funnel_id, stage, token) => {
+  return await HttpService.post(`funnels/${funnel_id}/stages/`, stage, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}
+
+export const updateStage = async (funnel_id, stage, token, stage_id) => {
+  return await HttpService.put(`funnels/${funnel_id}/stages/${stage_id}`, stage, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}
+
+export const destroyStage = async (funnel_id, stage_id, token) => {
+  return await HttpService.delete(`funnels/${funnel_id}/stages/${stage_id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}
+
 // parte de criação de contato
 
-export const createContact = async (contact, token, funnel_id) => {
-  return await HttpService.post(`/contacts/${funnel_id}`, contact, {
+export const getContacts = async (funnel_id, stage_id, token) => {
+  return await HttpService.get(`funnels/${funnel_id}/${stage_id}/contacts/`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
-  });
+  })
 }
 
-export const getContacts = async (token, funnel_id) => {
-  return await HttpService.get(`/contacts/${funnel_id}`, {
+export const createContact = async (funnel_id, stage_id, contact, token) => {
+  return await HttpService.post(`${funnel_id}/${stage_id}/contacts/`, contact, {
     headers: {
       Authorization: `Bearer ${token}`
     }
-  });
+  })
 }
 
-export const updateContact = async (contact, token, contact_id) => {
-  return await HttpService.put(`/contacts/${contact_id}`, contact, {
+export const updateContact = async (funnel_id, stage_id, contact, contact_id, token) => {
+  return await HttpService.put(`${funnel_id}/${stage_id}/contacts/${contact_id}`, contact, {
     headers: {
       Authorization: `Bearer ${token}`
     }
-  });
+  })
 }
 
-export const destroyContact = async (contact_id, token) => {
-  return await HttpService.delete(`/contacts/${contact_id}`, {
+export const destroyContact = async (funnel_id, stage_id, contact_id, token) => {
+  return await HttpService.delete(`${funnel_id}/${stage_id}/contacts/${contact_id}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
-  });
-}
-
-export const getStages = async (token, funnel_id) => {
-  return await HttpService.get(`${funnel_id}/stages/`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+  })
 }
 
 export default HttpService;
