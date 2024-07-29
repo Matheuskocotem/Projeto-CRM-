@@ -18,29 +18,28 @@ class ContactController extends Controller
         return response()->json($contacts);
     }
 
-    public function store(Request $request, $funnel_id, $stage_id)
+    public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string',
+            'funnel_id' => 'required|exists:funnel,id',
+            'stage_id' => 'required|exists:stages,id',
             'email' => 'required|email',
             'phoneNumber' => 'required|string',
-            'dateOfBirth' => 'nullable|string',
+            'dateOfBirth' => 'nullable|date',
             'address' => 'nullable|string',
             'buyValue' => 'nullable|numeric',   
         ]);
 
-        $nextPosition = Contacts::getNextPosition($request->stage_id);
-
         $contact = Contacts::create([
             'name' => $request->name,
-            'funnel_id' => $funnel_id,
-            'stage_id' => $stage_id,
+            'funnel_id' => $request->funnel_id,
+            'stage_id' => $request->stage_id,
             'email' => $request->email,
             'phoneNumber' => $request->phoneNumber,
             'dateOfBirth' => $request->dateOfBirth,
             'address' => $request->address,
             'buyValue' => $request->buyValue,
-            'position' => $nextPosition,
         ]);
 
         return response()->json([
