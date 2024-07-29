@@ -41,6 +41,40 @@ class StageController extends Controller
         return response()->json(['message' => 'etapa deletada'], 200);
     }
 
+    public function updateOrder(Request $request, $funnel_id, $stage_id)
+    {
+        $request->validate([
+            'order' => 'required|integer|min:1',
+        ]);
+    
+        $stage = Stage::where('id', $stage_id)
+            ->where('funnel_id', $funnel_id)
+            ->firstOrFail();
+    
+        $newOrder = $request->input('order');
+        
+        if ($newOrder == $stage->order) {
+            return response()->json(['message' => 'A nova ordem é igual à ordem atual.'], 200);
+        }
+    
+        if ($newOrder < $stage->order) {
+            Stage::where('funnel_id', $funnel_id)
+                ->whereBetween('order', [$newOrder, $stage->order - 1])
+                ->increment('order');
+        } else {
+            Stage::where('funnel_id', $funnel_id)
+                ->whereBetween('order', [$stage->order + 1, $newOrder])
+                ->decrement('order');
+        }
+    
+        $stage->order = $newOrder;
+        $stage->save();
+    
+        return response()->json(['message' => 'Ordem alterada com sucesso.'], 200);
+    }
+    
+
+
     public function totalContactsValue($funnelId)
 {
     $funnel = Funnel::with('stages.contacts')->findOrFail($funnelId);
