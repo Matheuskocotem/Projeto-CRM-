@@ -96,11 +96,6 @@ h2 {
   margin-top: 5px;
 }
 
-.form-control:focus {
-  outline: none;
-  box-shadow: none;
-}
-
 .input-group
   > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(
     .valid-feedback

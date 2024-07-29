@@ -23,6 +23,7 @@ import {
   faEllipsisVertical,
   faFillDrip,
   faUserPlus,
+  faAngleLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { faUser, faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -41,7 +42,8 @@ library.add(
   faEllipsisVertical,
   faTrashCan,
   faFillDrip,
-  faUserPlus
+  faUserPlus,
+  faAngleLeft
 );
 
 const app = createApp(App);
