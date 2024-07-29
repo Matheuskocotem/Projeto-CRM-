@@ -37,9 +37,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Contacts
-    Route::prefix('contacts')->group(function () {
-        Route::get('/{funnel_id}', [ContactController::class, 'index']);
-        Route::post('/{funnel_id}', [ContactController::class, 'store']);
+    Route::prefix('{funnel_id}/{stage_id}/contacts')->group(function () {
+        Route::get('/', [ContactController::class, 'index']);
+        Route::post('/', [ContactController::class, 'store']);
         Route::get('/{contact}', [ContactController::class, 'show']);
         Route::put('/{contact}', [ContactController::class, 'update']);
         Route::delete('/{contact}', [ContactController::class, 'destroy']);

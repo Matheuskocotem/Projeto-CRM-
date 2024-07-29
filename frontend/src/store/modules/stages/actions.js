@@ -29,6 +29,8 @@ export default {
   async updateStage({ commit, rootState }, stage) {
     try {
       const token = rootState.user.token;
+      const funnel_id = rootState.funnel.id;
+      const stage_id = stage.id;
       const response = await updateStage(funnel_id, stage, token, stage_id);
       commit("updateStage", response.data);
       return response;
@@ -36,11 +38,13 @@ export default {
       console.log(error.response.data.message);
     }
   },
-  async deleteStage({ commit, rootState }, stage_id) {
+  async deleteStage({ commit, rootState }, stage) {
     try {
       const token = rootState.user.token;
+      const funnel_id = rootState.funnel.id;
+      const stage_id = stage.id;
       await destroyStage(funnel_id, stage_id, token);
-      commit("deleteStage", stage_id);
+      commit("deleteStage", stage);
     } catch (error) {
       console.log(error.response.data.message);
     }
