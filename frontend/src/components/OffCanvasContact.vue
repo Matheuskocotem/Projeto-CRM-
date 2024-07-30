@@ -8,7 +8,7 @@
     <div class="offcanvas-header d-flex justify-content-between">
       <button
         type="button"
-        class="btn border-0 d-flex mt-2"
+        class="bg-light border-0 d-flex mt-2"
         data-bs-dismiss="offcanvas"
         aria-label="Close"
       >
@@ -33,8 +33,7 @@
         <div class="border-bottom mx-3"></div>
         <div class="d-flex flex-column w-100 justify-content-between mt-3">
           <p class="mx-3 fw-bolder">{{ funnel.name }}</p>
-          <div class="button-stage gap-1 d-flex flex-row">
-
+          <div class="button-stage gap-1 d-flex flex-row bg-light">
             <div v-for="stage in getStages" :key="stage.id">
               <input
                 type="radio"
@@ -73,7 +72,7 @@
           >
             <div class="accordion-body">
               <label
-                class="input d-flex align-items-center flex-row w-100 rounded p-1 mt-2"
+                class="inputAcc d-flex align-items-center flex-row w-100 rounded p-1 mt-2"
                 >Telefone:
                 <span class="text-danger fs-5 fw-bolder">*</span>
                 <input
@@ -216,16 +215,16 @@ export default {
     async createNewContact() {
       console.log(this.stage_id);
       try {
-        await this.createContact(this.funnel.id ,{
-            name: this.name,
-            funnel_id: this.funnel.id,
-            stage_id: this.stage_id,
-            email: this.email,
-            phoneNumber: this.phoneNumber,
-            cpf: this.cpf,
-            dateOfBirth: this.dateOfBirth,
-            address: this.address,
-            buyValue: this.buyValue,
+        await this.createContact(this.funnel.id, {
+          name: this.name,
+          funnel_id: this.funnel.id,
+          stage_id: this.stage_id,
+          email: this.email,
+          phoneNumber: this.phoneNumber,
+          cpf: this.cpf,
+          dateOfBirth: this.dateOfBirth,
+          address: this.address,
+          buyValue: this.buyValue,
         });
         this.showSuccess("Contato criado com sucesso!");
       } catch (error) {

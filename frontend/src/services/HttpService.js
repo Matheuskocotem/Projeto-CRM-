@@ -106,13 +106,9 @@ export const createStage = async (funnel_id, stage, token) => {
 };
 
 export const updateStage = async (funnel_id, stage, stage_id, token) => {
-  return await HttpService.put(
-    `funnels/${funnel_id}/stages/${stage_id}`,
-    stage,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  return await HttpService.put(`funnels/${funnel_id}/stages/${stage_id}`, stage, {
+    headers: {
+      Authorization: `Bearer ${token}`
     }
   );
 };

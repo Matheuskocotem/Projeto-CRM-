@@ -1,5 +1,11 @@
 <template>
-    <div>
+    <div class="stage ">
+        <h3>{{ stage.name }}</h3>
+        <Draggable v-model="getContacts" group="cards" item-key="id">
+            <template #item="{element}">
+                <CardContact :contact="element" />
+            </template>
+        </Draggable>
     </div>
 
 </template>
