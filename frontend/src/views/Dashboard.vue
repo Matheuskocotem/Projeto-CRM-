@@ -10,6 +10,7 @@
         @deleteFunnel="funnelDelection"
       />
     </div>
+    <Pagination @pageChange="fetchFunnels" />
   </div>
 </template>
 
@@ -24,6 +25,7 @@ import CreateFunnelModal from "@/components/CreateFunnelModal.vue";
 import DeleteFunnelModal from "@/components/DeleteFunnelModal.vue";
 import NavBar from "@/components/navBar.vue";
 import CardFunnel from "@/components/CardFunnel.vue";
+import Pagination from "@/components/Pagination.vue";
 
 export default {
   data() {
@@ -33,6 +35,7 @@ export default {
       funnelColor: "#212529",
       SearchRequest: "",
       expanded: false,
+      page: 2,
     };
   },
   computed: {
@@ -40,7 +43,8 @@ export default {
     ...mapGetters("funnels", ["getFunnels"]),
   },
   async created() {
-    await this.setFunnels();
+    await this.setFunnels(this.page);
+    console.log(this.page);
   },
   components: {
     Error,
@@ -50,6 +54,7 @@ export default {
     CardFunnel,
     CreateFunnelModal,
     DeleteFunnelModal,
+    Pagination,
   },
   methods: {
     ...mapActions("user", ["logout"]),

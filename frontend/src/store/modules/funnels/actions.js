@@ -28,14 +28,15 @@ export default {
             error.response.data.message;
         }
     },
-    async setFunnels({ commit, rootState }) {
+    async setFunnels({ commit, rootState }, page) {
         try {
             const token = rootState.user.token;
-            const funnels = await getFunnels(token);
+            const funnels = await getFunnels(token, page);
             // const relatories = await getRelatories(token, funnels);
             commit('setFunnels', funnels.data.data);
+            commit('setPagination', funnels.data.meta);
         } catch (error) {
             error.response.data.message;
         }
-    }
+    },
 }
