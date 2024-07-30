@@ -41,7 +41,7 @@ class StageController extends Controller
         return response()->json(['message' => 'etapa deletada'], 200);
     }
 
-    public function updateOrder(Request $request, $funnel_id, $stage_id)
+    public function swapOrder(Request $request, $funnel_id, $stage_id)
     {
         $request->validate([
             'order' => 'required|integer|min:1',
