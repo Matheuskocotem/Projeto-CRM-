@@ -9,6 +9,7 @@ export default {
             const token = rootState.user.token;
             const response = await createFunnel(funnel, token);
             commit('addFunnel', response.data);
+            console.log(response);
             return response;
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message){
