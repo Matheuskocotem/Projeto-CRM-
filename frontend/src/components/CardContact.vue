@@ -1,39 +1,26 @@
 <template>
   <div class="card border-1 rounded-1 p-2 m-1">
-    <Draggable v-model="getContacts"> </Draggable>
+    <h5>{{ contact.name }}</h5>
+    <p>{{ contact.buyValue }}</p>
   </div>
 </template>
 
 <script>
-import Draggable from "vuedraggable";
-import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "CardContact",
-  components: {
-    Draggable,
-  },
   props: {
     contact: {
-      type: Object,
-      required: true,
-    },
+        type: Object,
+        required: true
+    }
   },
-  data() {
-    return {};
-  },
-  created() {
-    this.setContacts();
-  },
-  mounted: {
-    ...mapGetters("contacts", ["getContacts"]),
-  },
-  methods: {
-    ...mapActions("contacts", ["setContacts"]),
-    
-  },
-
-};
+}
 </script>
 
-<style scoped></style>
+<style scoped>
+.card {
+    height: 80px;
+    width: 100px;
+}
+</style>
