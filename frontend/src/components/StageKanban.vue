@@ -1,11 +1,11 @@
 <template>
     <div class="stage ">
         <h3>{{ stage.name }}</h3>
-        <VueDraggableNext :list="contacts" animation="150" item-key="id">
+        <Draggable v-model="getContacts" group="cards" item-key="id">
             <template #item="{element}">
                 <CardContact :contact="element" />
             </template>
-        </VueDraggableNext>
+        </Draggable>
     </div>
 </template>
 
@@ -21,6 +21,10 @@ export default {
         Draggable
     },
     props: {
+        stage: {
+            type: Object,
+            required: true,
+        },
         contacts: {
             type: Array,
             required: true
