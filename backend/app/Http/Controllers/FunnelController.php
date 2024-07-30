@@ -19,7 +19,7 @@ class FunnelController extends Controller
             }
             return response()->json($funnel);
         }
-        $funnel = Funnel::where('user_id', Auth::id())->paginate(10);
+        $funnel = Funnel::where('user_id', Auth::id())->paginate(8);
     
         return response()->json([
             'data' => $funnel->items(), 
