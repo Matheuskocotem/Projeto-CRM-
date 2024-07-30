@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('{funnel_id}/stages')->group(function () {
             Route::get('/', [StageController::class, 'index']);
             Route::post('/', [StageController::class, 'store']);
-            Route::put('/swap-move-stage/{stage_id}', [StageController::class, 'updateOrder']);
+            Route::put('/{stage_id}', [StageController::class, 'swapOrder']);
             Route::delete('/{stage_id}', [StageController::class, 'destroy']);
         });
     });
