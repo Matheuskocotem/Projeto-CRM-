@@ -4,29 +4,42 @@
     <NavBarKanban ref="NavBarKanban" :funnel="funnel" />
     <OffCanvasContact :funnel="funnel" />
     <div id="main-content" class="p-4 d-flex" ref="MainContent">
-      <StageKanban v-for="stage in funnel.stages" :key="stage.id" :contacts="stage.contacts" />
+      <StageKanban v-for="stage in stages" :key="stage.id" :stage="stage" />
     </div>
   </div>
 </template>
 
 <script>
+import CardContact from "@/components/CardContact.vue";
 import NavBarKanban from "@/components/NavBarKanban.vue";
 import OffCanvasContact from "@/components/OffCanvasContact.vue";
 import SideBar from "@/components/SideBar.vue";
 import StageKanban from "@/components/StageKanban.vue";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
     SideBar,
     NavBarKanban,
     OffCanvasContact,
-    StageKanban
+    CardContact,
+    StageKanban,
   },
-  created() {
+  data() {
+    return {
+      stages: [],
+    };
+  },
+  computed: {
+    ...mapGetters("stages", ["getStages"]),
+  },
+  async created() {
     this.funnel = this.$route.params;
-    console.log(this.funnel);
+    await this.setStages(this.funnel.id);
+    this.stages = this.getStages;
   },
   methods: {
+    ...mapActions("stages", ["setStages"]),
     toggleSideBar(expanded) {
       if (expanded) {
         this.$refs.MainContent.style.marginLeft = "200px";

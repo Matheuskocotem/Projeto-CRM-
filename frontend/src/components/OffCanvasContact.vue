@@ -8,7 +8,7 @@
     <div class="offcanvas-header d-flex justify-content-between">
       <button
         type="button"
-        class="rounded-circle bg-light border-0 d-flex mt-2"
+        class="btn border-0 d-flex mt-2"
         data-bs-dismiss="offcanvas"
         aria-label="Close"
       >
@@ -18,13 +18,13 @@
       <button
         type="button"
         class="btn btn-primary d-flex justify-content-center mb-1 w-50"
-        @click="createContact"
+        @click="createNewContact"
       >
         Criar contato
       </button>
     </div>
     <div class="offcanvas-body">
-      <div class="input d-flex flex-column w-100 rounded p-1">
+      <div class="inputAcc d-flex flex-column w-100 rounded p-1">
         <input
           v-model="name"
           placeholder="Nome do contato*"
@@ -32,8 +32,8 @@
         />
         <div class="border-bottom mx-3"></div>
         <div class="d-flex flex-column w-100 justify-content-between mt-3">
-          <p class="mx-3">{{ funnel.name }}</p>
-          <div class="button-stage gap-1 d-flex flex-row bg-light">
+          <p class="mx-3 fw-bolder">{{ funnel.name }}</p>
+          <div class="button-stage gap-1 d-flex flex-row">
             <div v-for="stage in getStages" :key="stage.id">
               <input
                 type="radio"
@@ -43,10 +43,7 @@
                 v-model="stage_id"
                 :value="stage.id"
               />
-              <label
-                class="item btn btn-light rounded-1"
-                :for="'option' + stage.id"
-              >
+              <label class="item btn btn-light" :for="'option' + stage.id">
                 {{ stage.name }}
               </label>
             </div>
@@ -215,18 +212,19 @@ export default {
   methods: {
     ...mapActions("contacts", ["createContact"]),
     ...mapActions("stages", ["setStages"]),
-    async createContact() {
+    async createNewContact() {
+      console.log(this.stage_id);
       try {
-        await this.createContact(this.funnel.id ,{
-            name: this.name,
-            funnel_id: this.funnel.id,
-            stage_id: this.stage_id,
-            email: this.email,
-            phoneNumber: this.phoneNumber,
-            cpf: this.cpf,
-            dateOfBirth: this.dateOfBirth,
-            address: this.address,
-            buyValue: this.buyValue,
+        await this.createContact(this.funnel.id, {
+          name: this.name,
+          funnel_id: this.funnel.id,
+          stage_id: this.stage_id,
+          email: this.email,
+          phoneNumber: this.phoneNumber,
+          cpf: this.cpf,
+          dateOfBirth: this.dateOfBirth,
+          address: this.address,
+          buyValue: this.buyValue,
         });
         this.showSuccess("Contato criado com sucesso!");
       } catch (error) {
@@ -260,6 +258,12 @@ export default {
   font-family: "CerebriSans";
 }
 
+.accordion {
+  --bs-accordion-active-bg: #fff;
+  --bs-accordion-btn-focus-box-shadow: none;
+  --bs-accordion-active-color: inherit;
+}
+
 ::-webkit-scrollbar {
   width: 7px;
   height: 5px;
@@ -279,6 +283,15 @@ export default {
   color: #fff;
 }
 
+.item {
+  border-radius: 40px;
+  width: 120px;
+}
+
+.item:hover {
+  background-color: #dfdfdf;
+}
+
 .button-stage {
   overflow-x: auto;
   white-space: nowrap;
@@ -286,10 +299,14 @@ export default {
 }
 
 .offcanvas {
-  --bs-offcanvas-width: 500px;
+  --bs-offcanvas-width: 640px;
 }
 
 .contact {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.inputAcc {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
