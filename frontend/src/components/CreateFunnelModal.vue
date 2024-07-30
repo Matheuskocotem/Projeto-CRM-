@@ -55,7 +55,7 @@
         >
         <button
         type="button"
-        class="w-50 btn btn-light mx-1 mt-2"
+        class="w-50 btn btn-light mx-1 mt-3"
         data-bs-dismiss="modal"
         >
         Fechar

@@ -1,13 +1,12 @@
 <template>
-    <div class="stage ">
-        <h3>{{ stage.name }}</h3>
-        <Draggable v-model="getContacts" group="cards" item-key="id">
-            <template #item="{element}">
-                <CardContact :contact="element" />
-            </template>
-        </Draggable>
-    </div>
-
+  <div class="stage">
+    <h3>{{ stage.name }}</h3>
+    <Draggable v-model="contacts" group="cards" item-key="id">
+      <template #item="{ element }">
+        <CardContact :contact="element" />
+      </template>
+    </Draggable>
+  </div>
 </template>
 
 <script>
