@@ -76,20 +76,26 @@ class StageController extends Controller
 
 
     public function totalContactsValue($funnelId)
-{
-    $funnel = Funnel::with('stages.contacts')->findOrFail($funnelId);
-    $totalValue = 0;
-
-    foreach ($funnel->stages as $stage) {
-        foreach ($stage->contacts as $contact) {
-            $totalValue += $contact->buyValue;
+    {
+        $funnel = Funnel::with('stages.contacts')->findOrFail($funnelId);
+        $totalValue = 0;
+        $totalContacts = 0;
+        $propostaValue = 0;
+    
+        foreach ($funnel->stages as $stage) {
+            foreach ($stage->contacts as $contact) {
+                $totalValue += $contact->buyValue;
+                $totalContacts++;
+                if ($stage->name == 'proposta') {
+                    $propostaValue += $contact->buyValue;
+                }
+            }
         }
+    
+        return response()->json([
+            'total_value' => $totalValue,
+            'quantidade_contatos' => $totalContacts,
+            'Proposta' => $propostaValue
+        ]);
     }
-    return response()->json([
-        'total_value' => $totalValue
-        // 'quantidade_contatos' =>
-        // 'finalizados' =>
-    ]);
-}
-
 }

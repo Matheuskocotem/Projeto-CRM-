@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [FunnelController::class, 'store']);
         Route::delete('/{id}', [FunnelController::class, 'destroy']);
         //relatorios
-        Route::get('/{funnelId}/total-value', [StageController::class, 'totalContactsValue']);
+        Route::get('/{funnelId}/Relatories', [StageController::class, 'totalContactsValue']);
 
         // Stages
         Route::prefix('{funnel_id}/stages')->group(function () {
