@@ -8,7 +8,7 @@
     <div class="offcanvas-header d-flex justify-content-between">
       <button
         type="button"
-        class="bg-light border-0 d-flex mt-2"
+        class="btn border-0 d-flex mt-2"
         data-bs-dismiss="offcanvas"
         aria-label="Close"
       >
@@ -18,7 +18,7 @@
       <button
         type="button"
         class="btn btn-primary d-flex justify-content-center mb-1 w-50"
-        @click="createContact"
+        @click="createNewContact"
       >
         Criar contato
       </button>
@@ -33,7 +33,7 @@
         <div class="border-bottom mx-3"></div>
         <div class="d-flex flex-column w-100 justify-content-between mt-3">
           <p class="mx-3 fw-bolder">{{ funnel.name }}</p>
-          <div class="button-stage gap-1 d-flex flex-row bg-light">
+          <div class="button-stage gap-1 d-flex flex-row">
             <div v-for="stage in getStages" :key="stage.id">
               <input
                 type="radio"
@@ -72,7 +72,7 @@
           >
             <div class="accordion-body">
               <label
-                class="inputAcc d-flex align-items-center flex-row w-100 rounded p-1 mt-2"
+                class="input d-flex align-items-center flex-row w-100 rounded p-1 mt-2"
                 >Telefone:
                 <span class="text-danger fs-5 fw-bolder">*</span>
                 <input
@@ -212,7 +212,8 @@ export default {
   methods: {
     ...mapActions("contacts", ["createContact"]),
     ...mapActions("stages", ["setStages"]),
-    async createContact() {
+    async createNewContact() {
+      console.log(this.stage_id);
       try {
         await this.createContact(this.funnel.id, {
           name: this.name,
@@ -298,7 +299,7 @@ export default {
 }
 
 .offcanvas {
-  --bs-offcanvas-width: 500px;
+  --bs-offcanvas-width: 640px;
 }
 
 .contact {
