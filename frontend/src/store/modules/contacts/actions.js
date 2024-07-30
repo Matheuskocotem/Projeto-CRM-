@@ -6,19 +6,28 @@ import {
 } from "@/services/HttpService";
 
 export default {
-  async setContacts({ commit, rootState }) {
+  async setContacts({ commit, rootState }, params) {
     try {
       const token = rootState.user.token;
-      const response = await getContacts(funnel_id, stage_id, token);
-      commit("setContacts", response.data);
+      const response = await getContacts(
+        params.funnel_id,
+        params.stage_id,
+        token
+      );
+      commit("addContact", response.data);
     } catch (error) {
       console.log(error.response.data.message);
     }
   },
-  async createContact({ commit, rootState }, contact) {
+  async createContact({ commit, rootState }, params) {
     try {
       const token = rootState.user.token;
-      const response = await createContact(funnel_id, contact, token);
+      const response = await createContact(
+        params.funnel_id,
+        params.stage_id,
+        params.contact,
+        token
+      );
       commit("addContact", response.data);
     } catch (error) {
       console.log(error.response.data.message);
@@ -52,6 +61,6 @@ export default {
       commit("deleteContact", contact);
     } catch (error) {
       console.log(error.response.data.message);
-    } 
+    }
   },
 };
