@@ -153,9 +153,15 @@ export const destroyContact = async (funnel_id, contact_id, token) => {
   });
 };
 
-export const swapBetweenPhases = async (funnel_id, contact_id, changes, token) => {
+export const swapBetweenPhases = async (
+  funnel_id,
+  contact_id,
+  changes,
+  token
+) => {
   return await HttpService.put(
-    `${funnel_id}/contacts/swap-phase/${contact_id}`, changes,
+    `${funnel_id}/contacts/swap-phase/${contact_id}`,
+    changes,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -164,9 +170,9 @@ export const swapBetweenPhases = async (funnel_id, contact_id, changes, token) =
   );
 };
 
-export const swap = async (funnel_id, contact_id, token) => {
+export const swap = async (funnel_id, contact_id, changes, token) => {
   return await HttpService.put(
-    `${funnel_id}/contacts/swap-phase/${contact_id}`,
+    `${funnel_id}/contacts/swap/${contact_id}`, changes,
     {
       headers: {
         Authorization: `Bearer ${token}`,

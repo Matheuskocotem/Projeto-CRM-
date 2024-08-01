@@ -1,5 +1,5 @@
 <template>
-  <div class="stage mx-2" style="height: 80vh; width: 22vh; overflow-y: auto">
+  <div class="stage mx-2" style="height: 100vh; width: 16vw; overflow-y: auto">
     <OffCanvasContact
       :funnel="funnel"
       :stage_id="stage.id"
@@ -10,27 +10,22 @@
       :style="{ '--background-color': funnel.color }"
     ></div>
     <div
-      class="stage-header d-flex justify-content-between align-items-center w-100 mt-1"
+      class="stage-header d-flex justify-content-between w-100 mt-2"
     >
       <h1
-        class="w-75 mt-2"
-        style="font-size: 15px; font-weight: 600; margin-left: 6px"
+        class="w-75 mt-1"
+        style="font-size: 1vw; font-weight: 600; margin-left: 6px"
       >
         {{ stage.name }}
       </h1>
       <button
-        class="border-0 rounded-2 mb-2"
-        style="
-          height: 30px;
-          margin-right: 5px;
-          background-color: #e1e9f4;
-          width: 30px;
-        "
+        class="mx-1 border-0 rounded-2 justify-content-center d-flex"
         data-bs-toggle="offcanvas"
         :data-bs-target="'#offcanvasRight' + stage.id"
         aria-controls="offcanvasRight"
+        style="width: 1.6vw; height: 2.5vh; font-size: 1.2rem; color:#6e8398; "
       >
-        <span class="fs-5">+</span>
+        +
       </button>
     </div>
     <draggable
@@ -38,7 +33,7 @@
       group="cards"
       item-key="id"
       animation="250"
-      @change="onChange"
+      @change="(event) => onChange(event, stage.id)"
       :data-stage-id="stage.id"
     >
       <template #item="{ element }">
@@ -81,16 +76,35 @@ export default {
   },
   methods: {
     ...mapActions("contacts", ["setContacts"]),
+    ...mapActions("contacts", ["swapBetweenPhases", "swap"]),
     updateContact() {
       this.contacts = this.getContactsByStage(this.stage.id);
     },
-    onChange(e) {
-      const contact_id = e.added.element.id;
-      const new_position = e.added.newIndex + 1;
-      this.$emit('swapContactInPhases', {
-        contact_id,
-        new_position,
-      })
+    onChange(e, stage) {
+      if (e.added) {
+        const contact_id = e.added.element.id;
+        const new_position = e.added.newIndex + 1;
+        this.swapBetweenPhases({
+          funnel_id: this.funnel.id,
+          contact_id: contact_id,
+          changes: {
+            new_position,
+            new_stage_id: stage,
+          },
+        });
+      }
+      if (e.moved) {
+        const contact_id = e.moved.element.id;
+        const new_position = e.moved.newIndex + 1;
+        this.swap({
+          funnel_id: this.funnel.id,
+          contact_id: contact_id,
+          changes: {
+            new_position: new_position,
+            stage_id: stage,
+          },
+        });
+      }
     },
   },
   async created() {
@@ -102,7 +116,7 @@ export default {
 
 <style scoped lang="scss">
 .bar {
-  height: 6px;
+  height: 1vh;
   background-color: var(--background-color);
 }
 .stage:hover {
