@@ -37,4 +37,9 @@ class Funnel extends Model
     {
         return $this->hasMany(Stage::class, 'funnel_id');
     }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contacts::class);
+    }
 }
