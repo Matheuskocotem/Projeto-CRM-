@@ -18,28 +18,31 @@ class ContactController extends Controller
         return response()->json($contacts);
     }
 
-    public function store(Request $request, $funnel_id, $stage_id)
+    public function store(Request $request)
     {
         $request->validate([
-            'position' => 'required|integer',
             'name' => 'required|string',
+            'funnel_id' => 'required|exists:funnel,id',
+            'stage_id' => 'required|exists:stages,id',
             'email' => 'required|email',
             'phoneNumber' => 'required|string',
-            'dateOfBirth' => 'nullable|string',
+            'dateOfBirth' => 'nullable|date',
             'address' => 'nullable|string',
             'buyValue' => 'nullable|numeric',   
         ]);
 
+        $nextPosition = Contacts::getNextPosition($request->stage_id);
+
         $contact = Contacts::create([
-            'position' => $request->position,
             'name' => $request->name,
-            'funnel_id' => $funnel_id,
-            'stage_id' => $stage_id,
+            'funnel_id' => $request->funnel_id,
+            'stage_id' => $request->stage_id,
             'email' => $request->email,
             'phoneNumber' => $request->phoneNumber,
             'dateOfBirth' => $request->dateOfBirth,
             'address' => $request->address,
             'buyValue' => $request->buyValue,
+            'position' => $nextPosition,
         ]);
 
         return response()->json([
@@ -47,6 +50,8 @@ class ContactController extends Controller
             'data' => $contact
         ], 201);
     }
+
+
 
     public function show(Contacts $contact)
     {
@@ -84,48 +89,35 @@ class ContactController extends Controller
             return response()->json(['error' => 'Contato não encontrado'], 404);
         }
     }
-    
-    
-
-    public function swap(Request $request)
+    public function swap(Request $request, $stage_id)
     {
         $request->validate([
-            'newPosition' => 'required|integer|min:1',
-            'stage_id' => 'required|exists:stages,id',
+            'position' => 'required|integer'
         ]);
-    
-        $newPosition = $request->newPosition;
-        $stage_id = $request->stage_id;
-        $contact_id = $request->contact_id;
-    
 
-    $contactToMove = Contacts::findOrFail($contact_id);
-    $currentPosition = $contactToMove->position;
+        $contato = Contacts::where('stage_id', $stage_id)->first();
+        if (!$contato) {
+            return response()->json(['error' => 'Contato não encontrado.'], 404);
+        }
+        $current_position = $contato->position;
+        $new_postion = $request->position;
 
-    if ($newPosition == $currentPosition) {
-        return response()->json(['message' => 'A nova posição é igual à posição atual.'], 200);
-    }
+        if ($new_postion == $current_position) {
+            return response()->json(['message' => 'A nova posição é igual à posição atual.'], 200);
+        }
 
-    if ($newPosition < $currentPosition) {
-        Contacts::where('stage_id', $stage_id)
-            ->whereBetween('position', [$newPosition, $currentPosition - 1])
-            ->update(['position' => \DB::raw('position + 1')]);
-    } else {
-        Contacts::where('stage_id', $stage_id)
-            ->whereBetween('position', [$currentPosition + 1, $newPosition])
-            ->update(['position' => \DB::raw('position - 1')]);
-    }
-
-    $contactToMove->position = $newPosition;
-    $contactToMove->save();
-
-    return response()->json(['message' => 'Posição alterada com sucesso.'], 200);
+        if ($new_postion > $current_position) {
+            Contacts::whereBetween('position', [$current_position + 1, $new_postion])
+                ->update(['position' => \DB::raw('`position` - 1')]);
+        } elseif ($new_postion < $current_position) {
+            Contacts::whereBetween('position', [$new_postion, $current_position - 1])
+                ->update(['position' => \DB::raw('`position` + 1')]);
+        }
+        $contato->position = $new_postion;
+        $contato->save();
+            return response()->json($contato, 200);
     }
     
-    
-    
-
-
     public function swapPhase(Request $request)
     {
         $request->validate([
