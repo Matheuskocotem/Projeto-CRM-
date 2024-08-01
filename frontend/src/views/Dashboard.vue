@@ -4,7 +4,7 @@
     <navBar ref="NavBar" :expanded="expanded"  @createFunnel="createFunnel"/>
     <div id="main-content" class="p-4 d-flex flex-row" ref="MainContent">
       <CardFunnel
-        v-for="(funnel, id) in getFunnels"
+        v-for="funnel in getFunnels"
         :funnel="funnel"
         :key="funnel.id"
         @deleteFunnel="funnelDelection"

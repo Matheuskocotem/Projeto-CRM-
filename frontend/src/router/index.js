@@ -46,7 +46,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/funnel/:name/:id',
+      path: '/funnel/:name/:id/:color',
       name: 'Funil',
       
       component: () => import('../views/Kanban.vue')

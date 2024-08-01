@@ -9,10 +9,9 @@ Use App\Models\Stage;
 
 class ContactController extends Controller
 {
-    public function index($funnel_id, $stage_id)
+    public function index($funnel_id)
     {
         $contacts = Contacts::where('funnel_id', $funnel_id)
-                            ->where('stage_id', $stage_id)
                             ->orderBy('position')
                             ->get();
         return response()->json($contacts);
@@ -116,11 +115,10 @@ class ContactController extends Controller
         $contato->save();
             return response()->json($contato, 200);
     }
-    
     public function swapPhase(Request $request)
     {
         $request->validate([
-            'newPosition' => 'required|integer',
+            'new_position' => 'required|integer',
             'new_stage_id' => 'required|exists:stages,id',
         ]);
 

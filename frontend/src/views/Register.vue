@@ -16,7 +16,7 @@
                 v-for="(char, index) in titleChars"
                 :key="index"
                 id="animated-word"
-                :style="{ animationDelay: `${index * 0.1}s` }"
+                :style="{ animationDelay: `${index * 0.1}s`}"
                 >{{ char }}</span
               >
             </div>
@@ -308,8 +308,11 @@ export default {
     transform: translateX(0%);
     opacity: 1;
   }
-  50% {
-    opacity: 1;
+  30% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0;
   }
   100% {
     transform: translateX(0%);
@@ -324,6 +327,7 @@ export default {
   display: inline-block;
   animation: slideIn 1s linear;
 }
+
 
 .hidden {
   visibility: hidden;
