@@ -2,9 +2,26 @@
   <div>
     <SideBar @toggleSideBar="toggleSideBar" />
     <NavBarKanban ref="NavBarKanban" :funnel="funnel" />
-    <OffCanvasContact :funnel="funnel" />
-    <div id="main-content" class="p-4 d-flex" ref="MainContent">
-      <StageKanban v-for="stage in stages" :key="stage.id" :stage="stage" />
+    <div id="main-content" class="p-4" ref="MainContent">
+      <draggable
+        v-model="stages"
+        group="stages"
+        ghost-class="ghost"
+        item-key="id"
+        animation="250"
+        class="d-flex flex-row"
+      >
+        <template #item="{ element }">
+          <div :data-id="element.id">
+            <StageKanban
+              :key="element.id"
+              :stage="element"
+              :funnel="funnel"
+              @change="onChange"
+            />
+          </div>
+        </template>
+      </draggable>
     </div>
   </div>
 </template>
@@ -15,6 +32,7 @@ import NavBarKanban from "@/components/NavBarKanban.vue";
 import OffCanvasContact from "@/components/OffCanvasContact.vue";
 import SideBar from "@/components/SideBar.vue";
 import StageKanban from "@/components/StageKanban.vue";
+import draggable from "vuedraggable";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -24,9 +42,11 @@ export default {
     OffCanvasContact,
     CardContact,
     StageKanban,
+    draggable,
   },
   data() {
     return {
+      funnel: null,
       stages: [],
     };
   },
@@ -40,6 +60,13 @@ export default {
   },
   methods: {
     ...mapActions("stages", ["setStages"]),
+    ...mapActions("contacts", ["swapBetweenPhases"]),
+    onChange(e) {
+      //VOU USAR PARA FAZER ORDENAÇÃO DE ETAPAS
+      // console.log(e.moved);
+      // console.log(e.added);
+      // const toStageId = e.to.closest('[data-id]').dataset.id;
+    },
     toggleSideBar(expanded) {
       if (expanded) {
         this.$refs.MainContent.style.marginLeft = "200px";
@@ -57,7 +84,12 @@ export default {
 #main-content {
   margin-left: 70px;
   transition: margin-left 0.5s;
-  overflow: hidden;
-  flex-wrap: wrap;
+  z-index: -1;
+}
+
+.ghost {
+  opacity: 0.4;
+  background-color: #f0f0f0;
+  border: 1px dashed #ccc;
 }
 </style>

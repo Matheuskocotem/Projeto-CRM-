@@ -2,7 +2,7 @@
   <div
     class="offcanvas offcanvas-end"
     tabindex="-1"
-    id="offcanvasRight"
+    :id="'offcanvasRight' + stage_id"
     aria-labelledby="offcanvasRightLabel"
   >
     <div class="offcanvas-header d-flex justify-content-between">
@@ -11,6 +11,7 @@
         class="btn border-0 d-flex mt-2"
         data-bs-dismiss="offcanvas"
         aria-label="Close"
+        ref="btnClose"
       >
         <font-awesome-icon class="mt-2 fs-5" :icon="['fas', 'angle-left']" />
         <p class="mx-3 mt-1 fs-5">Voltar</p>
@@ -33,17 +34,28 @@
         <div class="border-bottom mx-3"></div>
         <div class="d-flex flex-column w-100 justify-content-between mt-3">
           <p class="mx-3 fw-bolder">{{ funnel.name }}</p>
-          <div class="button-stage gap-1 d-flex flex-row">
+          <div class="gap-1 d-flex flex-row">
             <div v-for="stage in getStages" :key="stage.id">
               <input
                 type="radio"
                 class="btn-check"
                 :name="'options'"
-                :id="'option' + stage.id"
-                v-model="stage_id"
+                :id="'option' + stage.id + stage_id"
+                v-model="chosen_stage_id"
                 :value="stage.id"
+                :checked="chosen_stage_id == stage.id"
               />
-              <label class="item btn btn-light" :for="'option' + stage.id">
+              <label
+                :class="[
+                  'stage-button',
+                  'btn-light',
+                  'd-flex',
+                  'align-items-center',
+                  'justify-content-center',
+                  { selected: chosen_stage_id == stage.id },
+                ]"
+                :for="'option' + stage.id + stage_id"
+              >
                 {{ stage.name }}
               </label>
             </div>
@@ -126,6 +138,7 @@
                   class="input mx-4 border-0 mb-1"
                   type="text"
                   v-model="cpf"
+                  v-maska="'###.###.###-##'"
                   placeholder="000.000.000-00"
                 />
               </label>
@@ -135,7 +148,7 @@
                 <span class="text-danger fs-5 fw-bolder">*</span>
                 <input
                   class="input mx-4 border-0"
-                  type="text"
+                  type="date"
                   v-model="dateOfBirth"
                   placeholder="DD/MM/AAAA"
                 />
@@ -169,7 +182,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import Error from "./Error.vue";
 import Success from "./Success.vue";
 import { useToast } from "vue-toastification";
@@ -185,9 +198,14 @@ export default {
       type: Object,
       required: true,
     },
+    stage_id: {
+      type: Number,
+      required: true,
+    },
   },
   data() {
     return {
+      position: 0,
       name: "",
       phoneNumber: "",
       email: "",
@@ -195,40 +213,45 @@ export default {
       dateOfBirth: "",
       address: "",
       buyValue: "",
-      stage_id: null,
+      chosen_stage_id: this.stage_id,
     };
   },
   computed: {
     ...mapGetters("stages", ["getStages"]),
+    ...mapGetters("contacts", ["getContactsByStage"]),
   },
   async created() {
     await this.setStages(this.funnel.id);
   },
-  watch: {
-    stage_id(newValue) {
-      this.stage_id = newValue;
-    },
-  },
   methods: {
-    ...mapActions("contacts", ["createContact"]),
+    ...mapActions("contacts", [
+      "createContact",
+      "setContacts",
+      "refreshContacts",
+    ]),
     ...mapActions("stages", ["setStages"]),
     async createNewContact() {
-      console.log(this.stage_id);
       try {
-        await this.createContact(this.funnel.id, {
-          name: this.name,
+        await this.createContact({
           funnel_id: this.funnel.id,
-          stage_id: this.stage_id,
-          email: this.email,
-          phoneNumber: this.phoneNumber,
-          cpf: this.cpf,
-          dateOfBirth: this.dateOfBirth,
-          address: this.address,
-          buyValue: this.buyValue,
+          contact: {
+            position: this.getContactsByStage(this.stage_id).length + 1,
+            name: this.name,
+            funnel_id: this.funnel.id,
+            stage_id: this.chosen_stage_id,
+            email: this.email,
+            phoneNumber: this.phoneNumber,
+            cpf: this.cpf,
+            dateOfBirth: this.dateOfBirth,
+            address: this.address,
+            buyValue: this.buyValue,
+          },
         });
+        this.$emit("updateContact");
         this.showSuccess("Contato criado com sucesso!");
+        this.$refs.btnClose.click();
       } catch (error) {
-        this.showError(error.message);
+        this.showError("Erro ao criar contato!");
       }
     },
     showError(errorMessage) {
@@ -278,24 +301,25 @@ export default {
   background-color: #787878;
 }
 
-.btn-check:checked + .item {
+.stage-button {
+  border-radius: 20px;
+  width: 120px;
+  height: 27px;
+  background-color: #e1e9f4;
+}
+
+.stage-button.selected {
   background-color: #7036e4;
   color: #fff;
 }
 
-.item {
-  border-radius: 40px;
-  width: 120px;
+.btn-check:checked + .stage-button {
+  background-color: #7036e4;
+  color: #fff;
 }
 
-.item:hover {
+.stage-button:hover {
   background-color: #dfdfdf;
-}
-
-.button-stage {
-  overflow-x: auto;
-  white-space: nowrap;
-  padding: 10px;
 }
 
 .offcanvas {

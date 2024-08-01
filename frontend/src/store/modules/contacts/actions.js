@@ -2,33 +2,50 @@ import {
   createContact,
   destroyContact,
   getContacts,
+  swap,
+  swapBetweenPhases,
   updateContact,
 } from "@/services/HttpService";
 
 export default {
-  async setContacts({ commit, rootState }, params) {
+  async swapBetweenPhases({ rootState }, { funnel_id, contact_id, changes }) {
     try {
       const token = rootState.user.token;
-      const response = await getContacts(
-        params.funnel_id,
-        params.stage_id,
-        token
-      );
-      commit("addContact", response.data);
-    } catch (error) {
-      console.log(error.response.data.message);
+      await swapBetweenPhases(funnel_id, contact_id, changes, token);
+    } catch(error) {
+      console.log(error);
     }
   },
-  async createContact({ commit, rootState }, params) {
+  async swap({ rootState }, { funnel_id, contact_id, changes }){
     try {
       const token = rootState.user.token;
-      const response = await createContact(
-        params.funnel_id,
-        params.stage_id,
-        params.contact,
-        token
-      );
-      commit("addContact", response.data);
+      await swap(funnel_id, contact_id, changes, token);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async refreshContacts({ rootState }, funnel_id) {
+    try {
+      const token = rootState.user.token;
+      await getContacts(funnel_id, token);
+    } catch(error){
+      console.log(error);
+    }
+  },
+  async setContacts({ commit, rootState }, funnel_id) {
+    try {
+      const token = rootState.user.token;
+      const response = await getContacts(funnel_id, token);
+      commit("setContacts", response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async createContact({ commit, rootState }, { funnel_id, contact }) {
+    try {
+      const token = rootState.user.token;
+      await createContact(funnel_id, contact, token);
+      commit("addContact", contact);
     } catch (error) {
       console.log(error.response.data.message);
     }

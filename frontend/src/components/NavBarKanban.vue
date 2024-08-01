@@ -13,13 +13,10 @@
       </div>
       <button
         type="button"
-        class="btn btn-primary h-100 w-25 mx-4 mt-4"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasRight"
-        aria-controls="offcanvasRight"
+        class="btn btn-primary h-100 w-25 mx-4 mt-4"  
       >
-        <font-awesome-icon class="mx-1" :icon="['fas', 'user-plus']" />
-        Criar novo contato
+      <font-awesome-icon class="mx-2" :icon="['fas', 'chart-simple']" />
+        Criar nova Etapa
       </button>
     </form>
   </nav>

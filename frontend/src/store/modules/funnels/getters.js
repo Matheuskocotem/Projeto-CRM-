@@ -4,5 +4,8 @@ export default {
     },
     isLoading(state){
         return state.loading;
+    },
+    getPagination(state){
+        return state.pagination;
     }
 }
