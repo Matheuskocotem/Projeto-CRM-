@@ -49,8 +49,8 @@ export const createFunnel = async (funnel, token) => {
   });
 };
 
-export const getFunnels = async (token) => {
-  return await HttpService.get(`/funnels`, {
+export const getFunnels = async (token, page) => {
+  return await HttpService.get(`/funnels?page=${page}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -137,9 +137,15 @@ export const destroyContact = async (funnel_id, contact_id, token) => {
   });
 };
 
-export const swapBetweenPhases = async (funnel_id, contact_id, changes, token) => {
+export const swapBetweenPhases = async (
+  funnel_id,
+  contact_id,
+  changes,
+  token
+) => {
   return await HttpService.put(
-    `${funnel_id}/contacts/swap-phase/${contact_id}`, changes,
+    `${funnel_id}/contacts/swap-phase/${contact_id}`,
+    changes,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -148,9 +154,9 @@ export const swapBetweenPhases = async (funnel_id, contact_id, changes, token) =
   );
 };
 
-export const swap = async (funnel_id, contact_id, token) => {
+export const swap = async (funnel_id, contact_id, changes, token) => {
   return await HttpService.put(
-    `${funnel_id}/contacts/swap-phase/${contact_id}`,
+    `${funnel_id}/contacts/swap/${contact_id}`, changes,
     {
       headers: {
         Authorization: `Bearer ${token}`,

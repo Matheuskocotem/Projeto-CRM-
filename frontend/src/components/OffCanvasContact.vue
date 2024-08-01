@@ -138,6 +138,7 @@
                   class="input mx-4 border-0 mb-1"
                   type="text"
                   v-model="cpf"
+                  v-maska="'###.###.###-##'"
                   placeholder="000.000.000-00"
                 />
               </label>

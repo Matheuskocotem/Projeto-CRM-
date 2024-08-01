@@ -17,8 +17,7 @@
               :key="element.id"
               :stage="element"
               :funnel="funnel"
-              @change="swapContactInPhases"
-              @swapContactInPhases="swapContactInPhases"
+              @change="onChange"
             />
           </div>
         </template>
@@ -62,17 +61,11 @@ export default {
   methods: {
     ...mapActions("stages", ["setStages"]),
     ...mapActions("contacts", ["swapBetweenPhases"]),
-    swapContactInPhases(e) {
+    onChange(e) {
       //VOU USAR PARA FAZER ORDENAÇÃO DE ETAPAS
       // console.log(e.moved);
       // console.log(e.added);
       // const toStageId = e.to.closest('[data-id]').dataset.id;
-      const new_stage_id = e.from.closest("[data-id]").dataset.id;
-      console.log(new_stage_id);
-      this.swapBetweenPhases(this.funnel.id, contact_id, {
-        new_position,
-        new_stage_id
-      })
     },
     toggleSideBar(expanded) {
       if (expanded) {

@@ -91,7 +91,7 @@ class ContactController extends Controller
     public function swap(Request $request)
     {
         $request->validate([
-            'newPosition' => 'required|integer|min:1',
+            'new_position' => 'required|integer|min:1',
             'stage_id' => 'required|exists:stages,id',
         ]);
     

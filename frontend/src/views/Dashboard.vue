@@ -10,6 +10,7 @@
         @deleteFunnel="funnelDelection"
       />
     </div>
+    <Pagination />
   </div>
 </template>
 
@@ -24,6 +25,7 @@ import CreateFunnelModal from "@/components/CreateFunnelModal.vue";
 import DeleteFunnelModal from "@/components/DeleteFunnelModal.vue";
 import NavBar from "@/components/navBar.vue";
 import CardFunnel from "@/components/CardFunnel.vue";
+import Pagination from "@/components/Pagination.vue";
 
 export default {
   data() {
@@ -50,6 +52,7 @@ export default {
     CardFunnel,
     CreateFunnelModal,
     DeleteFunnelModal,
+    Pagination,
   },
   methods: {
     ...mapActions("user", ["logout"]),

@@ -8,11 +8,19 @@ import {
 } from "@/services/HttpService";
 
 export default {
-  async swapBetweenPhases({ rootState }, funnel_id, contact_id, changes) {
+  async swapBetweenPhases({ rootState }, { funnel_id, contact_id, changes }) {
     try {
       const token = rootState.user.token;
       await swapBetweenPhases(funnel_id, contact_id, changes, token);
     } catch(error) {
+      console.log(error);
+    }
+  },
+  async swap({ rootState }, { funnel_id, contact_id, changes }){
+    try {
+      const token = rootState.user.token;
+      await swap(funnel_id, contact_id, changes, token);
+    } catch (error) {
       console.log(error);
     }
   },
@@ -37,7 +45,6 @@ export default {
     try {
       const token = rootState.user.token;
       await createContact(funnel_id, contact, token);
-      console.log(contact);
       commit("addContact", contact);
     } catch (error) {
       console.log(error.response.data.message);
