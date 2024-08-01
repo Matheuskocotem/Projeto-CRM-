@@ -9,6 +9,9 @@ export default defineConfig({
     vue(),
     vueDevTools(),
   ],
+  // optimizeDeps: {
+  //   include: ['maska']
+  // },
   build: {
     sourcemap: false,  
   },

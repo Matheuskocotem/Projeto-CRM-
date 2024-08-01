@@ -43,6 +43,7 @@ export default {
         params: {
           name: this.funnel.name,
           id: this.funnel.id,
+          color: this.funnel.color
         },
       });
     },

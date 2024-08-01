@@ -10,6 +10,8 @@ import "vue-toastification/dist/index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 
+// import { Maska } from "maska";
+
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faInstagram, faTiktok } from "@fortawesome/free-brands-svg-icons";
 import {
@@ -25,6 +27,7 @@ import {
   faUserPlus,
   faAngleLeft,
 } from "@fortawesome/free-solid-svg-icons";
+
 import { faUser, faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -56,6 +59,7 @@ app.use(Toast, {
   icon: false,
 });
 
+// app.use(Maska);
 app.use(router);
 app.use(store);
 app.component("font-awesome-icon", FontAwesomeIcon);
