@@ -1,10 +1,9 @@
 describe('Main Page', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:8085'); // Visita a página principal
+        cy.visit('http://localhost:8085/dashboard'); 
     });
 
     it('deve exibir todos os componentes corretamente', () => {
-        // Verifica se todos os componentes principais estão visíveis
         cy.get('#app-container').should('be.visible');
         cy.get('SideBar').should('exist');
         cy.get('NavBar').should('exist');
