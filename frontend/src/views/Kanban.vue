@@ -6,8 +6,8 @@
       :funnel="funnel"
       @updateStages="updateStages()"
     />
-    <div id="main-content" class="p-4 w-100" ref="MainContent">
-      <div class="scroll-x-auto">
+    <div id="main-content" class="p-4" ref="MainContent">
+      <div class="overflow-x-auto" style="width: 85vw;">
         <draggable
           v-model="stages"
           group="stages"
@@ -69,7 +69,6 @@ export default {
       //VOU USAR PARA FAZER ORDENAÇÃO DE ETAPAS
       // console.log(e.moved);
       // console.log(e.added);
-      // const toStageId = e.to.closest('[data-id]').dataset.id;
     },
     toggleSideBar(expanded) {
       if (expanded) {
@@ -90,6 +89,20 @@ export default {
 </script>
 
 <style>
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #cccccc;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #d3d3d3;
+}
+
 #main-content {
   margin-left: 70px;
   transition: margin-left 0.5s;

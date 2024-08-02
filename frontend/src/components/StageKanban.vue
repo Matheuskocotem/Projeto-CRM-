@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="stage mx-2" style="height: 100vh; width: 16vw">
+  <div class="overflow-x-auto w-100">
+    <div class="stage mx-2" style="height: 78vh; width: 16vw">
       <DeleteStageModal :stage="stage" />
       <div
         class="bar w-100 rounded-4"
@@ -11,22 +11,18 @@
         :funnel="funnel"
         @updateContact="updateContact"
       />
-      <div>
-        <div class="scroll h-100 overflow-y-auto">
-          <draggable
-            v-model="contacts"
-            group="cards"
-            item-key="id"
-            animation="250"
-            @change="(event) => onChange(event, stage.id)"
-            :data-stage-id="stage.id"
-          >
-            <template #item="{ element }">
-              <CardContact :contact="element" />
-            </template>
-          </draggable>
-        </div>
-      </div>
+      <draggable
+        v-model="contacts"
+        group="cards"
+        item-key="id"
+        animation="250"
+        @change="(event) => onChange(event, stage.id)"
+        :data-stage-id="stage.id"
+      >
+        <template #item="{ element }">
+          <CardContact :contact="element" />
+        </template>
+      </draggable>
     </div>
   </div>
 </template>
