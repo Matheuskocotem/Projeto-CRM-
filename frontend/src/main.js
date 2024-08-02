@@ -9,7 +9,6 @@ import "vue-toastification/dist/index.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
-
 import { vMaska } from "maska/vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
