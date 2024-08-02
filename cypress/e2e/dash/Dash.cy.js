@@ -12,15 +12,12 @@ describe('Main Page', () => {
     });
 
     it('deve permitir alternar o Sidebar', () => {
-        // Testa o comportamento de alternância do Sidebar
-        cy.get('button#toggle-sidebar').click(); // Supondo que haja um botão para alternar o sidebar
+        cy.get('button#toggle-sidebar').click(); 
 
-        // Verifica se o estilo foi aplicado corretamente para o sidebar expandido
         cy.get('#main-content').should('have.css', 'margin-left', '200px');
 
-        cy.get('button#toggle-sidebar').click(); // Alterna o sidebar de volta
+        cy.get('button#toggle-sidebar').click(); 
 
-        // Verifica se o estilo foi aplicado corretamente para o sidebar recolhido
         cy.get('#main-content').should('have.css', 'margin-left', '75px');
     });
 
@@ -32,7 +29,6 @@ describe('Main Page', () => {
 
         cy.intercept('POST', '/api/funnels').as('createFunnelRequest');
 
-        // Interage com o modal de criação de funil
         cy.get('button#open-create-funnel-modal').click();
         cy.get('input#funnel-name').type(funnel.name);
         cy.get('input#funnel-color').type(funnel.color);
@@ -45,26 +41,22 @@ describe('Main Page', () => {
     });
 
     it('deve deletar um funil com sucesso', () => {
-        const funnelId = 1; // ID do funil para deletar
 
         cy.intercept('DELETE', `/api/funnels/${funnelId}`).as('deleteFunnelRequest');
 
-        // Interage com o botão de deleção de funil
         cy.get(`button#delete-funnel-${funnelId}`).click();
-        cy.get('button#confirm-delete').click(); // Confirma a deleção
+        cy.get('button#confirm-delete').click();
 
         cy.wait('@deleteFunnelRequest').then((interception) => {
-            expect(interception.response.statusCode).to.eq(200); // Verifica se a resposta tem status 200
+            expect(interception.response.statusCode).to.eq(200); 
             cy.contains('Funil deletado com sucesso.').should('be.visible');
         });
     });
 
     it('deve exibir a paginação corretamente', () => {
-        // Verifica se a paginação está visível e funciona
         cy.get('Pagination').should('be.visible');
-        cy.get('button#next-page').click(); // Supondo que haja um botão para avançar para a próxima página
+        cy.get('button#next-page').click(); 
 
-        // Verifica se a página foi avançada
-        cy.url().should('include', 'page=2'); // Ajuste conforme sua lógica de paginação
+        cy.url().should('include', 'page=2');
     });
 });
