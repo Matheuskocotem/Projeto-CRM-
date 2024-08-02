@@ -7,7 +7,7 @@
       @updateStages="updateStages()"
     />
     <div id="main-content" class="p-4" ref="MainContent">
-      <div class="overflow-x-auto" style="width: 85vw;">
+      <div class="overflow-x-auto" style="width: 86vw;">
         <draggable
           v-model="stages"
           group="stages"
