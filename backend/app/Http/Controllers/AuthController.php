@@ -19,7 +19,7 @@ class AuthController extends Controller
             'documentType' => 'required|in:CPF,CNPJ',
             'documentNumber' => 'required|string|unique:User',
         ]);
-        
+
         if ($validator->fails()) {
             return response()->json(
                 $validator->errors()

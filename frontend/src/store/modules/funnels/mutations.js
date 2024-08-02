@@ -5,9 +5,6 @@ export default {
     setFunnels(state, funnels){
         state.funnels = funnels;
     },
-    setPagination(state, pagination){
-        state.pagination = pagination;
-    },
     setLoading(state, isLoading){
         state.loading = isLoading;
     },

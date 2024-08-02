@@ -49,8 +49,6 @@ class ContactController extends Controller
         ], 201);
     }
 
-
-
     public function show(Contacts $contact)
     {
         return response()->json($contact);
@@ -87,7 +85,10 @@ class ContactController extends Controller
             return response()->json(['error' => 'Contato não encontrado'], 404);
         }
     }
-    public function swap(Request $request, $stage_id)
+    
+    
+
+    public function swap(Request $request)
     {
         $request->validate([
             'new_position' => 'required|integer|min:1',
@@ -116,6 +117,7 @@ class ContactController extends Controller
         $contato->save();
             return response()->json($contato, 200);
     }
+
     public function swapPhase(Request $request)
     {
         $request->validate([
@@ -160,6 +162,9 @@ class ContactController extends Controller
         
         return response()->json(['message' => 'Fase alterada com sucesso.'], 200);
     }
+
+
+
 
     public function averageValueInStage($funnelId, $stageId)
     {
