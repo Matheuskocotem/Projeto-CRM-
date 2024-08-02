@@ -91,8 +91,8 @@ class ContactController extends Controller
     public function swap(Request $request)
     {
         $request->validate([
-            'new_position' => 'required|integer|min:1',
-            'stage_id' => 'required|exists:stages,id',
+
+            'position' => 'required|integer'
         ]);
     
         $newPosition = $request->newPosition;
@@ -122,6 +122,7 @@ class ContactController extends Controller
 
     return response()->json(['message' => 'Posição alterada com sucesso.'], 200);
     }
+
 
     public function swapPhase(Request $request)
     {
