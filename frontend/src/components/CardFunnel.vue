@@ -66,6 +66,7 @@ export default {
   border-top: solid 1px var(--border-color);
   border-right: solid 1px var(--border-color);
   border-radius: 12px;
+  cursor: pointer;
 }
 
 .trash {
