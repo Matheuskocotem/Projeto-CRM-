@@ -10,11 +10,7 @@
         @deleteFunnel="funnelDelection"
       />
     </div>
-<<<<<<< HEAD
-    <Pagination @pageChange="fetchFunnels" />
-=======
     <Pagination />
->>>>>>> origin/main
   </div>
 </template>
 
@@ -39,10 +35,6 @@ export default {
       funnelColor: "#212529",
       SearchRequest: "",
       expanded: false,
-<<<<<<< HEAD
-      page: 2,
-=======
->>>>>>> origin/main
     };
   },
   computed: {
@@ -50,12 +42,7 @@ export default {
     ...mapGetters("funnels", ["getFunnels"]),
   },
   async created() {
-<<<<<<< HEAD
-    await this.setFunnels(this.page);
-    console.log(this.page);
-=======
     await this.setFunnels();
->>>>>>> origin/main
   },
   components: {
     Error,

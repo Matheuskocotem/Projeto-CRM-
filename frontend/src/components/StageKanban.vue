@@ -1,13 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <div class="stage">
-    <h3>{{ stage.name }}</h3>
-    <Draggable v-model="contacts" group="cards" item-key="id">
-      <template #item="{ element }">
-        <CardContact :contact="element" />
-      </template>
-    </Draggable>
-=======
   <div class="stage mx-2" style="height: 100vh; width: 16vw; overflow-y: auto">
     <OffCanvasContact
       :funnel="funnel"
@@ -49,30 +40,21 @@
         <CardContact :contact="element" />
       </template>
     </draggable>
->>>>>>> origin/main
   </div>
 </template>
 
 <script>
 import CardContact from "./CardContact.vue";
 import { mapGetters, mapActions } from "vuex";
-<<<<<<< HEAD
-import Draggable from "vuedraggable";
-=======
 import draggable from "vuedraggable";
 import OffCanvasContact from "./OffCanvasContact.vue";
->>>>>>> origin/main
 
 export default {
   name: "StageKanban",
   components: {
     CardContact,
-<<<<<<< HEAD
-    Draggable,
-=======
     draggable,
     OffCanvasContact,
->>>>>>> origin/main
   },
   data() {
     return {
@@ -80,40 +62,15 @@ export default {
     };
   },
   props: {
-<<<<<<< HEAD
-=======
     funnel: {
       type: Object,
       required: true,
     },
->>>>>>> origin/main
     stage: {
       type: Object,
       required: true,
     },
   },
-<<<<<<< HEAD
-  methods: {
-    ...mapActions("contacts", ["setContacts"]),
-  },
-  async created() {
-    await this.setContacts({
-      funnel_id: this.stage.funnel_id,
-      stage_id: this.stage.id,
-    });
-    
-    console.log(this.getContacts);
-    
-    this.contacts = this.getContacts.filter(
-      (contact) => contact.stage_id === this.stage.id
-    );
-  },
-  computed: {
-    ...mapGetters("contacts", ["getContacts"]),
-  },
-};
-</script>
-=======
   computed: {
     ...mapGetters("contacts", ["getContactsByStage"]),
   },
@@ -179,4 +136,3 @@ export default {
   background-color: #d3d3d3;
 }
 </style>
->>>>>>> origin/main

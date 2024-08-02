@@ -2,11 +2,6 @@
   <div>
     <SideBar @toggleSideBar="toggleSideBar" />
     <NavBarKanban ref="NavBarKanban" :funnel="funnel" />
-<<<<<<< HEAD
-    <OffCanvasContact :funnel="funnel" />
-    <div id="main-content" class="p-4 d-flex" ref="MainContent">
-      <StageKanban v-for="stage in stages" :key="stage.id" :stage="stage" />
-=======
     <div id="main-content" class="p-4" ref="MainContent">
       <draggable
         v-model="stages"
@@ -27,7 +22,6 @@
           </div>
         </template>
       </draggable>
->>>>>>> origin/main
     </div>
   </div>
 </template>
@@ -38,10 +32,7 @@ import NavBarKanban from "@/components/NavBarKanban.vue";
 import OffCanvasContact from "@/components/OffCanvasContact.vue";
 import SideBar from "@/components/SideBar.vue";
 import StageKanban from "@/components/StageKanban.vue";
-<<<<<<< HEAD
-=======
 import draggable from "vuedraggable";
->>>>>>> origin/main
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -51,17 +42,11 @@ export default {
     OffCanvasContact,
     CardContact,
     StageKanban,
-<<<<<<< HEAD
-  },
-  data() {
-    return {
-=======
     draggable,
   },
   data() {
     return {
       funnel: null,
->>>>>>> origin/main
       stages: [],
     };
   },
@@ -75,8 +60,6 @@ export default {
   },
   methods: {
     ...mapActions("stages", ["setStages"]),
-<<<<<<< HEAD
-=======
     ...mapActions("contacts", ["swapBetweenPhases"]),
     onChange(e) {
       //VOU USAR PARA FAZER ORDENAÇÃO DE ETAPAS
@@ -84,7 +67,6 @@ export default {
       // console.log(e.added);
       // const toStageId = e.to.closest('[data-id]').dataset.id;
     },
->>>>>>> origin/main
     toggleSideBar(expanded) {
       if (expanded) {
         this.$refs.MainContent.style.marginLeft = "200px";
@@ -102,13 +84,6 @@ export default {
 #main-content {
   margin-left: 70px;
   transition: margin-left 0.5s;
-<<<<<<< HEAD
-  overflow: hidden;
-  flex-wrap: wrap;
-}
-</style>
-
-=======
   z-index: -1;
 }
 
@@ -118,4 +93,3 @@ export default {
   border: 1px dashed #ccc;
 }
 </style>
->>>>>>> origin/main

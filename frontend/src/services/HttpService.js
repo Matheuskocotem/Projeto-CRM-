@@ -105,13 +105,8 @@ export const destroyStage = async (funnel_id, stage_id, token) => {
 
 // parte de criação de contato
 
-<<<<<<< HEAD
-export const getContacts = async (funnel_id, stage_id, token) => {
-  return await HttpService.get(`${funnel_id}/contacts/${stage_id}`, {
-=======
 export const getContacts = async (funnel_id, token) => {
   return await HttpService.get(`${funnel_id}/contacts/`, {
->>>>>>> origin/main
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -142,10 +137,6 @@ export const destroyContact = async (funnel_id, contact_id, token) => {
   });
 };
 
-<<<<<<< HEAD
-export default HttpService;
-
-=======
 export const swapBetweenPhases = async (
   funnel_id,
   contact_id,
@@ -175,4 +166,3 @@ export const swap = async (funnel_id, contact_id, changes, token) => {
 };
 
 export default HttpService;
->>>>>>> origin/main
