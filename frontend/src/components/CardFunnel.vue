@@ -8,7 +8,10 @@
       class="d-flex flex-row align-items-center justify-content-between w-100"
     >
       <h4 class="w-50" style="font-family: grotesque">
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
         {{ funnel?.name }}
       </h4>
       <font-awesome-icon
@@ -44,6 +47,10 @@ export default {
         params: {
           name: this.funnel.name,
           id: this.funnel.id,
+<<<<<<< HEAD
+=======
+          color: this.funnel.color
+>>>>>>> origin/main
         },
       });
     },

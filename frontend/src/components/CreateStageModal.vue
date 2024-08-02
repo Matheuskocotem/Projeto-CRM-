@@ -2,7 +2,7 @@
   <div>
     <div
       class="modal fade"
-      :id="'modalDelete' + funnel?.id"
+      :id="'modalCreate' + stage?.id"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -10,29 +10,33 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5 fw-bolder">Excluir Funil</h1>
+            <h1 class="modal-title fs-5 fw-bolder">Criar Etapa</h1>
             <button
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-              ref="CloseDeleteModal"
+              ref="CloseStageModal"
               @click.stop
             ></button>
           </div>
           <div
             class="modal-body d-flex flex-column align-items-center justify-content-center"
           >
-            <h1 class="fs-4 fw-bolder mt-5 mb-4">
-              Tem certeza que deseja excluir este funil?
-            </h1>
-            <p class="fs-6">A ação não poderá ser desfeita.</p>
-            
+            <h1 class="fs-4 fw-bolder mt-5 mb-4">Qual o nome da sua etapa?</h1>
+            <InputForm
+              class="my-2"
+              type="text"
+              v-model="StageName"
+              placeholder="Nome da Etapa"
+              id="name"
+              label="Nome da Etapa"
+            />
+
             <button
               type="button"
-              class="btn btn-danger w-50 mt-4"
-              @click="deleteFunnel(funnel)"
-              @click.stop
+              class="btn btn-primary w-50 mt-4"
+              @click="CreateStage"
             >
               Sim
             </button>
@@ -40,7 +44,6 @@
               type="button"
               class="btn btn-light w-50 mt-2 mb-4"
               data-bs-dismiss="modal"
-              @click.stop 
             >
               Não
             </button>
@@ -52,6 +55,8 @@
 </template>
 
 <script>
+import InputForm from "./InputForm.vue";
+
 export default {
   name: "DeleteFunnelModal",
   props: {
@@ -72,10 +77,6 @@ export default {
   },
 };
 </script>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
 
 <style scoped>
 .btn-close {
@@ -87,9 +88,3 @@ export default {
   --bs-modal-padding: 0 !important;
 }
 </style>
-<<<<<<< HEAD
-
-=======
->>>>>>> 406972a (terminando de componentizar as fita loka)
-=======
->>>>>>> origin/main

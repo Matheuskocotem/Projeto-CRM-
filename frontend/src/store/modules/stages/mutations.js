@@ -8,6 +8,12 @@ export default {
     deleteStage(state, stage) {
         state.stages = state.stages.filter(s => s.id !== stage.id);
     },
+<<<<<<< HEAD
+=======
+    changeStage(state, stage_id) {
+        state.stage_id = stage_id;
+    },
+>>>>>>> origin/main
     clearStages(state) {
         state.stages = [];
     },

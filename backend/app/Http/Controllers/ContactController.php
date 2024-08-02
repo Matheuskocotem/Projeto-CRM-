@@ -9,10 +9,16 @@ Use App\Models\Stage;
 
 class ContactController extends Controller
 {
+<<<<<<< HEAD
     public function index($funnel_id, $stage_id)
     {
         $contacts = Contacts::where('funnel_id', $funnel_id)
                             ->where('stage_id', $stage_id)
+=======
+    public function index($funnel_id)
+    {
+        $contacts = Contacts::where('funnel_id', $funnel_id)
+>>>>>>> origin/main
                             ->orderBy('position')
                             ->get();
         return response()->json($contacts);
@@ -21,6 +27,7 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'position' => 'required|integer',
             'name' => 'required|string',
             'funnel_id' => 'required|exists:funnel,id',
             'stage_id' => 'required|exists:stages,id',
@@ -31,9 +38,8 @@ class ContactController extends Controller
             'buyValue' => 'nullable|numeric',   
         ]);
 
-        $nextPosition = Contacts::getNextPosition($request->stage_id);
-
         $contact = Contacts::create([
+            'position' => $request->position,
             'name' => $request->name,
             'funnel_id' => $request->funnel_id,
             'stage_id' => $request->stage_id,
@@ -42,7 +48,6 @@ class ContactController extends Controller
             'dateOfBirth' => $request->dateOfBirth,
             'address' => $request->address,
             'buyValue' => $request->buyValue,
-            'position' => $nextPosition,
         ]);
 
         return response()->json([
@@ -92,7 +97,12 @@ class ContactController extends Controller
     public function swap(Request $request, $stage_id)
     {
         $request->validate([
+<<<<<<< HEAD
             'position' => 'required|integer'
+=======
+            'new_position' => 'required|integer|min:1',
+            'stage_id' => 'required|exists:stages,id',
+>>>>>>> origin/main
         ]);
 
         $contato = Contacts::where('stage_id', $stage_id)->first();
@@ -117,11 +127,15 @@ class ContactController extends Controller
         $contato->save();
             return response()->json($contato, 200);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> origin/main
     public function swapPhase(Request $request)
     {
         $request->validate([
-            'newPosition' => 'required|integer',
+            'new_position' => 'required|integer',
             'new_stage_id' => 'required|exists:stages,id',
         ]);
 

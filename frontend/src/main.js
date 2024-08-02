@@ -10,6 +10,7 @@ import "vue-toastification/dist/index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 
+<<<<<<< HEAD
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faInstagram, faTiktok } from "@fortawesome/free-brands-svg-icons";
 import {
@@ -46,8 +47,50 @@ library.add(
   faAngleLeft
 );
 
+=======
+import { vMaska } from "maska/vue";
 
-const app = createApp(App);
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faInstagram, faTiktok } from "@fortawesome/free-brands-svg-icons";
+import {
+  faFileAlt,
+  faCircleCheck,
+  faSearch,
+  faFilterCircleDollar,
+  faChartBar,
+  faPhone,
+  faPalette,
+  faEllipsisVertical,
+  faFillDrip,
+  faUserPlus,
+  faAngleLeft,
+  faChartSimple,
+} from "@fortawesome/free-solid-svg-icons";
+>>>>>>> origin/main
+
+import { faUser, faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+library.add(
+  faInstagram,
+  faTiktok,
+  faFileAlt,
+  faCircleCheck,
+  faSearch,
+  faFilterCircleDollar,
+  faUser,
+  faPhone,
+  faChartBar,
+  faPalette,
+  faEllipsisVertical,
+  faTrashCan,
+  faFillDrip,
+  faUserPlus,
+  faAngleLeft,
+  faChartSimple
+);
+
+const app = createApp(App).directive("maska", vMaska);
 
 app.use(Toast, {
   transition: "Vue-Toastification__bounce",

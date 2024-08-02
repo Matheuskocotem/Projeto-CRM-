@@ -28,10 +28,17 @@ export default {
             error.response.data.message;
         }
     },
+<<<<<<< HEAD
     async setFunnels({ commit, rootState }, page) {
         try {
             const token = rootState.user.token;
             const funnels = await getFunnels(token, page);
+=======
+    async setFunnels({ commit, rootState }) {
+        try {
+            const token = rootState.user.token;
+            const funnels = await getFunnels(token);
+>>>>>>> origin/main
             // const relatories = await getRelatories(token, funnels);
             commit('setFunnels', funnels.data.data);
             commit('setPagination', funnels.data.meta);
