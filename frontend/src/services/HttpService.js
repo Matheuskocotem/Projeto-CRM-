@@ -120,7 +120,6 @@ export const destroyStage = async (funnel_id, stage_id, token) => {
 };
 
 // parte de criação de contato
-
 export const getContacts = async (funnel_id, token) => {
   return await HttpService.get(`${funnel_id}/contacts/`, {
     headers: {

@@ -72,7 +72,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .btn-close {
   font-size: 12px;
