@@ -10,17 +10,44 @@ class FunnelController extends Controller
 {
     public function index()
     {
-        $funnel = Funnel::where('user_id', Auth::id())->paginate(10);
+        $funnels = Funnel::where('user_id', Auth::id())->with('stages.contacts')->paginate(10);
+
+        $funnelsData = $funnels->map(function($funnel) {
+            $totalValue = 0;
+            $totalContacts = 0;
+            $lastStageContacts = 0;
+
+            foreach ($funnel->stages as $stage) {
+                foreach ($stage->contacts as $contact) {
+                    $totalValue += $contact->buyValue;
+                    $totalContacts++;
+                }
+            }
+
+            // Obtendo a quantidade de contatos no último estágio
+            if ($funnel->stages->isNotEmpty()) {
+                $lastStage = $funnel->stages->last();
+                $lastStageContacts = $lastStage->contacts->count();
+            }
+
+            return [
+                'id' => $funnel->id,
+                'name' => $funnel->name,
+                'total_value' => $totalValue,
+                'total_contacts' => $totalContacts,
+                'last_stage_contacts' => $lastStageContacts
+            ];
+        });
 
         return response()->json([
-            'data' => $funnel->items(),
+            'data' => $funnelsData,
             'meta' => [
-                'total' => $funnel->total(),
-                'per_page' => $funnel->perPage(),
-                'current_page' => $funnel->currentPage(),
-                'last_page' => $funnel->lastPage(),
-                'next_page_url' => $funnel->nextPageUrl(),
-                'prev_page_url' => $funnel->previousPageUrl()
+                'total' => $funnels->total(),
+                'per_page' => $funnels->perPage(),
+                'current_page' => $funnels->currentPage(),
+                'last_page' => $funnels->lastPage(),
+                'next_page_url' => $funnels->nextPageUrl(),
+                'prev_page_url' => $funnels->previousPageUrl()
             ]
         ]);
     }
