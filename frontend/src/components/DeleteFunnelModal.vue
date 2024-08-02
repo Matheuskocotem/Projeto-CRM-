@@ -72,10 +72,6 @@ export default {
   },
 };
 </script>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
 
 <style scoped>
 .btn-close {
@@ -87,9 +83,3 @@ export default {
   --bs-modal-padding: 0 !important;
 }
 </style>
-<<<<<<< HEAD
-
-=======
->>>>>>> 406972a (terminando de componentizar as fita loka)
-=======
->>>>>>> origin/main

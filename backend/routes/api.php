@@ -9,8 +9,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\StageController;
 
 // login e forgot
-
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register',     [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 // reset password
@@ -25,22 +24,21 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/search', [FunnelController::class, 'search']);
         Route::post('/', [FunnelController::class, 'store']);
         Route::delete('/{id}', [FunnelController::class, 'destroy']);
-
         //relatorios
-        Route::get('/{funnelId}/Relatories', [StageController::class, 'totalContactsValue']);
+        Route::get('/{funnelId}/total-value', [StageController::class, 'totalContactsValue']);
 
         // Stages
         Route::prefix('{funnel_id}/stages')->group(function () {
             Route::get('/', [StageController::class, 'index']);
             Route::post('/', [StageController::class, 'store']);
-            Route::put('/{stage_id}', [StageController::class, 'swapOrder']);
-            Route::delete('/{stage_id}', [StageController::class, 'destroy']);
+            Route::put('/{stage}', [StageController::class, 'update']);
+            Route::delete('/{stage}', [StageController::class, 'destroy']);
         });
     });
 
     // Contacts
     Route::prefix('{funnel_id}/contacts')->group(function () {
-        Route::get('/{stage_id}', [ContactController::class, 'index']);
+        Route::get('/', [ContactController::class, 'index']);
         Route::post('/', [ContactController::class, 'store']);  
         Route::get('/{contact_id}', [ContactController::class, 'show']);
         Route::put('/{contact_id}', [ContactController::class, 'update']);
