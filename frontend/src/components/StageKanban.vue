@@ -1,45 +1,33 @@
 <template>
-  <div class="stage mx-2" style="height: 100vh; width: 16vw; overflow-y: auto">
-    <OffCanvasContact
-      :funnel="funnel"
-      :stage_id="stage.id"
-      @updateContact="updateContact"
-    />
-    <div
-      class="bar w-100 rounded-4"
-      :style="{ '--background-color': funnel.color }"
-    ></div>
-    <div
-      class="stage-header d-flex justify-content-between w-100 mt-2"
-    >
-      <h1
-        class="w-75 mt-1"
-        style="font-size: 1vw; font-weight: 600; margin-left: 6px"
-      >
-        {{ stage.name }}
-      </h1>
-      <button
-        class="mx-1 border-0 rounded-2 justify-content-center d-flex"
-        data-bs-toggle="offcanvas"
-        :data-bs-target="'#offcanvasRight' + stage.id"
-        aria-controls="offcanvasRight"
-        style="width: 1.6vw; height: 2.5vh; font-size: 1.2rem; color:#6e8398; "
-      >
-        +
-      </button>
+  <div>
+    <div class="stage mx-2" style="height: 100vh; width: 16vw">
+      <DeleteStageModal :stage="stage" />
+      <div
+        class="bar w-100 rounded-4"
+        :style="{ '--background-color': funnel.color }"
+      ></div>
+      <StageHeader
+        :stage="stage"
+        :funnel="funnel"
+        @updateContact="updateContact"
+      />
+      <div>
+        <div class="scroll h-100 overflow-y-auto">
+          <draggable
+            v-model="contacts"
+            group="cards"
+            item-key="id"
+            animation="250"
+            @change="(event) => onChange(event, stage.id)"
+            :data-stage-id="stage.id"
+          >
+            <template #item="{ element }">
+              <CardContact :contact="element" />
+            </template>
+          </draggable>
+        </div>
+      </div>
     </div>
-    <draggable
-      v-model="contacts"
-      group="cards"
-      item-key="id"
-      animation="250"
-      @change="(event) => onChange(event, stage.id)"
-      :data-stage-id="stage.id"
-    >
-      <template #item="{ element }">
-        <CardContact :contact="element" />
-      </template>
-    </draggable>
   </div>
 </template>
 
@@ -48,6 +36,8 @@ import CardContact from "./CardContact.vue";
 import { mapGetters, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import OffCanvasContact from "./OffCanvasContact.vue";
+import DeleteStageModal from "./DeleteStageModal.vue";
+import StageHeader from "./StageHeader.vue";
 
 export default {
   name: "StageKanban",
@@ -55,6 +45,8 @@ export default {
     CardContact,
     draggable,
     OffCanvasContact,
+    DeleteStageModal,
+    StageHeader,
   },
   data() {
     return {
@@ -78,6 +70,7 @@ export default {
     ...mapActions("contacts", ["setContacts"]),
     ...mapActions("contacts", ["swapBetweenPhases", "swap"]),
     updateContact() {
+      console.log("a");
       this.contacts = this.getContactsByStage(this.stage.id);
     },
     onChange(e, stage) {
@@ -115,10 +108,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.scroll {
+  height: 100%;
+}
+
 .bar {
   height: 1vh;
   background-color: var(--background-color);
 }
+
+.dropItem:hover {
+  background-color: #f3f3f3;
+}
+
 .stage:hover {
   background-color: #f0f4fa;
 }

@@ -13,24 +13,37 @@
       </div>
       <button
         type="button"
-        class="btn btn-primary h-100 w-25 mx-4 mt-4"  
+        class="btn btn-primary h-100 w-25 mx-4 mt-4"
+        data-bs-toggle="modal"
+        data-bs-target="#CreateStageModal"
       >
-      <font-awesome-icon class="mx-2" :icon="['fas', 'chart-simple']" />
+        <font-awesome-icon class="mx-2" :icon="['fas', 'chart-simple']" />
         Criar nova Etapa
       </button>
     </form>
+    <CreateStageModal :funnel="funnel" @updateStages="updateStages"/>
   </nav>
 </template>
 
 <script>
+import CreateStageModal from "./CreateStageModal.vue";
+
 export default {
   name: "NavBarKanban",
+  components: {
+    CreateStageModal,
+  },
   props: {
     funnel: {
       type: Object,
       required: true,
     },
   },
+  methods: {
+    updateStages() {
+      this.$emit("updateStages");
+    }
+  }
 };
 </script>
 

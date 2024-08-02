@@ -10,13 +10,15 @@
         </div>
         <div id="title">
           <div id="title-line">
-            <p id="mais" style="font-family: grotesque" class="carac mr-1">Mais</p>
+            <p id="mais" style="font-family: grotesque" class="carac mr-1">
+              Mais
+            </p>
             <div v-if="showWord">
               <span
                 v-for="(char, index) in titleChars"
                 :key="index"
                 id="animated-word"
-                :style="{ animationDelay: `${index * 0.1}s`}"
+                :style="{ animationDelay: `${index * 0.1}s` }"
                 >{{ char }}</span
               >
             </div>
@@ -29,7 +31,7 @@
         </div>
       </div>
       <form>
-        <h1 style="font-family: grotesque">Comece por aqui!</h1> 
+        <h1 style="font-family: grotesque">Comece por aqui!</h1>
         <InputForm
           type="text"
           v-model="name"
@@ -77,9 +79,7 @@
             v-model="documentType"
             checked
           />
-          <label class="btn btn-outline-primary" for="btnradio1"
-            >CPF</label
-          >
+          <label class="btn btn-outline-primary" for="btnradio1">CPF</label>
           <input
             type="radio"
             class="btn-check"
@@ -89,20 +89,19 @@
             value="CNPJ"
             v-model="documentType"
           />
-          <label class="btn btn-outline-primary" for="btnradio2"
-            >CNPJ</label
-          >
+          <label class="btn btn-outline-primary" for="btnradio2">CNPJ</label>
         </div>
         <InputForm
           type="text"
-          v-model="formattedDocumentNumber"
+          v-model="documentNumber"
+          v-maska="Mask"
           :placeholder="`Número do ${documentType}`"
           id="docNum"
           :maxlength="documentMaxLength"
           :label="`Número do ${documentType}`"
           class="input my-2"
         />
-        <button type="button" class="btn btn-primary" @click="Register">
+        <button type="button" class="btn btn-primary w-75" @click="Register">
           Registrar-se
         </button>
       </form>
@@ -147,19 +146,12 @@ export default {
     titleChars() {
       return this.currentWord.split("");
     },
-    formattedDocumentNumber: {
-      get() {
-        return this.formatDocumentNumber(
-          this.documentNumber,
-          this.documentType
-        );
-      },
-      set(value) {
-        this.documentNumber = this.unformatDocumentNumber(value);
-      },
-    },
-    documentMaxLength() {
-      return this.documentType === "CPF" ? 14 : 18;
+    Mask() {
+      if (this.documentType == "CPF") {
+        return "###.###.###-##";
+      } else {
+        return "##.###.###/####-##";
+      }
     },
   },
   mounted() {
@@ -223,7 +215,7 @@ export default {
         password: this.password,
         password_confirmation: this.password_confirmation,
         documentType: this.documentType,
-        documentNumber: this.unformatDocumentNumber(this.documentNumber)
+        documentNumber: this.documentNumber,
       });
       if (response == 201) {
         this.showSuccess("Faça o seu login a seguir!");
@@ -233,26 +225,6 @@ export default {
       }
     },
     ...mapActions("user", ["register"]),
-    formatDocumentNumber(number, type) {
-      if (type === "CPF") {
-        return number
-          .replace(/\D/g, "")
-          .replace(/(\d{3})(\d)/, "$1.$2")
-          .replace(/(\d{3})(\d)/, "$1.$2")
-          .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-      } else if (type === "CNPJ") {
-        return number
-          .replace(/\D/g, "")
-          .replace(/(\d{2})(\d)/, "$1.$2")
-          .replace(/(\d{3})(\d)/, "$1.$2")
-          .replace(/(\d{3})(\d)/, "$1/$2")
-          .replace(/(\d{4})(\d{1,2})$/, "$1-$2");
-      }
-      return number;
-    },
-    unformatDocumentNumber(number) {
-      return number.replace(/\D/g, "");
-    },
   },
 };
 </script>
@@ -327,7 +299,6 @@ export default {
   display: inline-block;
   animation: slideIn 1s linear;
 }
-
 
 .hidden {
   visibility: hidden;

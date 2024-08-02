@@ -1,27 +1,33 @@
 <template>
   <div>
     <SideBar @toggleSideBar="toggleSideBar" />
-    <NavBarKanban ref="NavBarKanban" :funnel="funnel" />
-    <div id="main-content" class="p-4" ref="MainContent">
-      <draggable
-        v-model="stages"
-        group="stages"
-        ghost-class="ghost"
-        item-key="id"
-        animation="250"
-        class="d-flex flex-row"
-      >
-        <template #item="{ element }">
-          <div :data-id="element.id">
-            <StageKanban
-              :key="element.id"
-              :stage="element"
-              :funnel="funnel"
-              @change="onChange"
-            />
-          </div>
-        </template>
-      </draggable>
+    <NavBarKanban
+      ref="NavBarKanban"
+      :funnel="funnel"
+      @updateStages="updateStages()"
+    />
+    <div id="main-content" class="p-4 w-100" ref="MainContent">
+      <div class="scroll-x-auto">
+        <draggable
+          v-model="stages"
+          group="stages"
+          ghost-class="ghost"
+          item-key="id"
+          animation="250"
+          class="d-flex flex-row"
+        >
+          <template #item="{ element }">
+            <div :data-id="element.id">
+              <StageKanban
+                :key="element.id"
+                :stage="element"
+                :funnel="funnel"
+                @change="onChange"
+              />
+            </div>
+          </template>
+        </draggable>
+      </div>
     </div>
   </div>
 </template>
@@ -53,14 +59,12 @@ export default {
   computed: {
     ...mapGetters("stages", ["getStages"]),
   },
-  async created() {
-    this.funnel = this.$route.params;
-    await this.setStages(this.funnel.id);
-    this.stages = this.getStages;
-  },
   methods: {
     ...mapActions("stages", ["setStages"]),
     ...mapActions("contacts", ["swapBetweenPhases"]),
+    updateStages() {
+      this.stages = this.getStages;
+    },
     onChange(e) {
       //VOU USAR PARA FAZER ORDENAÇÃO DE ETAPAS
       // console.log(e.moved);
@@ -76,6 +80,11 @@ export default {
         this.$refs.NavBarKanban.$el.style.marginLeft = "75px";
       }
     },
+  },
+  async created() {
+    this.funnel = this.$route.params;
+    await this.setStages(this.funnel.id);
+    this.stages = this.getStages;
   },
 };
 </script>
