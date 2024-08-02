@@ -2,7 +2,11 @@
   <div
     class="offcanvas offcanvas-end"
     tabindex="-1"
+<<<<<<< HEAD
+    id="offcanvasRight"
+=======
     :id="'offcanvasRight' + stage_id"
+>>>>>>> origin/main
     aria-labelledby="offcanvasRightLabel"
   >
     <div class="offcanvas-header d-flex justify-content-between">
@@ -11,7 +15,10 @@
         class="btn border-0 d-flex mt-2"
         data-bs-dismiss="offcanvas"
         aria-label="Close"
+<<<<<<< HEAD
+=======
         ref="btnClose"
+>>>>>>> origin/main
       >
         <font-awesome-icon class="mt-2 fs-5" :icon="['fas', 'angle-left']" />
         <p class="mx-3 mt-1 fs-5">Voltar</p>
@@ -34,12 +41,24 @@
         <div class="border-bottom mx-3"></div>
         <div class="d-flex flex-column w-100 justify-content-between mt-3">
           <p class="mx-3 fw-bolder">{{ funnel.name }}</p>
+<<<<<<< HEAD
+          <div class="button-stage gap-1 d-flex flex-row">
+
+=======
           <div class="gap-1 d-flex flex-row">
+>>>>>>> origin/main
             <div v-for="stage in getStages" :key="stage.id">
               <input
                 type="radio"
                 class="btn-check"
                 :name="'options'"
+<<<<<<< HEAD
+                :id="'option' + stage.id"
+                v-model="stage_id"
+                :value="stage.id"
+              />
+              <label class="item btn btn-light" :for="'option' + stage.id">
+=======
                 :id="'option' + stage.id + stage_id"
                 v-model="chosen_stage_id"
                 :value="stage.id"
@@ -56,6 +75,7 @@
                 ]"
                 :for="'option' + stage.id + stage_id"
               >
+>>>>>>> origin/main
                 {{ stage.name }}
               </label>
             </div>
@@ -138,7 +158,10 @@
                   class="input mx-4 border-0 mb-1"
                   type="text"
                   v-model="cpf"
+<<<<<<< HEAD
+=======
                   v-maska="'###.###.###-##'"
+>>>>>>> origin/main
                   placeholder="000.000.000-00"
                 />
               </label>
@@ -148,7 +171,11 @@
                 <span class="text-danger fs-5 fw-bolder">*</span>
                 <input
                   class="input mx-4 border-0"
+<<<<<<< HEAD
+                  type="text"
+=======
                   type="date"
+>>>>>>> origin/main
                   v-model="dateOfBirth"
                   placeholder="DD/MM/AAAA"
                 />
@@ -182,7 +209,11 @@
 </template>
 
 <script>
+<<<<<<< HEAD
+import { mapActions, mapGetters } from "vuex";
+=======
 import { mapActions, mapGetters, mapMutations } from "vuex";
+>>>>>>> origin/main
 import Error from "./Error.vue";
 import Success from "./Success.vue";
 import { useToast } from "vue-toastification";
@@ -198,6 +229,11 @@ export default {
       type: Object,
       required: true,
     },
+<<<<<<< HEAD
+  },
+  data() {
+    return {
+=======
     stage_id: {
       type: Number,
       required: true,
@@ -206,6 +242,7 @@ export default {
   data() {
     return {
       position: 0,
+>>>>>>> origin/main
       name: "",
       phoneNumber: "",
       email: "",
@@ -213,16 +250,50 @@ export default {
       dateOfBirth: "",
       address: "",
       buyValue: "",
+<<<<<<< HEAD
+      stage_id: null,
+=======
       chosen_stage_id: this.stage_id,
+>>>>>>> origin/main
     };
   },
   computed: {
     ...mapGetters("stages", ["getStages"]),
+<<<<<<< HEAD
+=======
     ...mapGetters("contacts", ["getContactsByStage"]),
+>>>>>>> origin/main
   },
   async created() {
     await this.setStages(this.funnel.id);
   },
+<<<<<<< HEAD
+  watch: {
+    stage_id(newValue) {
+      this.stage_id = newValue;
+    },
+  },
+  methods: {
+    ...mapActions("contacts", ["createContact"]),
+    ...mapActions("stages", ["setStages"]),
+    async createNewContact() {
+      console.log(this.stage_id);
+      try {
+        await this.createContact(this.funnel.id, {
+          name: this.name,
+          funnel_id: this.funnel.id,
+          stage_id: this.stage_id,
+          email: this.email,
+          phoneNumber: this.phoneNumber,
+          cpf: this.cpf,
+          dateOfBirth: this.dateOfBirth,
+          address: this.address,
+          buyValue: this.buyValue,
+        });
+        this.showSuccess("Contato criado com sucesso!");
+      } catch (error) {
+        this.showError(error.message);
+=======
   methods: {
     ...mapActions("contacts", [
       "createContact",
@@ -252,6 +323,7 @@ export default {
         this.$refs.btnClose.click();
       } catch (error) {
         this.showError("Erro ao criar contato!");
+>>>>>>> origin/main
       }
     },
     showError(errorMessage) {
@@ -301,6 +373,9 @@ export default {
   background-color: #787878;
 }
 
+<<<<<<< HEAD
+.btn-check:checked + .item {
+=======
 .stage-button {
   border-radius: 20px;
   width: 120px;
@@ -309,10 +384,32 @@ export default {
 }
 
 .stage-button.selected {
+>>>>>>> origin/main
   background-color: #7036e4;
   color: #fff;
 }
 
+<<<<<<< HEAD
+.item {
+  border-radius: 40px;
+  width: 120px;
+}
+
+.item:hover {
+  background-color: #dfdfdf;
+}
+
+.button-stage {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px;
+}
+
+.offcanvas {
+  --bs-offcanvas-width: 640px;
+
+
+=======
 .btn-check:checked + .stage-button {
   background-color: #7036e4;
   color: #fff;
@@ -324,6 +421,7 @@ export default {
 
 .offcanvas {
   --bs-offcanvas-width: 640px;
+>>>>>>> origin/main
 }
 
 .contact {

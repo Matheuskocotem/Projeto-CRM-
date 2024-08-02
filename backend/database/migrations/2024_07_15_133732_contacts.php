@@ -13,7 +13,7 @@ return new class extends Migration
             $table->integer('position');
             $table->string('name');
             $table->unsignedBigInteger('funnel_id');
-            $table->foreign('funnel_id')->references('id')->on('funnel');
+            $table->foreign('funnel_id')->references('id')->on('funnel')->onDelete('cascade');
             $table->unsignedBigInteger('stage_id');
             $table->foreign('stage_id')->references('id')->on('stages')->onDelete('cascade');
             $table->string('email')->unique();

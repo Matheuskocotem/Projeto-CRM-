@@ -9,6 +9,7 @@ export default {
             const token = rootState.user.token;
             const response = await createFunnel(funnel, token);
             commit('addFunnel', response.data);
+            console.log(response);
             return response;
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message){
@@ -27,15 +28,22 @@ export default {
             error.response.data.message;
         }
     },
+<<<<<<< HEAD
+    async setFunnels({ commit, rootState }, page) {
+        try {
+            const token = rootState.user.token;
+            const funnels = await getFunnels(token, page);
+=======
     async setFunnels({ commit, rootState }) {
         try {
             const token = rootState.user.token;
             const funnels = await getFunnels(token);
+>>>>>>> origin/main
             // const relatories = await getRelatories(token, funnels);
             commit('setFunnels', funnels.data.data);
             commit('setPagination', funnels.data.meta);
         } catch (error) {
             error.response.data.message;
         }
-    }
+    },
 }

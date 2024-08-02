@@ -5,9 +5,23 @@ export default {
     setFunnels(state, funnels){
         state.funnels = funnels;
     },
+    setPagination(state, pagination){
+        state.pagination = pagination;
+    },
     setLoading(state, isLoading){
         state.loading = isLoading;
     },
+<<<<<<< HEAD
+    addFunnel(state, funnel) {
+        state.funnels.push(funnel);
+    },
+    deleteFunnel(state, funnelId) {
+        const index = state.funnels.findIndex(funnel => funnel.id === funnelId);
+        if (index !== -1) {
+            state.funnels.splice(index, 1);
+        }
+    },
+=======
     setPagination(state, pagination){
         state.pagination = pagination;
     },
@@ -20,4 +34,5 @@ export default {
             state.funnels.splice(index, 1);
         }
     }
+>>>>>>> origin/main
 }

@@ -15,9 +15,16 @@ export default {
       console.log(error);
     }
   },
+<<<<<<< HEAD
+  async createStage({ commit, rootState }, stage) {
+    try {
+      const token = rootState.user.token;
+      const funnel_id = rootState.funnel.id;
+=======
   async createStage({ commit, rootState },{ stage, funnel_id}) {
     try {
       const token = rootState.user.token;
+>>>>>>> origin/main
       const response = await createStage(funnel_id, stage, token);
       commit("addStage", response.data);
       return response.data;

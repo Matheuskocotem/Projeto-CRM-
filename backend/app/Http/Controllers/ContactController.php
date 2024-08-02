@@ -9,9 +9,16 @@ Use App\Models\Stage;
 
 class ContactController extends Controller
 {
+<<<<<<< HEAD
+    public function index($funnel_id, $stage_id)
+    {
+        $contacts = Contacts::where('funnel_id', $funnel_id)
+                            ->where('stage_id', $stage_id)
+=======
     public function index($funnel_id)
     {
         $contacts = Contacts::where('funnel_id', $funnel_id)
+>>>>>>> origin/main
                             ->orderBy('position')
                             ->get();
         return response()->json($contacts);
@@ -49,6 +56,8 @@ class ContactController extends Controller
         ], 201);
     }
 
+
+
     public function show(Contacts $contact)
     {
         return response()->json($contact);
@@ -85,44 +94,44 @@ class ContactController extends Controller
             return response()->json(['error' => 'Contato não encontrado'], 404);
         }
     }
-    
-    
-
-    public function swap(Request $request)
+    public function swap(Request $request, $stage_id)
     {
         $request->validate([
+<<<<<<< HEAD
+            'position' => 'required|integer'
+=======
             'new_position' => 'required|integer|min:1',
             'stage_id' => 'required|exists:stages,id',
+>>>>>>> origin/main
         ]);
+
+        $contato = Contacts::where('stage_id', $stage_id)->first();
+        if (!$contato) {
+            return response()->json(['error' => 'Contato não encontrado.'], 404);
+        }
+        $current_position = $contato->position;
+        $new_postion = $request->position;
+
+        if ($new_postion == $current_position) {
+            return response()->json(['message' => 'A nova posição é igual à posição atual.'], 200);
+        }
+
+        if ($new_postion > $current_position) {
+            Contacts::whereBetween('position', [$current_position + 1, $new_postion])
+                ->update(['position' => \DB::raw('`position` - 1')]);
+        } elseif ($new_postion < $current_position) {
+            Contacts::whereBetween('position', [$new_postion, $current_position - 1])
+                ->update(['position' => \DB::raw('`position` + 1')]);
+        }
+        $contato->position = $new_postion;
+        $contato->save();
+            return response()->json($contato, 200);
+    }
+<<<<<<< HEAD
     
-        $newPosition = $request->newPosition;
-        $stage_id = $request->stage_id;
-        $contact_id = $request->contact_id;
-    
+=======
 
-    $contactToMove = Contacts::findOrFail($contact_id);
-    $currentPosition = $contactToMove->position;
-
-    if ($newPosition == $currentPosition) {
-        return response()->json(['message' => 'A nova posição é igual à posição atual.'], 200);
-    }
-
-    if ($newPosition < $currentPosition) {
-        Contacts::where('stage_id', $stage_id)
-            ->whereBetween('position', [$newPosition, $currentPosition - 1])
-            ->update(['position' => \DB::raw('position + 1')]);
-    } else {
-        Contacts::where('stage_id', $stage_id)
-            ->whereBetween('position', [$currentPosition + 1, $newPosition])
-            ->update(['position' => \DB::raw('position - 1')]);
-    }
-
-    $contactToMove->position = $newPosition;
-    $contactToMove->save();
-
-    return response()->json(['message' => 'Posição alterada com sucesso.'], 200);
-    }
-
+>>>>>>> origin/main
     public function swapPhase(Request $request)
     {
         $request->validate([
@@ -167,9 +176,6 @@ class ContactController extends Controller
         
         return response()->json(['message' => 'Fase alterada com sucesso.'], 200);
     }
-
-
-
 
     public function averageValueInStage($funnelId, $stageId)
     {

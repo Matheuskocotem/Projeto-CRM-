@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('User')->onDelete('cascade');
         });
     }
+    //destroy 
 
     /**
      * Reverse the migrations.

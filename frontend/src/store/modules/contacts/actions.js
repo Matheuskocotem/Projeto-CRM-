@@ -2,12 +2,40 @@ import {
   createContact,
   destroyContact,
   getContacts,
+<<<<<<< HEAD
+=======
   swap,
   swapBetweenPhases,
+>>>>>>> origin/main
   updateContact,
 } from "@/services/HttpService";
 
 export default {
+<<<<<<< HEAD
+  async setContacts({ commit, rootState }, params) {
+    try {
+      const token = rootState.user.token;
+      const response = await getContacts(
+        params.funnel_id,
+        params.stage_id,
+        token
+      );
+      commit("addContact", response.data);
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  },
+  async createContact({ commit, rootState }, params) {
+    try {
+      const token = rootState.user.token;
+      const response = await createContact(
+        params.funnel_id,
+        params.stage_id,
+        params.contact,
+        token
+      );
+      commit("addContact", response.data);
+=======
   async swapBetweenPhases({ rootState }, { funnel_id, contact_id, changes }) {
     try {
       const token = rootState.user.token;
@@ -46,6 +74,7 @@ export default {
       const token = rootState.user.token;
       await createContact(funnel_id, contact, token);
       commit("addContact", contact);
+>>>>>>> origin/main
     } catch (error) {
       console.log(error.response.data.message);
     }
@@ -78,6 +107,10 @@ export default {
       commit("deleteContact", contact);
     } catch (error) {
       console.log(error.response.data.message);
+<<<<<<< HEAD
+    } 
+=======
     }
+>>>>>>> origin/main
   },
 };
