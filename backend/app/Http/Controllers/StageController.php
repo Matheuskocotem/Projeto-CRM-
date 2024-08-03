@@ -6,6 +6,8 @@ use App\Models\Contacts;
 use Illuminate\Http\Request;
 use App\Models\Stage;
 use App\Models\Funnel;
+use Illuminate\Support\Facades\Auth;
+
 
 class StageController extends Controller
 {
@@ -49,13 +51,18 @@ class StageController extends Controller
         return response()->json($stage, 200);
     }
 
-    public function destroy(Request $request, Funnel $funnel, Stage $stage)
+    public function destroy(Request $request, $funnelId, $stageId)
     {
+        $funnel = Funnel::where('user_id', Auth::id())->where('id', $funnelId)->firstOrFail();
+        
+        $stage = Stage::where('funnel_id', $funnelId)->where('id', $stageId)->firstOrFail();
+        
         $stage->delete();
-
-        return response()->json(['message' => 'etapa deletada'], 200);
+    
+        return response()->json(['message' => 'Estágio excluído com sucesso'], 204);
     }
-
+    
+    
     public function totalContactsValue($funnelId)
 {
     $funnel = Funnel::with('stages.contacts')->findOrFail($funnelId);
@@ -68,8 +75,6 @@ class StageController extends Controller
     }
     return response()->json([
         'total_value' => $totalValue
-        // 'quantidade_contatos' =>
-        // 'finalizados' =>
     ]);
 }
 
