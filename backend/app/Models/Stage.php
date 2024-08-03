@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Stage extends Model
 {
     protected $fillable = ['name', 'order', 'funnel_id'];
-
+    protected $primaryKey = 'id';
+    public $timestamps = true;
     public function funnel()
     {
         return $this->belongsTo(Funnel::class, 'funnel_id', 'id');

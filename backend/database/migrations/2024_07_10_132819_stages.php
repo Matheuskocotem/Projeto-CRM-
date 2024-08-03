@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('name');
             $table->integer('order')->default(0);
             $table->timestamps();
-
             $table->foreign('funnel_id')->references('id')->on('funnel')->onDelete('cascade');
         });
     }
