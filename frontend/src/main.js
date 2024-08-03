@@ -28,7 +28,7 @@ import {
   faChartSimple,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { faUser, faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { faUser, faTrashCan, faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 library.add(
@@ -47,7 +47,8 @@ library.add(
   faFillDrip,
   faUserPlus,
   faAngleLeft,
-  faChartSimple
+  faChartSimple,
+  faSquarePlus
 );
 
 const app = createApp(App).directive("maska", vMaska);

@@ -12,23 +12,15 @@ export default {
     try {
       const token = rootState.user.token;
       await swapBetweenPhases(funnel_id, contact_id, changes, token);
-    } catch(error) {
-      console.log(error);
-    }
-  },
-  async swap({ rootState }, { funnel_id, contact_id, changes }){
-    try {
-      const token = rootState.user.token;
-      await swap(funnel_id, contact_id, changes, token);
     } catch (error) {
       console.log(error);
     }
   },
-  async refreshContacts({ rootState }, funnel_id) {
+  async swap({ rootState }, { funnel_id, contact_id, changes }) {
     try {
       const token = rootState.user.token;
-      await getContacts(funnel_id, token);
-    } catch(error){
+      await swap(funnel_id, contact_id, changes, token);
+    } catch (error) {
       console.log(error);
     }
   },
@@ -44,8 +36,9 @@ export default {
   async createContact({ commit, rootState }, { funnel_id, contact }) {
     try {
       const token = rootState.user.token;
-      await createContact(funnel_id, contact, token);
+      const response = await createContact(funnel_id, contact, token);
       commit("addContact", contact);
+      return response.status;
     } catch (error) {
       console.log(error.response.data.message);
     }
