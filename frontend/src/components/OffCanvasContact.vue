@@ -18,9 +18,10 @@
       </button>
       <button
         type="button"
-        class="btn btn-primary d-flex justify-content-center mb-1 w-50"
+        class="btn btn-primary d-flex justify-content-center mb-1 w-50 align-items-center"
         @click="createNewContact"
       >
+        <font-awesome-icon class="mx-2 mb-1" :icon="['far', 'square-plus']" />
         Criar contato
       </button>
     </div>
@@ -91,6 +92,7 @@
                   class="input mx-4 border-0 mb-1"
                   type="text"
                   v-model="phoneNumber"
+                  v-maska="'## #####-####'"
                   placeholder="Adicionar número"
                 />
               </label>
@@ -182,7 +184,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import Error from "./Error.vue";
 import Success from "./Success.vue";
 import { useToast } from "vue-toastification";
@@ -227,30 +229,30 @@ export default {
     ...mapActions("contacts", [
       "createContact",
       "setContacts",
-      "refreshContacts",
     ]),
     ...mapActions("stages", ["setStages"]),
     async createNewContact() {
-      try {
-        await this.createContact({
+      const response = await this.createContact({
+        funnel_id: this.funnel.id,
+        contact: {
+          position: this.getContactsByStage(this.stage_id).length + 1,
+          name: this.name,
           funnel_id: this.funnel.id,
-          contact: {
-            position: this.getContactsByStage(this.stage_id).length + 1,
-            name: this.name,
-            funnel_id: this.funnel.id,
-            stage_id: this.chosen_stage_id,
-            email: this.email,
-            phoneNumber: this.phoneNumber,
-            cpf: this.cpf,
-            dateOfBirth: this.dateOfBirth,
-            address: this.address,
-            buyValue: this.buyValue,
-          },
-        });
+          stage_id: this.chosen_stage_id,
+          email: this.email,
+          phoneNumber: this.phoneNumber,
+          cpf: this.cpf,
+          dateOfBirth: this.dateOfBirth,
+          address: this.address,
+          buyValue: this.buyValue,
+        },
+      });
+
+      if (response == 201) {
         this.$emit("updateContact");
         this.showSuccess("Contato criado com sucesso!");
         this.$refs.btnClose.click();
-      } catch (error) {
+      } else {
         this.showError("Erro ao criar contato!");
       }
     },

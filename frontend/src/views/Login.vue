@@ -24,7 +24,7 @@
           </div>
         </div>
         <div id="titleArea">
-          <h1 class="h1s">Sua jornada Começa Aqui</h1> 
+          <h1 class="h1s">Sua jornada Começa Aqui</h1>
           <p>Um único login para todos os produtos da 3c plus</p>
         </div>
         <div id="form">
@@ -84,28 +84,11 @@ export default {
     return {
       email: "",
       password: "",
-      errorMessage: "",
     };
   },
   methods: {
-    showError(errorMessage) {
-      const toast = useToast();
-      toast.error({
-        component: Error,
-        props: {
-          errorMessage,
-        },
-      });
-    },
-    showSuccess(successMessage) {
-      const toast = useToast();
-      toast.success({
-        component: Success,
-        props: {
-          successMessage,
-        },
-      });
-    },
+    ...mapActions("user", ["showError", "showSuccess"]),
+    ...mapActions("user", ["login"]),
     async Login() {
       // error treatment
 
@@ -131,11 +114,9 @@ export default {
         this.showError(response.data.error.message);
       }
     },
-    ...mapActions("user", ["login"]),
   },
 };
 </script>
-
 
 <style scoped>
 #main {
@@ -179,7 +160,7 @@ export default {
   font-weight: 100;
   font-size: 38px;
   margin-top: 40px;
-  font-family: 'grotesque';
+  font-family: "grotesque";
   color: #212529;
 }
 
