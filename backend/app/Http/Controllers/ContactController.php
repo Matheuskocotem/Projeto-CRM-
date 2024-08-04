@@ -132,10 +132,10 @@ class ContactController extends Controller
         }
         if ($new_postion > $current_position) {
             Contacts::whereBetween('position', [$current_position + 1, $new_postion])
-                ->update(['position' => \DB::raw('`position` - 1')]);
+                ->update(['position' => \DB::raw('position - 1')]);
         } elseif ($new_postion < $current_position) {
             Contacts::whereBetween('position', [$new_postion, $current_position - 1])
-                ->update(['position' => \DB::raw('`position` + 1')]);
+                ->update(['position' => \DB::raw('position + 1')]);
         }
         $contato->position = $new_postion;
         $contato->save();
@@ -218,8 +218,4 @@ class ContactController extends Controller
 
         return response()->json($contacts);
     }
-
-
-
-
 }
