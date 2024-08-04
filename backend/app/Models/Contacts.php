@@ -10,8 +10,18 @@ class Contacts extends Model
     use HasFactory;
     protected $table = 'contacts';
     protected $fillable = [
-        'position', 'name', 'email', 'phoneNumber', 'dateOfBirth', 'address', 'buyValue'
+        'position', 'name', 'email', 'phoneNumber', 'dateOfBirth', 'address', 'buyValue', 'funnel_id', 'stage_id'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $maxposition = static::max('position');
+            $model->position = $maxposition + 1;
+        });
+    }
 
     public function funnel()
     {
@@ -29,3 +39,4 @@ class Contacts extends Model
         return $lastPosition ? $lastPosition + 1 : 1;
     }
 }
+
