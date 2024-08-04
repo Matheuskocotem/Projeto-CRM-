@@ -18,14 +18,15 @@ Route::post('/resetPassword', [ResetPasswordController::class, 'reset'])->name('
 Route::post('/forgotPassword', [ForgotPasswordController::class, 'forgotPassword'])->name('password.reset');
 
 Route::middleware('auth:sanctum')->group(function () {
-    // Funnel
+
+    
     Route::prefix('/funnels')->group(function () {
         Route::get('/', [FunnelController::class, 'index']);
         Route::get('/search', [FunnelController::class, 'search']);
         Route::post('/', [FunnelController::class, 'store']);
         Route::delete('/{id}', [FunnelController::class, 'destroy']);
         //relatorios
-        Route::get('/{funnelId}/total-value', [StageController::class, 'totalContactsValue']);
+        Route::get('/funnels/metrics', [FunnelController::class, 'metrics']);
 
         // Stages
         Route::prefix('{funnel_id}/stages')->group(function () {
