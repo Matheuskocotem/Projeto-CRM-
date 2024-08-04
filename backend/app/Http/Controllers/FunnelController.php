@@ -8,48 +8,42 @@ use Illuminate\Support\Facades\Auth;
 
 class FunnelController extends Controller
 {
-public function index()
-{
-    $funnels = Funnel::where('user_id', Auth::id())->with('stages.contacts')->paginate(8);
-
-    $funnelsData = $funnels->map(function($funnel) {
-        $totalValue = 0;
-        $totalContacts = 0;
-        $lastStageContacts = 0;
-
-        foreach ($funnel->stages as $stage) {
-            foreach ($stage->contacts as $contact) {
-                $totalValue += $contact->buyValue;
-                $totalContacts++;
+    public function index()
+    {
+        $funnels = Funnel::where('user_id', Auth::id())->with('stages.contacts')->paginate(8);
+    
+        $funnelsData = $funnels->map(function($funnel) {
+            $totalValue = 0;
+    
+            foreach ($funnel->stages as $stage) {
+                foreach ($stage->contacts as $contact) {
+                    $totalValue += $contact->buyValue;
+                }
             }
-        }
-        
-        if ($funnel->stages->isNotEmpty()) {
-            $lastStage = $funnel->stages->last();
-            $lastStageContacts = $lastStage->contacts->count();
-        }
+    
+            return [
+                'id' => $funnel->id,
+                'name' => $funnel->name,
+                'color' => $funnel->color,
+                'total_value' => $totalValue
+            ];
+        });
+    
+        return response()->json([
+            'data' => $funnelsData,
+            'meta' => [
+                'total' => $funnels->total(),
+                'per_page' => $funnels->perPage(),
+                'current_page' => $funnels->currentPage(),
+                'last_page' => $funnels->lastPage(),
+                'next_page_url' => $funnels->nextPageUrl(),
+                'prev_page_url' => $funnels->previousPageUrl()
+            ]
+        ]);
+    }
+    
 
-        return [
-            'id' => $funnel->id,
-            'name' => $funnel->name,
-            'total_value' => $totalValue,
-            'total_contacts' => $totalContacts,
-            'last_stage_contacts' => $lastStageContacts
-        ];
-    });
 
-    return response()->json([
-        'data' => $funnelsData,
-        'meta' => [
-            'total' => $funnels->total(),
-            'per_page' => $funnels->perPage(),
-            'current_page' => $funnels->currentPage(),
-            'last_page' => $funnels->lastPage(),
-            'next_page_url' => $funnels->nextPageUrl(),
-            'prev_page_url' => $funnels->previousPageUrl()
-        ]
-    ]);
-}
 
 
     public function metrics()
