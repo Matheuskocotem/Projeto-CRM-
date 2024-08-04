@@ -60,7 +60,7 @@ router.beforeEach((to, from, next) => {
   }
 
   const auth = store.getters['user/isAuth'];
-  const PublicRoutes = ['/login', '/register', '/forgot-password'];
+  const PublicRoutes = ['/login', '/register', '/forgot-password', '/resetPassword/:token'];
   const AuthRequired = !PublicRoutes.includes(to.path);
 
   if(AuthRequired && !auth){
