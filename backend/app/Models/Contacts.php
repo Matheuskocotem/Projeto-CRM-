@@ -39,4 +39,3 @@ class Contacts extends Model
         return $lastPosition ? $lastPosition + 1 : 1;
     }
 }
-
