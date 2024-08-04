@@ -37,20 +37,36 @@ class StageController extends Controller
         return response()->json($stage, 201);
     }
 
-    public function update(Request $request, Funnel $funnel, Stage $stage){
+    public function update(Request $request, $funnel_id, $stage_id)
+    {
         $validatedData = $request->validate([
-            'name' => 'sometimes|string',
-            'order' => 'sometimes|integer',
+            'order' => 'required|integer', 
         ]);
-
+    
+        $stage = stage::where('id', $stage_id)
+                       ->where('funnel_id', $funnel_id)
+                       ->first();
+    
+        if(!$stage) {
+            return response()->json([
+                'message' => 'stage não encontrada'
+            ], 404);
+        }
+    
         $stage->update([
-            'name' => $validatedData['name'],
-            'order' => $validatedData['order'],
+            'order' => $request->order
         ]);
 
-        return response()->json($stage, 200);
+        return response()->json([
+            'message' => 'Etapa atualizada com sucesso',
+            'data' => $stage
+        ], 200);
     }
 
+    
+    
+
+    
     public function destroy(Request $request, $funnelId, $stageId)
     {
         $funnel = Funnel::where('user_id', Auth::id())->where('id', $funnelId)->firstOrFail();
@@ -75,7 +91,6 @@ class StageController extends Controller
     }
     return response()->json([
         'total_value' => $totalValue
-    ]);
-}
-
+        ]);
+    }
 }
