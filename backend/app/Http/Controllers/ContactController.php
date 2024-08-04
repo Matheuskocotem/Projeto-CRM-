@@ -54,8 +54,9 @@ class ContactController extends Controller
         return response()->json($contact);
     }
 
-    public function update(Request $request, Contacts $contact)
-    {
+    public function update(Request $request, $funnel_id, $contact_id)
+    {   
+        // Valide os dados recebidos
         $request->validate([
             'position' => 'required|integer',
             'name' => 'nullable|string',
@@ -64,10 +65,34 @@ class ContactController extends Controller
             'dateOfBirth' => 'nullable|date',
             'address' => 'nullable|string',
             'buyValue' => 'nullable|numeric',
+            'funnel_id' => 'required|exists:funnel,id',
+            'stage_id' => 'required|exists:stages,id',
         ]);
-
-        $contact->update($request->all());
-
+    
+        $contact = Contacts::where('id', $contact_id)
+                           ->where('funnel_id', $funnel_id)
+                           ->first();
+    
+        if (!$contact) {
+            return response()->json([
+                'message' => 'Contato não encontrado'
+            ], 404);
+        }
+    
+        // Atualize o contato com os dados validados
+        $contact->update([
+            'position' => $request->position,
+            'name' => $request->name,
+            'funnel_id' => $request->funnel_id,
+            'stage_id' => $request->stage_id,
+            'email' => $request->email,
+            'phoneNumber' => $request->phoneNumber,
+            'dateOfBirth' => $request->dateOfBirth,
+            'address' => $request->address,
+            'buyValue' => $request->buyValue,
+        ]);
+    
+        // Retorne a resposta
         return response()->json([
             'message' => 'Contato atualizado com sucesso',
             'data' => $contact

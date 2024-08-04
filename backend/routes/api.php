@@ -19,7 +19,8 @@ Route::post('/forgotPassword', [ForgotPasswordController::class, 'forgotPassword
 
 //rotas protegidas
 Route::middleware('auth:sanctum')->group(function () {
-    // Funnel
+
+    
     Route::prefix('/funnels')->group(function () {
         Route::get('/', [FunnelController::class, 'index']);
         Route::get('/search', [FunnelController::class, 'search']);

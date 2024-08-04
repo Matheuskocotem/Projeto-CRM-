@@ -7,9 +7,48 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Funnel;
 
 class AuthController extends Controller
 {
+
+    public function show(Request $request)
+    {
+        $user = Auth::user();
+
+        $funnels = Funnel::where('user_id', $user->id)->with('stages.contacts')->get();
+
+        $funnelsData = $funnels->map(function($funnel) {
+            $totalValue = 0;
+            $totalContacts = 0;
+            $lastStageContacts = 0;
+
+            foreach ($funnel->stages as $stage) {
+                foreach ($stage->contacts as $contact) {
+                    $totalValue += $contact->buyValue ?? 0;
+                    $totalContacts++;
+                }
+            }
+            
+            if ($funnel->stages->isNotEmpty()) {
+                $lastStage = $funnel->stages->last();
+                $lastStageContacts = $lastStage->contacts->count();
+            }
+
+            return [
+                'id' => $funnel->id,
+                'name' => $funnel->name,
+                'total_value' => $totalValue,
+                'total_contacts' => $totalContacts,
+                'last_stage_contacts' => $lastStageContacts
+            ];
+        });
+
+        return response()->json([
+            'user' => $user,
+            'funnels' => $funnelsData
+        ]);
+    }
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
