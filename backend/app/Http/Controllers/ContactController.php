@@ -21,33 +21,34 @@ class ContactController extends Controller
     {
         $request->validate([
             'position' => 'required|integer',
-            'name' => 'required|string',
+            'name' => 'required|string|max:255',
             'funnel_id' => 'required|exists:funnel,id',
             'stage_id' => 'required|exists:stages,id',
-            'email' => 'required|email',
-            'phoneNumber' => 'required|string',
+            'email' => 'required|email|max:255',
+            'phoneNumber' => 'required|string|max:20',
             'dateOfBirth' => 'nullable|date',
-            'address' => 'nullable|string',
-            'buyValue' => 'nullable|numeric',   
+            'address' => 'nullable|string|max:255',
+            'buyValue' => 'nullable|numeric',
         ]);
 
-        $contact = Contacts::create([
-            'position' => $request->position,
-            'name' => $request->name,
-            'funnel_id' => $request->funnel_id,
-            'stage_id' => $request->stage_id,
-            'email' => $request->email,
-            'phoneNumber' => $request->phoneNumber,
-            'dateOfBirth' => $request->dateOfBirth,
-            'address' => $request->address,
-            'buyValue' => $request->buyValue,
-        ]);
+        $contact = new Contacts();
+        $contact->position = $request->position;
+        $contact->name = $request->name;
+        $contact->funnel_id = $request->funnel_id;
+        $contact->stage_id = $request->stage_id;
+        $contact->email = $request->email;
+        $contact->phoneNumber = $request->phoneNumber;
+        $contact->dateOfBirth = $request->dateOfBirth;
+        $contact->address = $request->address;
+        $contact->buyValue = $request->buyValue;
+        $contact->save();
 
-        return response()->json([
-            'message' => 'Contato criado com sucesso',
-            'data' => $contact
-        ], 201);
+        return response()->json($contact, 201);
     }
+    
+    
+    
+
 
     public function show(Contacts $contact)
     {
@@ -56,7 +57,6 @@ class ContactController extends Controller
 
     public function update(Request $request, $funnel_id, $contact_id)
     {   
-        // Valide os dados recebidos
         $request->validate([
             'position' => 'required|integer',
             'name' => 'nullable|string',
@@ -79,7 +79,6 @@ class ContactController extends Controller
             ], 404);
         }
     
-        // Atualize o contato com os dados validados
         $contact->update([
             'position' => $request->position,
             'name' => $request->name,

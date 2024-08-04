@@ -49,28 +49,36 @@ class FunnelController extends Controller
     public function metrics()
     {
         $funnels = Funnel::where('user_id', Auth::id())->with('stages.contacts')->get();
-
+    
         $totalFunnels = $funnels->count();
         $totalValue = 0;
         $totalContacts = 0;
-
+        $totalContactsInLastStage = 0;
+    
         foreach ($funnels as $funnel) {
-            foreach ($funnel->stages as $stage) {
+            foreach ($funnel->stages as $index => $stage) {
                 foreach ($stage->contacts as $contact) {
                     $totalValue += $contact->buyValue;
                     $totalContacts++;
+                }
+                if ($index === $funnel->stages->count() - 1) {
+                    $totalContactsInLastStage += $stage->contacts->count();
+                }
             }
         }
+    
+        $averageValuePerContact = $totalContacts > 0 ? $totalValue / $totalContacts : 0;
+        $averageValuePerFunnel = $totalFunnels > 0 ? $totalValue / $totalFunnels : 0;
+    
+        return response()->json([
+            'total_funnels' => $totalFunnels,
+            'total_value' => $totalValue,
+            'average_value_per_contact' => $averageValuePerContact,
+            'average_value_per_funnel' => $averageValuePerFunnel,
+            'total_contacts_in_last_stage' => $totalContactsInLastStage,
+        ]);
     }
-
-    $averageValue = $totalContacts > 0 ? $totalValue / $totalContacts : 0;
-
-    return response()->json([
-        'total_funnels' => $totalFunnels,
-        'total_value' => $totalValue,
-        'average_value_per_contact' => $averageValue,
-    ]);
-}
+    
 
 
     public function store(Request $request)
