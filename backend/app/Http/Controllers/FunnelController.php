@@ -10,7 +10,7 @@ class FunnelController extends Controller
 {
 public function index()
 {
-    $funnels = Funnel::where('user_id', Auth::id())->with('stages.contacts')->paginate(10);
+    $funnels = Funnel::where('user_id', Auth::id())->with('stages.contacts')->paginate(8);
 
     $funnelsData = $funnels->map(function($funnel) {
         $totalValue = 0;
