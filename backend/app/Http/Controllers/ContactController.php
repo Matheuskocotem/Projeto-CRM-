@@ -53,6 +53,7 @@ class ContactController extends Controller
         return response()->json($contact, 201);
     }
 
+
     public function show(Contacts $contact)
     {
         return response()->json($contact);
@@ -100,17 +101,21 @@ class ContactController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id_funnel, $id_contact)
     {
-        $contact = Contacts::find($id);
-    
+        $contact = Contacts::where('id', $id_contact)
+                           ->where('funnel_id', $id_funnel)
+                           ->first();
+
         if ($contact) {
             $contact->delete();
-            return response()->json(['message' => 'contato deleteado']);
+            return response()->json(['message' => 'Contato não deletado'], 204);
         } else {
             return response()->json(['error' => 'Contato não encontrado'], 404);
         }
     }
+    
+    
     
     
 
