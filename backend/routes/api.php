@@ -45,7 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{contact_id}', [ContactController::class, 'update']);
         Route::delete('/{contact_id}', [ContactController::class, 'destroy']);
         Route::post('/search', [ContactController::class, 'search']);
-        Route::put('/swap/{contact_id}', [ContactController::class, 'swap']);
+        Route::put('/{stage_id}/swap/{contact_id}', [ContactController::class, 'swap']);
         Route::put('/swap-phase/{contact_id}', [ContactController::class, 'swapPhase']);
     });
 });

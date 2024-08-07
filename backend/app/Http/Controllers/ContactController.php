@@ -20,7 +20,6 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'position' => 'required|integer',
             'name' => 'required|string|max:255',
             'funnel_id' => 'required|exists:funnel,id',
             'stage_id' => 'required|exists:stages,id',
@@ -30,24 +29,31 @@ class ContactController extends Controller
             'address' => 'nullable|string|max:255',
             'buyValue' => 'nullable|numeric',
         ]);
-
-        $contact = new Contacts();
-        $contact->position = $request->position;
-        $contact->name = $request->name;
-        $contact->funnel_id = $request->funnel_id;
-        $contact->stage_id = $request->stage_id;
-        $contact->email = $request->email;
-        $contact->phoneNumber = $request->phoneNumber;
-        $contact->dateOfBirth = $request->dateOfBirth;
-        $contact->address = $request->address;
-        $contact->buyValue = $request->buyValue;
-        $contact->save();
-
-        return response()->json($contact, 201);
+    
+        if ($request->stage_id === null) {
+            $request->stage_id = 1;
+        }
+    
+        if ($request->buyValue === null) {
+            $request->buyValue = 0.00;
+        }
+    
+        $contact = Contacts::create([
+            'name' => $request->name,
+            'stage_id' => $request->stage_id,
+            'funnel_id' => $request->funnel_id,
+            'phoneNumber' => $request->phoneNumber,
+            'email' => $request->email,
+            'dateOfBirth' => $request->dateOfBirth,
+            'address' => $request->address,
+            'buyValue' => $request->buyValue
+        ]);
+    
+        return response()->json([
+            'id' => $contact->id,
+            'contact' => $contact
+        ], 201);
     }
-    
-    
-    
 
 
     public function show(Contacts $contact)
@@ -58,7 +64,6 @@ class ContactController extends Controller
     public function update(Request $request, $funnel_id, $contact_id)
     {   
         $request->validate([
-            'position' => 'required|integer',
             'name' => 'nullable|string',
             'email' => 'nullable|email',
             'phoneNumber' => 'nullable|string',
@@ -80,7 +85,6 @@ class ContactController extends Controller
         }
     
         $contact->update([
-            'position' => $request->position,
             'name' => $request->name,
             'funnel_id' => $request->funnel_id,
             'stage_id' => $request->stage_id,
@@ -91,61 +95,60 @@ class ContactController extends Controller
             'buyValue' => $request->buyValue,
         ]);
     
-        // Retorne a resposta
         return response()->json([
             'message' => 'Contato atualizado com sucesso',
             'data' => $contact
         ], 200);
     }
 
-    public function destroy($id)
+    public function destroy($id_funnel, $id_contact)
     {
-        $contact = Contacts::find($id);
-    
+        $contact = Contacts::where('id', $id_contact)
+                           ->where('funnel_id', $id_funnel)
+                           ->first();
+
         if ($contact) {
             $contact->delete();
-            return response()->json(['message' => 'contato deleteado']);
+            return response()->json(['message' => 'Contato não deletado'], 204);
         } else {
             return response()->json(['error' => 'Contato não encontrado'], 404);
         }
     }
     
-    
-
-    public function swap(Request $request)
+    public function swap(Request $request, $stage_id)
     {
+        
         $request->validate([
-
             'position' => 'required|integer'
         ]);
     
-        $newPosition = $request->newPosition;
-        $stage_id = $request->stage_id;
-        $contact_id = $request->contact_id;
+        $contato = Contacts::where('stage_id', $stage_id)->first();
+        if (!$contato) {
+            return response()->json(['error' => 'Contato não encontrado.'], 404);
+        }
+        $current_position = $contato->position;
+        $new_position = $request->position;
+    
+        if ($new_position == $current_position) {
+            return response()->json(['message' => 'A nova posição é igual à posição atual.'], 200);
+        }
+        if ($new_position > $current_position) {
+            Contacts::where('stage_id', $stage_id)
+                ->whereBetween('position', [$current_position + 1, $new_position])
+                ->increment('position');
+        } elseif ($new_position < $current_position) {
+            Contacts::where('stage_id', $stage_id)
+                ->whereBetween('position', [$new_position, $current_position - 1])
+                ->decrement('position');
+        }
+
+        $contato->position = $new_position;
+        $contato->save();
+    
+        return response()->json($contato, 200);
+    }
     
 
-    $contactToMove = Contacts::findOrFail($contact_id);
-    $currentPosition = $contactToMove->position;
-
-    if ($newPosition == $currentPosition) {
-        return response()->json(['message' => 'A nova posição é igual à posição atual.'], 200);
-    }
-
-    if ($newPosition < $currentPosition) {
-        Contacts::where('stage_id', $stage_id)
-            ->whereBetween('position', [$newPosition, $currentPosition - 1])
-            ->update(['position' => \DB::raw('position + 1')]);
-    } else {
-        Contacts::where('stage_id', $stage_id)
-            ->whereBetween('position', [$currentPosition + 1, $newPosition])
-            ->update(['position' => \DB::raw('position - 1')]);
-    }
-
-    $contactToMove->position = $newPosition;
-    $contactToMove->save();
-
-    return response()->json(['message' => 'Posição alterada com sucesso.'], 200);
-    }
 
 
     public function swapPhase(Request $request)
@@ -224,8 +227,4 @@ class ContactController extends Controller
 
         return response()->json($contacts);
     }
-
-
-
-
 }
