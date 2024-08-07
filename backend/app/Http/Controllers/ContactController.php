@@ -17,7 +17,6 @@ class ContactController extends Controller
         return response()->json($contacts);
     }
 
-
     public function store(Request $request)
     {
         $request->validate([
@@ -50,7 +49,10 @@ class ContactController extends Controller
             'buyValue' => $request->buyValue
         ]);
     
-        return response()->json($contact, 201);
+        return response()->json([
+            'id' => $contact->id,
+            'contact' => $contact
+        ], 201);
     }
 
 
@@ -62,7 +64,6 @@ class ContactController extends Controller
     public function update(Request $request, $funnel_id, $contact_id)
     {   
         $request->validate([
-            'position' => 'required|integer',
             'name' => 'nullable|string',
             'email' => 'nullable|email',
             'phoneNumber' => 'nullable|string',
@@ -84,7 +85,6 @@ class ContactController extends Controller
         }
     
         $contact->update([
-            'position' => $request->position,
             'name' => $request->name,
             'funnel_id' => $request->funnel_id,
             'stage_id' => $request->stage_id,
@@ -115,38 +115,38 @@ class ContactController extends Controller
         }
     }
     
-    
-    
-    
-
     public function swap(Request $request, $stage_id)
     {
         $request->validate([
             'position' => 'required|integer'
         ]);
-
+    
         $contato = Contacts::where('stage_id', $stage_id)->first();
         if (!$contato) {
             return response()->json(['error' => 'Contato não encontrado.'], 404);
         }
         $current_position = $contato->position;
-        $new_postion = $request->position;
-
-        if ($new_postion == $current_position) {
+        $new_position = $request->position;
+    
+        if ($new_position == $current_position) {
             return response()->json(['message' => 'A nova posição é igual à posição atual.'], 200);
         }
-
-        if ($new_postion > $current_position) {
-            Contacts::whereBetween('position', [$current_position + 1, $new_postion])
-                ->update(['position' => \DB::raw('position - 1')]);
-        } elseif ($new_postion < $current_position) {
-            Contacts::whereBetween('position', [$new_postion, $current_position - 1])
-                ->update(['position' => \DB::raw('position + 1')]);
+        if ($new_position > $current_position) {
+            Contacts::where('stage_id', $stage_id)
+                ->whereBetween('position', [$current_position + 1, $new_position])
+                ->increment('position');
+        } elseif ($new_position < $current_position) {
+            Contacts::where('stage_id', $stage_id)
+                ->whereBetween('position', [$new_position, $current_position - 1])
+                ->decrement('position');
         }
-        $contato->position = $new_postion;
+
+        $contato->position = $new_position;
         $contato->save();
-            return response()->json($contato, 200);
+    
+        return response()->json($contato, 200);
     }
+    
 
 
 
