@@ -3,7 +3,6 @@ import Error from "@/components/Error.vue";
 import Success from "@/components/Success.vue";
 import { useToast } from "vue-toastification";
 
-
 export default {
   saveToken({ commit }, token) {
     commit("setToken", token);

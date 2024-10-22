@@ -10,7 +10,6 @@ class Funnel extends Model
     use HasFactory;
 
     protected $table = 'funnel';
-
     protected $fillable = ['user_id', 'name', 'color'];
     
     protected static function booted()
