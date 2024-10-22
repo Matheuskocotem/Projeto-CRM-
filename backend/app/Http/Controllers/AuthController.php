@@ -11,7 +11,7 @@ use App\Models\Funnel;
 
 class AuthController extends Controller
 {
-
+    
     public function show(Request $request)
     {
         $user = Auth::user();
