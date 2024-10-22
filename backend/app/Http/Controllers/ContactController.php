@@ -132,14 +132,12 @@ class ContactController extends Controller
         if ($new_position == $current_position) {
             return response()->json(['message' => 'A nova posição é igual à posição atual.'], 200);
         }
-        if ($new_position > $current_position) {
-            Contacts::where('stage_id', $stage_id)
-                ->whereBetween('position', [$current_position + 1, $new_position])
-                ->increment('position');
-        } elseif ($new_position < $current_position) {
-            Contacts::where('stage_id', $stage_id)
-                ->whereBetween('position', [$new_position, $current_position - 1])
-                ->decrement('position');
+        if ($new_postion > $current_position) {
+            Contacts::whereBetween('position', [$current_position + 1, $new_postion])
+                ->update(['position' => \DB::raw('position - 1')]);
+        } elseif ($new_postion < $current_position) {
+            Contacts::whereBetween('position', [$new_postion, $current_position - 1])
+                ->update(['position' => \DB::raw('position + 1')]);
         }
 
         $contato->position = $new_position;
@@ -148,8 +146,6 @@ class ContactController extends Controller
         return response()->json($contato, 200);
     }
     
-
-
 
     public function swapPhase(Request $request)
     {

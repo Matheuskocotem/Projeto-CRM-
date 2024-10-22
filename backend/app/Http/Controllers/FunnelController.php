@@ -102,8 +102,8 @@ class FunnelController extends Controller
     {
         $name = $request->query('name');
         $funnel = Funnel::where('user_id', Auth::id())
-                        ->where('name', 'like', "%$name%")
-                        ->get();
+            ->where('name', 'like', "%$name%")
+            ->get();
         return response()->json($funnel);
     }
 

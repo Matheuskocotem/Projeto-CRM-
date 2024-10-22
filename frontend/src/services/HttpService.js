@@ -75,6 +75,22 @@ export const getStages = async (funnel_id, token) => {
   });
 };
 
+export const updateContact = async (contact, token, contact_id) => {
+  return await HttpService.put(`/contacts/${contact_id}`, contact, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+
+export const getStages = async (token, funnel_id) => {
+  return await HttpService.get(`${funnel_id}/stages/`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 export const createStage = async (funnel_id, stage, token) => {
   return await HttpService.post(`funnels/${funnel_id}/stages/`, stage, {
     headers: {
